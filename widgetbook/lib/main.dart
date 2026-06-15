@@ -73,6 +73,30 @@ class WidgetbookApp extends StatelessWidget {
                 ),
               ],
             ),
+            WidgetbookComponent(
+              name: 'SellerCard',
+              useCases: [
+                WidgetbookUseCase(
+                  name: 'Default',
+                  builder: (context) => Center(
+                    child: SizedBox(
+                      width: 350,
+                      child: SellerCard(
+                        sellerId: 's1',
+                        name: context.knobs.string(label: 'Name', initialValue: 'Mama Njeri'),
+                        city: context.knobs.string(label: 'City', initialValue: 'Nairobi'),
+                        stiScore: context.knobs.int.input(label: 'STI Score', initialValue: 85),
+                        totalListings: context.knobs.int.input(label: 'Listings', initialValue: 42),
+                        isVaziFeatured: context.knobs.boolean(label: 'VAZI Featured', initialValue: false),
+                        actionLabel: context.knobs.stringOrNull(label: 'Action Label', initialValue: 'Visit Store'),
+                        onTap: () {},
+                        onAction: () {},
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ],
         ),
         WidgetbookCategory(

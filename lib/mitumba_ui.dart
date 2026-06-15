@@ -10,3 +10,4 @@ export 'src/tokens/theme.dart';
 // Components
 export 'src/components/listing/listing_card.dart';
 export 'src/components/navigation/mobile_bottom_nav.dart';
+export 'src/components/seller/seller_card.dart';
