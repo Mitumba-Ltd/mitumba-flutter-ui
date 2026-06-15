@@ -27,7 +27,7 @@ ListingCard(
 
 ## Components
 
-See the [Widgetbook](https://mitumba-flutter-ui.vercel.app) for live previews.
+See the [Widgetbook](https://mitumba-flutter-ui.pages.dev) for live previews.
 
 ## Development
 
