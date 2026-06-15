@@ -274,12 +274,15 @@ class _VaziToggle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SwitchListTile(
-      value: value,
-      onChanged: onChanged,
-      title: Text('VAZI Eligible Only', style: MitumbaTypography.body2),
-      contentPadding: EdgeInsets.zero,
-      activeTrackColor: MitumbaColors.green,
+    return Row(
+      children: [
+        Expanded(child: Text('VAZI Eligible Only', style: MitumbaTypography.body2)),
+        Switch(
+          value: value,
+          onChanged: onChanged,
+          activeTrackColor: MitumbaColors.green,
+        ),
+      ],
     );
   }
 }
