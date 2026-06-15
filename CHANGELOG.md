@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.1](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/compare/v1.0.0...v1.0.1) (2026-06-15)
+
+
+### Bug Fixes
+
+* **ci:** use latest stable Flutter for widgetbook deploy ([7920034](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/commit/792003417ea61f94bdbb36ab3a083d4636cee13d))
+
 ## 1.0.0 (2026-06-15)
 
 
