@@ -49,6 +49,30 @@ class WidgetbookApp extends StatelessWidget {
                 ),
               ],
             ),
+            WidgetbookComponent(
+              name: 'MobileBottomNav',
+              useCases: [
+                WidgetbookUseCase(
+                  name: 'All Variants',
+                  builder: (context) {
+                    final variant = context.knobs.object.dropdown(
+                      label: 'Variant',
+                      options: BottomNavVariant.values,
+                      labelBuilder: (v) => v.name,
+                      initialOption: BottomNavVariant.indicator,
+                    );
+                    return Align(
+                      alignment: Alignment.bottomCenter,
+                      child: MobileBottomNav(
+                        activeTab: 'home',
+                        onTabChange: (_) {},
+                        variant: variant,
+                      ),
+                    );
+                  },
+                ),
+              ],
+            ),
           ],
         ),
         WidgetbookCategory(
