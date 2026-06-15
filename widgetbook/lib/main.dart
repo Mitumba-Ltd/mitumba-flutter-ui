@@ -123,6 +123,29 @@ class WidgetbookApp extends StatelessWidget {
                 ),
               ],
             ),
+            WidgetbookComponent(
+              name: 'AuthPage',
+              useCases: [
+                WidgetbookUseCase(
+                  name: 'Default',
+                  builder: (context) {
+                    final view = context.knobs.object.dropdown(
+                      label: 'View',
+                      options: AuthView.values,
+                      labelBuilder: (v) => v.name,
+                      initialOption: AuthView.signin,
+                    );
+                    return AuthPage(
+                      view: view,
+                      error: context.knobs.stringOrNull(label: 'Error'),
+                      onLogin: (_, __, ___) {},
+                      onSignUp: (_, __) {},
+                      onForgotPassword: (_) {},
+                    );
+                  },
+                ),
+              ],
+            ),
           ],
         ),
         WidgetbookCategory(
