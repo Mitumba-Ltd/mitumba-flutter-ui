@@ -7,8 +7,8 @@ repository: https://github.com/Mitumba-Ltd/mitumba-flutter-ui
 issue_tracker: https://github.com/Mitumba-Ltd/mitumba-flutter-ui/issues
 
 environment:
-  sdk: '>=3.0.0 <4.0.0'
-  flutter: '>=3.10.0'
+  sdk: '>=3.7.0 <4.0.0'
+  flutter: '>=3.27.0'
 
 dependencies:
   flutter:
@@ -18,7 +18,6 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^5.0.0
-  widgetbook: ^3.23.0
 
 flutter:
   uses-material-design: true
