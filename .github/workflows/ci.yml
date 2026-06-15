@@ -19,19 +19,14 @@ jobs:
       - run: flutter analyze
       - run: flutter test
 
-  publish:
+  release-please:
     needs: analyze-and-test
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
     steps:
-      - uses: actions/checkout@v4
-      - uses: subosito/flutter-action@v2
+      - uses: googleapis/release-please-action@v4
         with:
-          flutter-version: '3.27.x'
-          channel: 'stable'
-      - name: Setup pub credentials
-        run: |
-          mkdir -p ~/.config/dart
-          echo '${{ secrets.PUB_CREDENTIALS }}' > ~/.config/dart/pub-credentials.json
-      - name: Publish to pub.dev
-        run: dart pub publish --force
+          release-type: dart
