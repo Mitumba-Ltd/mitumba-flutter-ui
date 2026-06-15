@@ -14,6 +14,44 @@ class WidgetbookApp extends StatelessWidget {
     return Widgetbook.material(
       directories: [
         WidgetbookCategory(
+          name: 'Components',
+          children: [
+            WidgetbookComponent(
+              name: 'ListingCard',
+              useCases: [
+                WidgetbookUseCase(
+                  name: 'Default',
+                  builder: (context) => Center(
+                    child: SizedBox(
+                      width: 200,
+                      child: ListingCard(
+                        id: '1',
+                        title: context.knobs.string(label: 'Title', initialValue: 'Vintage Leather Jacket — Size M'),
+                        price: context.knobs.int.input(label: 'Price (KES)', initialValue: 3500),
+                        media: const [
+                          'https://images.unsplash.com/photo-1551028719-00167b16eac5?w=400',
+                          'https://images.unsplash.com/photo-1559551409-dadc959f76b8?w=400',
+                        ],
+                        storeName: context.knobs.stringOrNull(label: 'Store Name', initialValue: 'Mama Njeri Styles'),
+                        condition: context.knobs.objectOrNull.dropdown(
+                          label: 'Condition',
+                          options: ListingCondition.values,
+                          labelBuilder: (c) => c.name,
+                          initialOption: ListingCondition.likeNew,
+                        ),
+                        isSaved: context.knobs.boolean(label: 'Saved', initialValue: false),
+                        onSaveToggle: (_) {},
+                        onTap: (_) {},
+                        onAddToCart: (_) {},
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+        WidgetbookCategory(
           name: 'Tokens',
           children: [
             WidgetbookComponent(
