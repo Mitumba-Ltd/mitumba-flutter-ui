@@ -19,28 +19,31 @@ class WidgetbookApp extends StatelessWidget {
             WidgetbookComponent(
               name: 'Colors',
               useCases: [
-                WidgetbookUseCase(
-                  name: 'Brand Palette',
-                  builder: (context) => _ColorPalette(),
-                ),
+                WidgetbookUseCase(name: 'Brand Palette', builder: (_) => _ColorPalette()),
               ],
             ),
             WidgetbookComponent(
               name: 'Typography',
               useCases: [
-                WidgetbookUseCase(
-                  name: 'Type Scale',
-                  builder: (context) => _TypeScale(),
-                ),
+                WidgetbookUseCase(name: 'Type Scale', builder: (_) => _TypeScale()),
               ],
             ),
             WidgetbookComponent(
               name: 'Spacing',
               useCases: [
-                WidgetbookUseCase(
-                  name: 'Scale',
-                  builder: (context) => _SpacingScale(),
-                ),
+                WidgetbookUseCase(name: 'Scale', builder: (_) => _SpacingScale()),
+              ],
+            ),
+            WidgetbookComponent(
+              name: 'Radius',
+              useCases: [
+                WidgetbookUseCase(name: 'Scale', builder: (_) => _RadiusScale()),
+              ],
+            ),
+            WidgetbookComponent(
+              name: 'Shadows',
+              useCases: [
+                WidgetbookUseCase(name: 'Elevations', builder: (_) => _ShadowScale()),
               ],
             ),
           ],
@@ -61,33 +64,40 @@ class _ColorPalette extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const swatches = <String, Color>{
-      'Primary': MitumbaColors.primary,
-      'Primary Light': MitumbaColors.primaryLight,
-      'Primary Dark': MitumbaColors.primaryDark,
+      'Green (Primary)': MitumbaColors.green,
+      'Green Light': MitumbaColors.greenLight,
+      'Green Dark': MitumbaColors.greenDark,
+      'Earth': MitumbaColors.earth,
+      'Earth Light': MitumbaColors.earthLight,
+      'Earth Dark': MitumbaColors.earthDark,
+      'Background': MitumbaColors.background,
+      'Surface': MitumbaColors.surface,
+      'Border': MitumbaColors.border,
       'Text Primary': MitumbaColors.textPrimary,
       'Text Secondary': MitumbaColors.textSecondary,
-      'Surface': MitumbaColors.surface,
-      'Background': MitumbaColors.background,
       'Success': MitumbaColors.success,
       'Error': MitumbaColors.error,
       'Warning': MitumbaColors.warning,
       'Info': MitumbaColors.info,
+      'STI Trusted': MitumbaColors.stiTrusted,
+      'STI At Risk': MitumbaColors.stiAtRisk,
+      'STI Flagged': MitumbaColors.stiFlagged,
     };
 
     return ListView(
       padding: const EdgeInsets.all(16),
-      children: swatches.entries.map((e) {
-        return Padding(
-          padding: const EdgeInsets.only(bottom: 8),
-          child: Row(
-            children: [
-              Container(width: 48, height: 48, color: e.value),
-              const SizedBox(width: 12),
-              Text(e.key, style: MitumbaTypography.body1),
-            ],
-          ),
-        );
-      }).toList(),
+      children: swatches.entries.map((e) => Padding(
+        padding: const EdgeInsets.only(bottom: 8),
+        child: Row(children: [
+          Container(width: 48, height: 48, decoration: BoxDecoration(
+            color: e.value,
+            borderRadius: BorderRadius.circular(MitumbaRadius.sm),
+            border: Border.all(color: MitumbaColors.border),
+          )),
+          const SizedBox(width: 12),
+          Text(e.key, style: MitumbaTypography.body2),
+        ]),
+      )).toList(),
     );
   }
 }
@@ -96,25 +106,23 @@ class _TypeScale extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const styles = <String, TextStyle>{
-      'H1': MitumbaTypography.h1,
-      'H2': MitumbaTypography.h2,
-      'H3': MitumbaTypography.h3,
-      'H4': MitumbaTypography.h4,
-      'H5': MitumbaTypography.h5,
-      'Body 1': MitumbaTypography.body1,
-      'Body 2': MitumbaTypography.body2,
-      'Caption': MitumbaTypography.caption,
-      'Button': MitumbaTypography.button,
+      'H1 (32px extrabold)': MitumbaTypography.h1,
+      'H2 (26px bold)': MitumbaTypography.h2,
+      'H3 (22px bold)': MitumbaTypography.h3,
+      'H4 (20px bold)': MitumbaTypography.h4,
+      'H5 (18px semibold)': MitumbaTypography.h5,
+      'Body 1 (16px)': MitumbaTypography.body1,
+      'Body 2 (14px)': MitumbaTypography.body2,
+      'Caption (12px)': MitumbaTypography.caption,
+      'Button (14px semibold)': MitumbaTypography.button,
     };
 
     return ListView(
       padding: const EdgeInsets.all(16),
-      children: styles.entries.map((e) {
-        return Padding(
-          padding: const EdgeInsets.only(bottom: 12),
-          child: Text('${e.key} — Mitumba', style: e.value),
-        );
-      }).toList(),
+      children: styles.entries.map((e) => Padding(
+        padding: const EdgeInsets.only(bottom: 12),
+        child: Text('${e.key} — Mitumba', style: e.value),
+      )).toList(),
     );
   }
 }
@@ -123,29 +131,96 @@ class _SpacingScale extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const values = <String, double>{
+      'xxs (2)': MitumbaSpacing.xxs,
       'xs (4)': MitumbaSpacing.xs,
-      'sm (8)': MitumbaSpacing.sm,
-      'md (12)': MitumbaSpacing.md,
+      'sm (6)': MitumbaSpacing.sm,
+      'md (8)': MitumbaSpacing.md,
+      'base (12)': MitumbaSpacing.base,
       'lg (16)': MitumbaSpacing.lg,
-      'xl (24)': MitumbaSpacing.xl,
-      'xxl (32)': MitumbaSpacing.xxl,
-      'xxxl (48)': MitumbaSpacing.xxxl,
+      'xl (20)': MitumbaSpacing.xl,
+      'xxl (24)': MitumbaSpacing.xxl,
+      'xxxl (32)': MitumbaSpacing.xxxl,
+      'huge (48)': MitumbaSpacing.huge,
+      'giant (64)': MitumbaSpacing.giant,
     };
 
     return ListView(
       padding: const EdgeInsets.all(16),
-      children: values.entries.map((e) {
-        return Padding(
-          padding: const EdgeInsets.only(bottom: 8),
-          child: Row(
-            children: [
-              Container(width: e.value, height: 24, color: MitumbaColors.primary),
-              const SizedBox(width: 12),
-              Text(e.key, style: MitumbaTypography.body2),
-            ],
+      children: values.entries.map((e) => Padding(
+        padding: const EdgeInsets.only(bottom: 8),
+        child: Row(children: [
+          Container(width: e.value, height: 24, color: MitumbaColors.green),
+          const SizedBox(width: 12),
+          Text(e.key, style: MitumbaTypography.body2),
+        ]),
+      )).toList(),
+    );
+  }
+}
+
+class _RadiusScale extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    const values = <String, double>{
+      'xxs (2)': MitumbaRadius.xxs,
+      'xs (4)': MitumbaRadius.xs,
+      'sm (6)': MitumbaRadius.sm,
+      'md (8)': MitumbaRadius.md,
+      'lg (12)': MitumbaRadius.lg,
+      'xl (16)': MitumbaRadius.xl,
+      'xxl (24)': MitumbaRadius.xxl,
+      'xxxl (32)': MitumbaRadius.xxxl,
+    };
+
+    return ListView(
+      padding: const EdgeInsets.all(16),
+      children: values.entries.map((e) => Padding(
+        padding: const EdgeInsets.only(bottom: 12),
+        child: Row(children: [
+          Container(
+            width: 64,
+            height: 64,
+            decoration: BoxDecoration(
+              color: MitumbaColors.greenLight,
+              border: Border.all(color: MitumbaColors.green),
+              borderRadius: BorderRadius.circular(e.value),
+            ),
           ),
-        );
-      }).toList(),
+          const SizedBox(width: 12),
+          Text(e.key, style: MitumbaTypography.body2),
+        ]),
+      )).toList(),
+    );
+  }
+}
+
+class _ShadowScale extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final shadows = <String, List<BoxShadow>>{
+      'Card': MitumbaShadows.card,
+      'Elevated': MitumbaShadows.elevated,
+      'Deep': MitumbaShadows.deep,
+      'Bottom Sheet': MitumbaShadows.bottomSheet,
+      'Green': MitumbaShadows.green,
+      'Earth': MitumbaShadows.earth,
+    };
+
+    return ListView(
+      padding: const EdgeInsets.all(16),
+      children: shadows.entries.map((e) => Padding(
+        padding: const EdgeInsets.only(bottom: 16),
+        child: Container(
+          height: 64,
+          decoration: BoxDecoration(
+            color: MitumbaColors.surface,
+            borderRadius: BorderRadius.circular(MitumbaRadius.lg),
+            boxShadow: e.value,
+          ),
+          alignment: Alignment.center,
+          child: Text(e.key, style: MitumbaTypography.body2),
+        ),
+      )).toList(),
     );
   }
 }
