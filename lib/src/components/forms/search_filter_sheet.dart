@@ -185,11 +185,20 @@ class _SortSection extends StatelessWidget {
           groupValue: sort,
           onChanged: (v) { if (v != null) onChanged(v); },
           child: Column(
-            children: FilterSort.values.map((s) => RadioListTile<FilterSort>(
-              value: s,
-              title: Text(_sortLabels[s]!, style: MitumbaTypography.body2),
-              dense: true,
-              contentPadding: EdgeInsets.zero,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: FilterSort.values.map((s) => GestureDetector(
+              onTap: () => onChanged(s),
+              behavior: HitTestBehavior.opaque,
+              child: Padding(
+                padding: EdgeInsets.symmetric(vertical: MitumbaSpacing.sm),
+                child: Row(
+                  children: [
+                    Radio<FilterSort>(value: s, materialTapTargetSize: MaterialTapTargetSize.shrinkWrap),
+                    SizedBox(width: MitumbaSpacing.md),
+                    Text(_sortLabels[s]!, style: MitumbaTypography.body2),
+                  ],
+                ),
+              ),
             )).toList(),
           ),
         ),
