@@ -1,0 +1,316 @@
+import 'package:flutter/material.dart';
+
+import '../../tokens/colors.dart';
+import '../../tokens/radius.dart';
+import '../../tokens/spacing.dart';
+import '../../tokens/typography.dart';
+
+/// Item condition values for a listing.
+enum ListingCondition { newItem, likeNew, good, fair }
+
+const _conditionLabels = {
+  ListingCondition.newItem: 'New',
+  ListingCondition.likeNew: 'Like New',
+  ListingCondition.good: 'Good',
+  ListingCondition.fair: 'Fair',
+};
+
+/// A listing card — Pinterest/Depop-style. Supports multi-image media carousel,
+/// wishlist toggle, add-to-cart, and condition chip.
+///
+/// Mirrors the web `ListingCard` component from `@mitumba/ui`.
+///
+/// ```dart
+/// ListingCard(
+///   id: '123',
+///   title: 'Vintage Leather Jacket',
+///   price: 3500,
+///   media: ['https://example.com/img.jpg'],
+///   onTap: (id) => print(id),
+/// )
+/// ```
+class ListingCard extends StatefulWidget {
+  /// Creates a listing card.
+  const ListingCard({
+    super.key,
+    required this.id,
+    required this.title,
+    required this.price,
+    required this.media,
+    this.storeName,
+    this.condition,
+    this.isSaved = false,
+    this.onSaveToggle,
+    this.onTap,
+    this.onAddToCart,
+  });
+
+  /// Unique listing identifier.
+  final String id;
+
+  /// Listing title — truncated to 2 lines.
+  final String title;
+
+  /// Price in KES.
+  final int price;
+
+  /// Media URLs — first shown by default, swipeable.
+  final List<String> media;
+
+  /// Seller/store name shown as caption.
+  final String? storeName;
+
+  /// Item condition.
+  final ListingCondition? condition;
+
+  /// Whether the buyer has saved/wishlisted this item.
+  final bool isSaved;
+
+  /// Called when the heart icon is toggled.
+  final ValueChanged<String>? onSaveToggle;
+
+  /// Called when the card is tapped.
+  final ValueChanged<String>? onTap;
+
+  /// Called when "Add to cart" is tapped.
+  final ValueChanged<String>? onAddToCart;
+
+  @override
+  State<ListingCard> createState() => _ListingCardState();
+}
+
+class _ListingCardState extends State<ListingCard> {
+  int _activeIndex = 0;
+  bool _cartAdded = false;
+
+  void _handleCart() {
+    if (_cartAdded) return;
+    setState(() => _cartAdded = true);
+    widget.onAddToCart?.call(widget.id);
+    Future.delayed(const Duration(milliseconds: 1500), () {
+      if (mounted) setState(() => _cartAdded = false);
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final hasMultiple = widget.media.length > 1;
+
+    return GestureDetector(
+      onTap: widget.onTap != null ? () => widget.onTap!(widget.id) : null,
+      child: Container(
+        decoration: BoxDecoration(
+          color: MitumbaColors.surface,
+          borderRadius: BorderRadius.circular(MitumbaRadius.lg),
+          border: Border.all(color: MitumbaColors.border),
+        ),
+        clipBehavior: Clip.antiAlias,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            _buildMedia(hasMultiple),
+            _buildContent(),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildMedia(bool hasMultiple) {
+    return Stack(
+      children: [
+        AspectRatio(
+          aspectRatio: 3 / 4,
+          child: hasMultiple
+              ? PageView.builder(
+                  itemCount: widget.media.length,
+                  onPageChanged: (i) => setState(() => _activeIndex = i),
+                  itemBuilder: (_, i) => _mediaItem(widget.media[i]),
+                )
+              : _mediaItem(widget.media.first),
+        ),
+        // Dots
+        if (hasMultiple)
+          Positioned(
+            bottom: MitumbaSpacing.md,
+            left: 0,
+            right: 0,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: List.generate(widget.media.length, (i) {
+                final active = i == _activeIndex;
+                return AnimatedContainer(
+                  duration: const Duration(milliseconds: 150),
+                  margin: const EdgeInsets.symmetric(horizontal: 2),
+                  width: active ? 12 : 6,
+                  height: 6,
+                  decoration: BoxDecoration(
+                    color: MitumbaColors.white.withAlpha(active ? 255 : 140),
+                    borderRadius: BorderRadius.circular(MitumbaRadius.full),
+                  ),
+                );
+              }),
+            ),
+          ),
+        // Heart
+        if (widget.onSaveToggle != null)
+          Positioned(
+            top: MitumbaSpacing.md,
+            right: MitumbaSpacing.md,
+            child: _IconOverlayButton(
+              onTap: () => widget.onSaveToggle!(widget.id),
+              child: Icon(
+                widget.isSaved ? Icons.favorite : Icons.favorite_border,
+                size: 18,
+                color: widget.isSaved ? MitumbaColors.error : MitumbaColors.textSecondary,
+              ),
+            ),
+          ),
+        // Condition chip
+        if (widget.condition != null)
+          Positioned(
+            bottom: hasMultiple ? MitumbaSpacing.xl : MitumbaSpacing.md,
+            left: MitumbaSpacing.md,
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+              decoration: BoxDecoration(
+                color: MitumbaColors.white.withAlpha(235),
+                borderRadius: BorderRadius.circular(MitumbaRadius.sm),
+              ),
+              child: Text(
+                _conditionLabels[widget.condition]!,
+                style: MitumbaTypography.caption.copyWith(
+                  fontSize: MitumbaTypography.fontSizeXs,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+          ),
+      ],
+    );
+  }
+
+  Widget _mediaItem(String url) {
+    return Image.network(
+      url,
+      fit: BoxFit.cover,
+      errorBuilder: (_, __, ___) => Container(
+        color: MitumbaColors.background,
+        child: const Icon(Icons.image_not_supported_outlined, color: MitumbaColors.textDisabled),
+      ),
+    );
+  }
+
+  Widget _buildContent() {
+    return Padding(
+      padding: EdgeInsets.all(MitumbaSpacing.base),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            widget.title,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+            style: MitumbaTypography.body2.copyWith(fontWeight: FontWeight.w600),
+          ),
+          SizedBox(height: MitumbaSpacing.xs),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'KES ${_formatPrice(widget.price)}',
+                      style: MitumbaTypography.body1.copyWith(
+                        fontWeight: FontWeight.w800,
+                      ),
+                    ),
+                    if (widget.storeName != null)
+                      Padding(
+                        padding: EdgeInsets.only(top: MitumbaSpacing.xxs),
+                        child: Text(
+                          widget.storeName!,
+                          style: MitumbaTypography.caption.copyWith(
+                            fontSize: MitumbaTypography.fontSizeXs,
+                            color: MitumbaColors.textSecondary,
+                          ),
+                        ),
+                      ),
+                  ],
+                ),
+              ),
+              if (widget.onAddToCart != null)
+                _CartButton(added: _cartAdded, onTap: _handleCart),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  String _formatPrice(int price) {
+    final s = price.toString();
+    final buf = StringBuffer();
+    for (var i = 0; i < s.length; i++) {
+      if (i > 0 && (s.length - i) % 3 == 0) buf.write(',');
+      buf.write(s[i]);
+    }
+    return buf.toString();
+  }
+}
+
+class _IconOverlayButton extends StatelessWidget {
+  const _IconOverlayButton({required this.onTap, required this.child});
+  final VoidCallback onTap;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        width: 32,
+        height: 32,
+        decoration: BoxDecoration(
+          color: MitumbaColors.white.withAlpha(235),
+          shape: BoxShape.circle,
+        ),
+        alignment: Alignment.center,
+        child: child,
+      ),
+    );
+  }
+}
+
+class _CartButton extends StatelessWidget {
+  const _CartButton({required this.added, required this.onTap});
+  final bool added;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.elasticOut,
+        width: 32,
+        height: 32,
+        decoration: const BoxDecoration(
+          color: MitumbaColors.green,
+          shape: BoxShape.circle,
+        ),
+        alignment: Alignment.center,
+        child: AnimatedSwitcher(
+          duration: const Duration(milliseconds: 200),
+          child: added
+              ? const Icon(Icons.check, key: ValueKey('check'), size: 18, color: MitumbaColors.white)
+              : const Icon(Icons.add_shopping_cart, key: ValueKey('cart'), size: 16, color: MitumbaColors.white),
+        ),
+      ),
+    );
+  }
+}
