@@ -97,6 +97,32 @@ class WidgetbookApp extends StatelessWidget {
                 ),
               ],
             ),
+            WidgetbookComponent(
+              name: 'EmptyState',
+              useCases: [
+                WidgetbookUseCase(
+                  name: 'Default',
+                  builder: (context) {
+                    final variant = context.knobs.object.dropdown(
+                      label: 'Variant',
+                      options: EmptyStateVariant.values,
+                      labelBuilder: (v) => v.name,
+                      initialOption: EmptyStateVariant.standard,
+                    );
+                    return Center(
+                      child: EmptyState(
+                        title: context.knobs.string(label: 'Title', initialValue: 'No listings yet'),
+                        subtitle: context.knobs.string(label: 'Subtitle', initialValue: 'Start selling to see your items here.'),
+                        icon: Icons.storefront_outlined,
+                        variant: variant,
+                        actionLabel: context.knobs.stringOrNull(label: 'Action', initialValue: 'Create listing'),
+                        onAction: () {},
+                      ),
+                    );
+                  },
+                ),
+              ],
+            ),
           ],
         ),
         WidgetbookCategory(
