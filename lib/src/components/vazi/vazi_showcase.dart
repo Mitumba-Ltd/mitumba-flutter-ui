@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 
 import '../../tokens/colors.dart';
@@ -102,6 +104,7 @@ class VAZIShowcase extends StatefulWidget {
 class _VAZIShowcaseState extends State<VAZIShowcase> {
   late PageController _pageCtrl;
   late int _current;
+  bool _isAnimating = false;
 
   @override
   void initState() {
@@ -116,10 +119,111 @@ class _VAZIShowcaseState extends State<VAZIShowcase> {
     super.dispose();
   }
 
+  void _navigateTo(int index) {
+    if (index < 0 || index >= widget.outfits.length || index == _current || _isAnimating) return;
+    setState(() {
+      _isAnimating = true;
+      _current = index;
+    });
+    widget.onIndexChange?.call(index);
+    Future.delayed(const Duration(milliseconds: 800), () {
+      if (mounted) setState(() => _isAnimating = false);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     if (widget.outfits.isEmpty) return const SizedBox.shrink();
 
+    return LayoutBuilder(builder: (context, constraints) {
+      if (constraints.maxWidth >= 900) {
+        return _buildDesktop(constraints);
+      }
+      return _buildMobile();
+    });
+  }
+
+  // ═══ DESKTOP — 3D perspective carousel ═══
+  Widget _buildDesktop(BoxConstraints constraints) {
+    final activeOutfit = widget.outfits[_current];
+
+    return Container(
+      width: double.infinity,
+      height: constraints.maxHeight > 0 ? constraints.maxHeight : 700,
+      color: const Color(0xFFE8F0F2),
+      child: Row(
+        children: [
+          // Left — collection info
+          SizedBox(
+            width: 240,
+            child: Padding(
+              padding: EdgeInsets.symmetric(vertical: MitumbaSpacing.huge, horizontal: MitumbaSpacing.xxl),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('VAZI Collection', style: MitumbaTypography.caption.copyWith(
+                        letterSpacing: 2,
+                        color: MitumbaColors.textSecondary,
+                      )),
+                      SizedBox(height: MitumbaSpacing.lg),
+                      Text(
+                        'AI-curated outfit combinations from verified Mitumba sellers.',
+                        style: MitumbaTypography.body2.copyWith(color: MitumbaColors.textSecondary),
+                      ),
+                    ],
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'LOOK ${(_current + 1).toString().padLeft(2, '0')}',
+                        style: MitumbaTypography.h2.copyWith(fontWeight: FontWeight.w300, letterSpacing: 4),
+                      ),
+                      Text(
+                        '${_current + 1} of ${widget.outfits.length}',
+                        style: MitumbaTypography.caption.copyWith(
+                          letterSpacing: 3,
+                          color: MitumbaColors.textDisabled,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+
+          // Center — 3D perspective model carousel
+          Expanded(
+            flex: 2,
+            child: _Desktop3DCarousel(
+              outfits: widget.outfits,
+              current: _current,
+              onNavigate: _navigateTo,
+            ),
+          ),
+
+          // Right — outfit panel (will be enhanced in glassmorphism task)
+          SizedBox(
+            width: 300,
+            child: _OutfitPanel(
+              outfit: activeOutfit,
+              onItemClick: widget.onItemClick,
+              onShopAll: widget.onShopAll,
+              onSaveLook: widget.onSaveLook,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // ═══ MOBILE — vertical swipe (existing behavior, kept here) ═══
+  Widget _buildMobile() {
     return Container(
       color: const Color(0xFFE8F0F2),
       child: Stack(
@@ -188,6 +292,80 @@ class _VAZIShowcaseState extends State<VAZIShowcase> {
           ),
         ],
       ),
+    );
+  }
+}
+
+/// Desktop 3D perspective carousel — models arranged in depth with blur/scale falloff.
+class _Desktop3DCarousel extends StatelessWidget {
+  const _Desktop3DCarousel({
+    required this.outfits,
+    required this.current,
+    required this.onNavigate,
+  });
+
+  final List<VAZIShowcaseOutfit> outfits;
+  final int current;
+  final ValueChanged<int> onNavigate;
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      alignment: Alignment.center,
+      children: List.generate(outfits.length, (i) {
+        final diff = i - current;
+        final absDiff = diff.abs();
+        if (absDiff > 3) return const SizedBox.shrink();
+
+        final isActive = diff == 0;
+        final scale = isActive ? 1.0 : (0.7 - absDiff * 0.15).clamp(0.3, 0.7);
+        final xOffset = diff * 140.0;
+        final opacity = isActive ? 1.0 : (0.6 - (absDiff - 1) * 0.2).clamp(0.0, 0.6);
+        final blur = isActive ? 0.0 : (absDiff * 4.0).clamp(0.0, 12.0);
+
+        return AnimatedPositioned(
+          duration: const Duration(milliseconds: 800),
+          curve: const Cubic(0.25, 0.46, 0.45, 0.94),
+          left: 0,
+          right: 0,
+          top: 0,
+          bottom: 0,
+          child: Center(
+            child: GestureDetector(
+              onTap: !isActive ? () => onNavigate(i) : null,
+              child: AnimatedOpacity(
+                duration: const Duration(milliseconds: 800),
+                curve: const Cubic(0.25, 0.46, 0.45, 0.94),
+                opacity: opacity,
+                child: AnimatedContainer(
+                  duration: const Duration(milliseconds: 800),
+                  curve: const Cubic(0.25, 0.46, 0.45, 0.94),
+                  transform: Matrix4.identity()
+                    ..setEntry(3, 2, 0.001)
+                    ..translate(xOffset, 0.0, isActive ? 200.0 : -200.0 * absDiff)
+                    ..scale(scale),
+                  transformAlignment: Alignment.center,
+                  child: ImageFiltered(
+                    imageFilter: blur > 0
+                        ? ImageFilter.blur(sigmaX: blur, sigmaY: blur)
+                        : ImageFilter.blur(sigmaX: 0, sigmaY: 0),
+                    child: Image.network(
+                      outfits[i].modelMediaUrl,
+                      height: 500,
+                      fit: BoxFit.contain,
+                      errorBuilder: (_, __, ___) => Icon(
+                        Icons.person,
+                        size: 120,
+                        color: MitumbaColors.textDisabled,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        );
+      }),
     );
   }
 }
