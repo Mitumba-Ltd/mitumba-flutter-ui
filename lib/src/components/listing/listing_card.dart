@@ -9,6 +9,11 @@ import '../../tokens/typography.dart';
 /// Item condition values for a listing.
 enum ListingCondition { newItem, likeNew, good, fair }
 
+/// Returns true if the URL points to a video file.
+bool _isVideoUrl(String url) {
+  return RegExp(r'\.(mp4|webm|mov)(\?|$)', caseSensitive: false).hasMatch(url);
+}
+
 const _conditionLabels = {
   ListingCondition.newItem: 'New',
   ListingCondition.likeNew: 'Like New',
@@ -231,6 +236,10 @@ class _ListingCardState extends State<ListingCard> with SingleTickerProviderStat
   }
 
   Widget _mediaItem(String url) {
+    if (_isVideoUrl(url)) {
+      return _videoPlaceholder(url);
+    }
+
     return Stack(
       fit: StackFit.expand,
       children: [
@@ -278,6 +287,28 @@ class _ListingCardState extends State<ListingCard> with SingleTickerProviderStat
           ),
         ),
       ],
+    );
+  }
+
+  /// Renders a video media placeholder with play icon overlay.
+  Widget _videoPlaceholder(String url) {
+    return Container(
+      color: MitumbaColors.backgroundDark,
+      child: Center(
+        child: Container(
+          width: 48,
+          height: 48,
+          decoration: BoxDecoration(
+            color: MitumbaColors.white.withAlpha(200),
+            shape: BoxShape.circle,
+          ),
+          child: const Icon(
+            Icons.play_arrow_rounded,
+            size: 28,
+            color: MitumbaColors.textPrimary,
+          ),
+        ),
+      ),
     );
   }
 
