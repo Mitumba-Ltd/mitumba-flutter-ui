@@ -290,27 +290,52 @@ class _VAZIShowcaseState extends State<VAZIShowcase> {
               ),
             ),
           ),
-          // Look counter
+          // Look counter — glassmorphism pill
           Positioned(
-            top: MitumbaSpacing.xxl,
+            top: MitumbaSpacing.lg,
             left: MitumbaSpacing.lg,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text('VAZI', style: MitumbaTypography.caption.copyWith(
-                  letterSpacing: 2,
-                  color: MitumbaColors.textSecondary,
-                )),
-                SizedBox(height: MitumbaSpacing.xs),
-                Text(
-                  'LOOK ${(_current + 1).toString().padLeft(2, '0')}',
-                  style: MitumbaTypography.h3.copyWith(fontWeight: FontWeight.w300, letterSpacing: 2),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(MitumbaRadius.full),
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
+                child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: MitumbaSpacing.md, vertical: MitumbaSpacing.xs),
+                  decoration: BoxDecoration(
+                    color: MitumbaColors.white.withAlpha(200),
+                    borderRadius: BorderRadius.circular(MitumbaRadius.full),
+                  ),
+                  child: Text(
+                    '${_current + 1} / ${widget.outfits.length}',
+                    style: MitumbaTypography.caption.copyWith(fontWeight: FontWeight.w700, color: MitumbaColors.textPrimary),
+                  ),
                 ),
-                Text(
-                  '${_current + 1} of ${widget.outfits.length}',
-                  style: MitumbaTypography.caption.copyWith(color: MitumbaColors.textDisabled, letterSpacing: 2),
+              ),
+            ),
+          ),
+          // VAZI pill — top right
+          Positioned(
+            top: MitumbaSpacing.lg,
+            right: MitumbaSpacing.lg,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(MitumbaRadius.full),
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
+                child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: MitumbaSpacing.md, vertical: MitumbaSpacing.xs),
+                  decoration: BoxDecoration(
+                    color: MitumbaColors.white.withAlpha(200),
+                    borderRadius: BorderRadius.circular(MitumbaRadius.full),
+                  ),
+                  child: Text(
+                    'VAZI',
+                    style: MitumbaTypography.caption.copyWith(
+                      fontWeight: FontWeight.w700,
+                      letterSpacing: 1.5,
+                      color: MitumbaColors.earth,
+                    ),
+                  ),
                 ),
-              ],
+              ),
             ),
           ),
         ],
