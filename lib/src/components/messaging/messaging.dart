@@ -432,6 +432,73 @@ class _MessageBubble extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  // Image attachment
+                  if (message.attachment?.type == ChatAttachmentType.image)
+                    Padding(
+                      padding: EdgeInsets.only(bottom: MitumbaSpacing.md),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(MitumbaRadius.md),
+                        child: Image.network(
+                          message.attachment!.url,
+                          width: double.infinity,
+                          fit: BoxFit.cover,
+                          errorBuilder: (_, __, ___) => Container(
+                            height: 120,
+                            color: MitumbaColors.divider,
+                            child: const Icon(Icons.broken_image_outlined, color: MitumbaColors.textDisabled),
+                          ),
+                        ),
+                      ),
+                    ),
+                  // File attachment
+                  if (message.attachment?.type == ChatAttachmentType.file)
+                    Container(
+                      margin: EdgeInsets.only(bottom: MitumbaSpacing.md),
+                      padding: EdgeInsets.all(MitumbaSpacing.md),
+                      decoration: BoxDecoration(
+                        color: message.isMine
+                            ? MitumbaColors.white.withAlpha(38)
+                            : MitumbaColors.surface,
+                        borderRadius: BorderRadius.circular(MitumbaRadius.md),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(
+                            Icons.insert_drive_file_outlined,
+                            size: 18,
+                            color: message.isMine ? MitumbaColors.white : MitumbaColors.textSecondary,
+                          ),
+                          SizedBox(width: MitumbaSpacing.sm),
+                          Flexible(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  message.attachment!.name,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: MitumbaTypography.caption.copyWith(
+                                    fontWeight: FontWeight.w600,
+                                    color: message.isMine ? MitumbaColors.white : MitumbaColors.textPrimary,
+                                  ),
+                                ),
+                                if (message.attachment!.size != null)
+                                  Text(
+                                    message.attachment!.size!,
+                                    style: MitumbaTypography.caption.copyWith(
+                                      fontSize: 10,
+                                      color: message.isMine
+                                          ? MitumbaColors.white.withAlpha(180)
+                                          : MitumbaColors.textSecondary,
+                                    ),
+                                  ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   Text(
                     message.body,
                     style: MitumbaTypography.body2.copyWith(
