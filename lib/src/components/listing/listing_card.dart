@@ -230,24 +230,29 @@ class _ListingCardState extends State<ListingCard> with SingleTickerProviderStat
               ),
             ),
           ),
-        Image.network(
-          url,
-          fit: BoxFit.cover,
-          frameBuilder: (_, child, frame, wasSynchronouslyLoaded) {
-            if (wasSynchronouslyLoaded) {
-              _imageLoaded = true;
+        AnimatedOpacity(
+          opacity: _imageLoaded ? 1.0 : 0.0,
+          duration: const Duration(milliseconds: 400),
+          curve: Curves.easeInOut,
+          child: Image.network(
+            url,
+            fit: BoxFit.cover,
+            frameBuilder: (_, child, frame, wasSynchronouslyLoaded) {
+              if (wasSynchronouslyLoaded) {
+                _imageLoaded = true;
+                return child;
+              }
+              if (frame != null && !_imageLoaded) {
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  if (mounted) setState(() => _imageLoaded = true);
+                });
+              }
               return child;
-            }
-            if (frame != null && !_imageLoaded) {
-              WidgetsBinding.instance.addPostFrameCallback((_) {
-                if (mounted) setState(() => _imageLoaded = true);
-              });
-            }
-            return child;
-          },
-          errorBuilder: (_, __, ___) => Container(
-            color: MitumbaColors.background,
-            child: const Icon(Icons.image_not_supported_outlined, color: MitumbaColors.textDisabled),
+            },
+            errorBuilder: (_, __, ___) => Container(
+              color: MitumbaColors.background,
+              child: const Icon(Icons.image_not_supported_outlined, color: MitumbaColors.textDisabled),
+            ),
           ),
         ),
       ],
