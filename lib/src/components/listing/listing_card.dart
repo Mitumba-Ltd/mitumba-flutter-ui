@@ -83,6 +83,7 @@ class _ListingCardState extends State<ListingCard> with SingleTickerProviderStat
   int _activeIndex = 0;
   bool _cartAdded = false;
   bool _imageLoaded = false;
+  bool _pressed = false;
   late final AnimationController _shimmerCtrl;
 
   @override
@@ -115,20 +116,28 @@ class _ListingCardState extends State<ListingCard> with SingleTickerProviderStat
 
     return GestureDetector(
       onTap: widget.onTap != null ? () => widget.onTap!(widget.id) : null,
-      child: Container(
-        decoration: BoxDecoration(
-          color: MitumbaColors.surface,
-          borderRadius: BorderRadius.circular(MitumbaRadius.lg),
-          border: Border.all(color: MitumbaColors.border),
-        ),
-        clipBehavior: Clip.antiAlias,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            _buildMedia(hasMultiple),
-            _buildContent(),
-          ],
+      onTapDown: widget.onTap != null ? (_) => setState(() => _pressed = true) : null,
+      onTapUp: widget.onTap != null ? (_) => setState(() => _pressed = false) : null,
+      onTapCancel: widget.onTap != null ? () => setState(() => _pressed = false) : null,
+      child: AnimatedScale(
+        scale: _pressed ? 0.97 : 1.0,
+        duration: const Duration(milliseconds: 120),
+        curve: Curves.easeOut,
+        child: Container(
+          decoration: BoxDecoration(
+            color: MitumbaColors.surface,
+            borderRadius: BorderRadius.circular(MitumbaRadius.lg),
+            border: Border.all(color: MitumbaColors.border),
+          ),
+          clipBehavior: Clip.antiAlias,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              _buildMedia(hasMultiple),
+              _buildContent(),
+            ],
+          ),
         ),
       ),
     );
