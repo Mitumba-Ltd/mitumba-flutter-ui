@@ -412,14 +412,25 @@ class _OutfitPanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.all(MitumbaSpacing.lg),
-      padding: EdgeInsets.all(MitumbaSpacing.lg),
-      decoration: BoxDecoration(
-        color: MitumbaColors.surface.withAlpha(230),
-        borderRadius: BorderRadius.circular(MitumbaRadius.xl),
-        border: Border.all(color: MitumbaColors.divider),
-      ),
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(MitumbaRadius.xl),
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+        child: Container(
+          margin: EdgeInsets.all(MitumbaSpacing.lg),
+          padding: EdgeInsets.all(MitumbaSpacing.lg),
+          decoration: BoxDecoration(
+            color: MitumbaColors.white.withAlpha(64),
+            borderRadius: BorderRadius.circular(MitumbaRadius.xl),
+            border: Border.all(color: MitumbaColors.white.withAlpha(102)),
+            boxShadow: const [
+              BoxShadow(
+                offset: Offset(0, 8),
+                blurRadius: 32,
+                color: Color(0x0D000000),
+              ),
+            ],
+          ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -465,6 +476,8 @@ class _OutfitPanel extends StatelessWidget {
             ),
           ),
         ],
+      ),
+        ),
       ),
     );
   }
