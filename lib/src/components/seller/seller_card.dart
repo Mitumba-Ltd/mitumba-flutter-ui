@@ -29,7 +29,7 @@ import '../../tokens/typography.dart';
 ///   onTap: () {},
 /// )
 /// ```
-class SellerCard extends StatelessWidget {
+class SellerCard extends StatefulWidget {
   /// Creates a seller card.
   const SellerCard({
     super.key,
@@ -76,52 +76,73 @@ class SellerCard extends StatelessWidget {
   final VoidCallback? onAction;
 
   @override
-  Widget build(BuildContext context) {
-    final sti = _stiConfig(stiScore.clamp(0, 100));
+  State<SellerCard> createState() => _SellerCardState();
+}
 
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        padding: EdgeInsets.all(MitumbaSpacing.lg),
-        decoration: BoxDecoration(
-          color: MitumbaColors.surface,
-          border: Border.all(color: MitumbaColors.divider),
-          borderRadius: BorderRadius.circular(MitumbaRadius.lg),
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Row(
-              children: [
-                _Avatar(name: name, url: avatarUrl),
-                SizedBox(width: MitumbaSpacing.base),
-                Expanded(child: _Info(
-                  name: name,
-                  city: city,
-                  totalListings: totalListings,
-                  isVaziFeatured: isVaziFeatured,
-                )),
-                _StiChip(score: stiScore, color: sti.color, label: sti.label),
-              ],
-            ),
-            if (actionLabel != null) ...[
-              SizedBox(height: MitumbaSpacing.md),
-              SizedBox(
-                width: double.infinity,
-                child: OutlinedButton(
-                  onPressed: () => onAction?.call(),
-                  style: OutlinedButton.styleFrom(
-                    side: const BorderSide(color: MitumbaColors.border),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(MitumbaRadius.md),
-                    ),
-                    textStyle: MitumbaTypography.caption.copyWith(fontWeight: FontWeight.w600),
-                  ),
-                  child: Text(actionLabel!, style: const TextStyle(color: MitumbaColors.textPrimary)),
-                ),
+class _SellerCardState extends State<SellerCard> {
+  bool _hovered = false;
+
+  @override
+  Widget build(BuildContext context) {
+    final sti = _stiConfig(widget.stiScore.clamp(0, 100));
+
+    return Semantics(
+      button: widget.onTap != null,
+      label: '${widget.name} — ${widget.city}, ${widget.totalListings} ${widget.totalListings == 1 ? 'listing' : 'listings'}, STI score ${widget.stiScore}',
+      child: MouseRegion(
+        onEnter: widget.onTap != null ? (_) => setState(() => _hovered = true) : null,
+        onExit: widget.onTap != null ? (_) => setState(() => _hovered = false) : null,
+        cursor: widget.onTap != null ? SystemMouseCursors.click : SystemMouseCursors.basic,
+        child: GestureDetector(
+          onTap: widget.onTap,
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 200),
+            curve: Curves.easeOut,
+            padding: EdgeInsets.all(MitumbaSpacing.lg),
+            transform: Matrix4.translationValues(0, _hovered ? -1 : 0, 0),
+            decoration: BoxDecoration(
+              color: MitumbaColors.surface,
+              border: Border.all(
+                color: _hovered ? MitumbaColors.green : MitumbaColors.divider,
               ),
+              borderRadius: BorderRadius.circular(MitumbaRadius.lg),
+            ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Row(
+                children: [
+                  _Avatar(name: widget.name, url: widget.avatarUrl),
+                  SizedBox(width: MitumbaSpacing.base),
+                  Expanded(child: _Info(
+                    name: widget.name,
+                    city: widget.city,
+                    totalListings: widget.totalListings,
+                    isVaziFeatured: widget.isVaziFeatured,
+                  )),
+                  _StiChip(score: widget.stiScore, color: sti.color, label: sti.label),
+                ],
+              ),
+              if (widget.actionLabel != null) ...[
+                SizedBox(height: MitumbaSpacing.md),
+                SizedBox(
+                  width: double.infinity,
+                  child: OutlinedButton(
+                    onPressed: () => widget.onAction?.call(),
+                    style: OutlinedButton.styleFrom(
+                      side: const BorderSide(color: MitumbaColors.border),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(MitumbaRadius.md),
+                      ),
+                      textStyle: MitumbaTypography.caption.copyWith(fontWeight: FontWeight.w600),
+                    ),
+                    child: Text(widget.actionLabel!, style: const TextStyle(color: MitumbaColors.textPrimary)),
+                  ),
+                ),
+              ],
             ],
-          ],
+          ),
+        ),
         ),
       ),
     );

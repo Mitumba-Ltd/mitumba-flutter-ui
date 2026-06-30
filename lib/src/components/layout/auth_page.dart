@@ -131,7 +131,25 @@ class _AuthPageState extends State<AuthPage> {
                 children: [
                   _buildHeader(),
                   SizedBox(height: MitumbaSpacing.xxl),
-                  _buildForm(),
+                  AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 300),
+                    switchInCurve: Curves.easeOut,
+                    switchOutCurve: Curves.easeIn,
+                    transitionBuilder: (child, animation) => FadeTransition(
+                      opacity: animation,
+                      child: SlideTransition(
+                        position: Tween<Offset>(
+                          begin: const Offset(0, 0.05),
+                          end: Offset.zero,
+                        ).animate(animation),
+                        child: child,
+                      ),
+                    ),
+                    child: KeyedSubtree(
+                      key: ValueKey(_currentView),
+                      child: _buildForm(),
+                    ),
+                  ),
                   if (widget.error != null) ...[
                     SizedBox(height: MitumbaSpacing.md),
                     _MessageBanner(message: widget.error!, color: MitumbaColors.error),

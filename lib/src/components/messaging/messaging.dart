@@ -30,6 +30,31 @@ class Conversation {
   final String? listingTitle;
 }
 
+/// Attachment type for a chat message.
+enum ChatAttachmentType { image, file }
+
+/// An attachment on a [ChatMessage].
+class ChatAttachment {
+  const ChatAttachment({
+    required this.type,
+    required this.name,
+    required this.url,
+    this.size,
+  });
+
+  /// Attachment type.
+  final ChatAttachmentType type;
+
+  /// File or image name.
+  final String name;
+
+  /// URL to the resource.
+  final String url;
+
+  /// Human-readable file size (e.g. "2.4 MB").
+  final String? size;
+}
+
 /// A single message in a chat thread.
 class ChatMessage {
   const ChatMessage({
@@ -37,12 +62,16 @@ class ChatMessage {
     required this.timestamp,
     required this.isMine,
     this.senderName,
+    this.attachment,
   });
 
   final String body;
   final String timestamp;
   final bool isMine;
   final String? senderName;
+
+  /// Optional file or image attachment.
+  final ChatAttachment? attachment;
 }
 
 // ─── InboxLayout ────────────────────────────────────────────────────────────
@@ -358,33 +387,137 @@ class _MessageBubble extends StatelessWidget {
   Widget build(BuildContext context) {
     return Align(
       alignment: message.isMine ? Alignment.centerRight : Alignment.centerLeft,
-      child: Container(
-        margin: EdgeInsets.only(bottom: MitumbaSpacing.md),
-        padding: EdgeInsets.symmetric(horizontal: MitumbaSpacing.base, vertical: MitumbaSpacing.md),
-        constraints: const BoxConstraints(maxWidth: 280),
-        decoration: BoxDecoration(
-          color: message.isMine ? MitumbaColors.green : MitumbaColors.background,
-          borderRadius: BorderRadius.circular(MitumbaRadius.lg),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              message.body,
-              style: MitumbaTypography.body2.copyWith(
-                color: message.isMine ? MitumbaColors.white : MitumbaColors.textPrimary,
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          if (!message.isMine) ...[
+            CircleAvatar(
+              radius: 14,
+              backgroundColor: MitumbaColors.background,
+              child: Text(
+                message.senderName != null && message.senderName!.isNotEmpty
+                    ? message.senderName![0]
+                    : '?',
+                style: const TextStyle(
+                  fontSize: 11,
+                  fontWeight: FontWeight.w700,
+                  color: MitumbaColors.textSecondary,
+                ),
               ),
             ),
-            SizedBox(height: MitumbaSpacing.xxs),
-            Text(
-              message.timestamp,
-              style: MitumbaTypography.caption.copyWith(
-                fontSize: 10,
-                color: message.isMine ? MitumbaColors.white.withAlpha(180) : MitumbaColors.textDisabled,
-              ),
-            ),
+            SizedBox(width: MitumbaSpacing.sm),
           ],
-        ),
+          Flexible(
+            child: Container(
+              margin: EdgeInsets.only(bottom: MitumbaSpacing.md),
+              padding: EdgeInsets.symmetric(horizontal: MitumbaSpacing.base, vertical: MitumbaSpacing.md),
+              constraints: const BoxConstraints(maxWidth: 280),
+              decoration: BoxDecoration(
+                color: message.isMine ? MitumbaColors.green : MitumbaColors.background,
+                borderRadius: message.isMine
+                    ? BorderRadius.only(
+                        topLeft: Radius.circular(MitumbaRadius.lg),
+                        topRight: Radius.circular(MitumbaRadius.lg),
+                        bottomLeft: Radius.circular(MitumbaRadius.lg),
+                        bottomRight: Radius.circular(MitumbaRadius.xs),
+                      )
+                    : BorderRadius.only(
+                        topLeft: Radius.circular(MitumbaRadius.lg),
+                        topRight: Radius.circular(MitumbaRadius.lg),
+                        bottomLeft: Radius.circular(MitumbaRadius.xs),
+                        bottomRight: Radius.circular(MitumbaRadius.lg),
+                      ),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Image attachment
+                  if (message.attachment?.type == ChatAttachmentType.image)
+                    Padding(
+                      padding: EdgeInsets.only(bottom: MitumbaSpacing.md),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(MitumbaRadius.md),
+                        child: Image.network(
+                          message.attachment!.url,
+                          width: double.infinity,
+                          fit: BoxFit.cover,
+                          errorBuilder: (_, __, ___) => Container(
+                            height: 120,
+                            color: MitumbaColors.divider,
+                            child: const Icon(Icons.broken_image_outlined, color: MitumbaColors.textDisabled),
+                          ),
+                        ),
+                      ),
+                    ),
+                  // File attachment
+                  if (message.attachment?.type == ChatAttachmentType.file)
+                    Container(
+                      margin: EdgeInsets.only(bottom: MitumbaSpacing.md),
+                      padding: EdgeInsets.all(MitumbaSpacing.md),
+                      decoration: BoxDecoration(
+                        color: message.isMine
+                            ? MitumbaColors.white.withAlpha(38)
+                            : MitumbaColors.surface,
+                        borderRadius: BorderRadius.circular(MitumbaRadius.md),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(
+                            Icons.insert_drive_file_outlined,
+                            size: 18,
+                            color: message.isMine ? MitumbaColors.white : MitumbaColors.textSecondary,
+                          ),
+                          SizedBox(width: MitumbaSpacing.sm),
+                          Flexible(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  message.attachment!.name,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: MitumbaTypography.caption.copyWith(
+                                    fontWeight: FontWeight.w600,
+                                    color: message.isMine ? MitumbaColors.white : MitumbaColors.textPrimary,
+                                  ),
+                                ),
+                                if (message.attachment!.size != null)
+                                  Text(
+                                    message.attachment!.size!,
+                                    style: MitumbaTypography.caption.copyWith(
+                                      fontSize: 10,
+                                      color: message.isMine
+                                          ? MitumbaColors.white.withAlpha(180)
+                                          : MitumbaColors.textSecondary,
+                                    ),
+                                  ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  Text(
+                    message.body,
+                    style: MitumbaTypography.body2.copyWith(
+                      color: message.isMine ? MitumbaColors.white : MitumbaColors.textPrimary,
+                    ),
+                  ),
+                  SizedBox(height: MitumbaSpacing.xxs),
+                  Text(
+                    message.timestamp,
+                    style: MitumbaTypography.caption.copyWith(
+                      fontSize: 10,
+                      color: message.isMine ? MitumbaColors.white.withAlpha(180) : MitumbaColors.textDisabled,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

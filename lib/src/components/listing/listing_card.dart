@@ -2,11 +2,17 @@ import 'package:flutter/material.dart';
 
 import '../../tokens/colors.dart';
 import '../../tokens/radius.dart';
+import '../../tokens/shadows.dart';
 import '../../tokens/spacing.dart';
 import '../../tokens/typography.dart';
 
 /// Item condition values for a listing.
 enum ListingCondition { newItem, likeNew, good, fair }
+
+/// Returns true if the URL points to a video file.
+bool _isVideoUrl(String url) {
+  return RegExp(r'\.(mp4|webm|mov)(\?|$)', caseSensitive: false).hasMatch(url);
+}
 
 const _conditionLabels = {
   ListingCondition.newItem: 'New',
@@ -79,9 +85,28 @@ class ListingCard extends StatefulWidget {
   State<ListingCard> createState() => _ListingCardState();
 }
 
-class _ListingCardState extends State<ListingCard> {
+class _ListingCardState extends State<ListingCard> with SingleTickerProviderStateMixin {
   int _activeIndex = 0;
   bool _cartAdded = false;
+  bool _imageLoaded = false;
+  bool _pressed = false;
+  bool _hovered = false;
+  late final AnimationController _shimmerCtrl;
+
+  @override
+  void initState() {
+    super.initState();
+    _shimmerCtrl = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1500),
+    )..repeat();
+  }
+
+  @override
+  void dispose() {
+    _shimmerCtrl.dispose();
+    super.dispose();
+  }
 
   void _handleCart() {
     if (_cartAdded) return;
@@ -96,22 +121,41 @@ class _ListingCardState extends State<ListingCard> {
   Widget build(BuildContext context) {
     final hasMultiple = widget.media.length > 1;
 
-    return GestureDetector(
-      onTap: widget.onTap != null ? () => widget.onTap!(widget.id) : null,
-      child: Container(
-        decoration: BoxDecoration(
-          color: MitumbaColors.surface,
-          borderRadius: BorderRadius.circular(MitumbaRadius.lg),
-          border: Border.all(color: MitumbaColors.border),
-        ),
-        clipBehavior: Clip.antiAlias,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            _buildMedia(hasMultiple),
-            _buildContent(),
-          ],
+    return MouseRegion(
+      onEnter: widget.onTap != null ? (_) => setState(() => _hovered = true) : null,
+      onExit: widget.onTap != null ? (_) => setState(() => _hovered = false) : null,
+      cursor: widget.onTap != null ? SystemMouseCursors.click : SystemMouseCursors.basic,
+      child: GestureDetector(
+        onTap: widget.onTap != null ? () => widget.onTap!(widget.id) : null,
+        onTapDown: widget.onTap != null ? (_) => setState(() => _pressed = true) : null,
+        onTapUp: widget.onTap != null ? (_) => setState(() => _pressed = false) : null,
+        onTapCancel: widget.onTap != null ? () => setState(() => _pressed = false) : null,
+        child: AnimatedScale(
+          scale: _pressed ? 0.97 : 1.0,
+          duration: const Duration(milliseconds: 120),
+          curve: Curves.easeOut,
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 200),
+            curve: Curves.easeOut,
+            transform: Matrix4.translationValues(0, _hovered ? -2 : 0, 0),
+            decoration: BoxDecoration(
+              color: MitumbaColors.surface,
+              borderRadius: BorderRadius.circular(MitumbaRadius.lg),
+              border: Border.all(
+                color: _hovered ? MitumbaColors.green : MitumbaColors.border,
+              ),
+              boxShadow: _hovered ? MitumbaShadows.elevated : null,
+            ),
+            clipBehavior: Clip.antiAlias,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                _buildMedia(hasMultiple),
+                _buildContent(),
+              ],
+            ),
+          ),
         ),
       ),
     );
@@ -192,12 +236,78 @@ class _ListingCardState extends State<ListingCard> {
   }
 
   Widget _mediaItem(String url) {
-    return Image.network(
-      url,
-      fit: BoxFit.cover,
-      errorBuilder: (_, __, ___) => Container(
-        color: MitumbaColors.background,
-        child: const Icon(Icons.image_not_supported_outlined, color: MitumbaColors.textDisabled),
+    if (_isVideoUrl(url)) {
+      return _videoPlaceholder(url);
+    }
+
+    return Stack(
+      fit: StackFit.expand,
+      children: [
+        // Shimmer placeholder — visible until image loads
+        if (!_imageLoaded)
+          AnimatedBuilder(
+            animation: _shimmerCtrl,
+            builder: (_, __) => Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment(-1.0 + 2.0 * _shimmerCtrl.value, 0),
+                  end: Alignment(-1.0 + 2.0 * _shimmerCtrl.value + 1.0, 0),
+                  colors: const [
+                    MitumbaColors.background,
+                    MitumbaColors.divider,
+                    MitumbaColors.background,
+                  ],
+                ),
+              ),
+            ),
+          ),
+        AnimatedOpacity(
+          opacity: _imageLoaded ? 1.0 : 0.0,
+          duration: const Duration(milliseconds: 400),
+          curve: Curves.easeInOut,
+          child: Image.network(
+            url,
+            fit: BoxFit.cover,
+            frameBuilder: (_, child, frame, wasSynchronouslyLoaded) {
+              if (wasSynchronouslyLoaded) {
+                _imageLoaded = true;
+                return child;
+              }
+              if (frame != null && !_imageLoaded) {
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  if (mounted) setState(() => _imageLoaded = true);
+                });
+              }
+              return child;
+            },
+            errorBuilder: (_, __, ___) => Container(
+              color: MitumbaColors.background,
+              child: const Icon(Icons.image_not_supported_outlined, color: MitumbaColors.textDisabled),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  /// Renders a video media placeholder with play icon overlay.
+  Widget _videoPlaceholder(String url) {
+    return Container(
+      color: MitumbaColors.backgroundDark,
+      child: Center(
+        child: Container(
+          width: 48,
+          height: 48,
+          decoration: BoxDecoration(
+            color: MitumbaColors.white.withAlpha(200),
+            shape: BoxShape.circle,
+          ),
+          child: const Icon(
+            Icons.play_arrow_rounded,
+            size: 28,
+            color: MitumbaColors.textPrimary,
+          ),
+        ),
       ),
     );
   }
