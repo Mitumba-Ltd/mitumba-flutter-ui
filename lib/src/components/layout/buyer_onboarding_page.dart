@@ -151,7 +151,7 @@ class _BuyerOnboardingPageState extends State<BuyerOnboardingPage> {
                   ),
                   SizedBox(height: MitumbaSpacing.lg),
                   DropdownButtonFormField<String>(
-                    initialValue: _county,
+                    value: _county,
                     decoration: InputDecoration(
                       labelText: 'County',
                       border: OutlineInputBorder(borderRadius: BorderRadius.circular(MitumbaRadius.md)),
