@@ -79,49 +79,53 @@ class SellerCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final sti = _stiConfig(stiScore.clamp(0, 100));
 
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        padding: EdgeInsets.all(MitumbaSpacing.lg),
-        decoration: BoxDecoration(
-          color: MitumbaColors.surface,
-          border: Border.all(color: MitumbaColors.divider),
-          borderRadius: BorderRadius.circular(MitumbaRadius.lg),
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Row(
-              children: [
-                _Avatar(name: name, url: avatarUrl),
-                SizedBox(width: MitumbaSpacing.base),
-                Expanded(child: _Info(
-                  name: name,
-                  city: city,
-                  totalListings: totalListings,
-                  isVaziFeatured: isVaziFeatured,
-                )),
-                _StiChip(score: stiScore, color: sti.color, label: sti.label),
-              ],
-            ),
-            if (actionLabel != null) ...[
-              SizedBox(height: MitumbaSpacing.md),
-              SizedBox(
-                width: double.infinity,
-                child: OutlinedButton(
-                  onPressed: () => onAction?.call(),
-                  style: OutlinedButton.styleFrom(
-                    side: const BorderSide(color: MitumbaColors.border),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(MitumbaRadius.md),
-                    ),
-                    textStyle: MitumbaTypography.caption.copyWith(fontWeight: FontWeight.w600),
-                  ),
-                  child: Text(actionLabel!, style: const TextStyle(color: MitumbaColors.textPrimary)),
-                ),
+    return Semantics(
+      button: onTap != null,
+      label: '$name — $city, $totalListings ${totalListings == 1 ? 'listing' : 'listings'}, STI score $stiScore',
+      child: GestureDetector(
+        onTap: onTap,
+        child: Container(
+          padding: EdgeInsets.all(MitumbaSpacing.lg),
+          decoration: BoxDecoration(
+            color: MitumbaColors.surface,
+            border: Border.all(color: MitumbaColors.divider),
+            borderRadius: BorderRadius.circular(MitumbaRadius.lg),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Row(
+                children: [
+                  _Avatar(name: name, url: avatarUrl),
+                  SizedBox(width: MitumbaSpacing.base),
+                  Expanded(child: _Info(
+                    name: name,
+                    city: city,
+                    totalListings: totalListings,
+                    isVaziFeatured: isVaziFeatured,
+                  )),
+                  _StiChip(score: stiScore, color: sti.color, label: sti.label),
+                ],
               ),
+              if (actionLabel != null) ...[
+                SizedBox(height: MitumbaSpacing.md),
+                SizedBox(
+                  width: double.infinity,
+                  child: OutlinedButton(
+                    onPressed: () => onAction?.call(),
+                    style: OutlinedButton.styleFrom(
+                      side: const BorderSide(color: MitumbaColors.border),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(MitumbaRadius.md),
+                      ),
+                      textStyle: MitumbaTypography.caption.copyWith(fontWeight: FontWeight.w600),
+                    ),
+                    child: Text(actionLabel!, style: const TextStyle(color: MitumbaColors.textPrimary)),
+                  ),
+                ),
+              ],
             ],
-          ],
+          ),
         ),
       ),
     );
