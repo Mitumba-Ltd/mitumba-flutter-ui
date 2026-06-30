@@ -181,26 +181,27 @@ class _SortSection extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _SectionHeader('Sort By'),
-        RadioGroup<FilterSort>(
-          groupValue: sort,
-          onChanged: (v) { if (v != null) onChanged(v); },
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: FilterSort.values.map((s) => GestureDetector(
-              onTap: () => onChanged(s),
-              behavior: HitTestBehavior.opaque,
-              child: Padding(
-                padding: EdgeInsets.symmetric(vertical: MitumbaSpacing.sm),
-                child: Row(
-                  children: [
-                    Radio<FilterSort>(value: s, materialTapTargetSize: MaterialTapTargetSize.shrinkWrap),
-                    SizedBox(width: MitumbaSpacing.md),
-                    Text(_sortLabels[s]!, style: MitumbaTypography.body2),
-                  ],
-                ),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: FilterSort.values.map((s) => GestureDetector(
+            onTap: () => onChanged(s),
+            behavior: HitTestBehavior.opaque,
+            child: Padding(
+              padding: EdgeInsets.symmetric(vertical: MitumbaSpacing.sm),
+              child: Row(
+                children: [
+                  Radio<FilterSort>(
+                    value: s,
+                    groupValue: sort,
+                    onChanged: (v) { if (v != null) onChanged(v); },
+                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                  ),
+                  SizedBox(width: MitumbaSpacing.md),
+                  Text(_sortLabels[s]!, style: MitumbaTypography.body2),
+                ],
               ),
-            )).toList(),
-          ),
+            ),
+          )).toList(),
         ),
       ],
     );
