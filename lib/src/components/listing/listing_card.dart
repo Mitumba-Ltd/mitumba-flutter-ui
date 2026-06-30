@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../tokens/colors.dart';
 import '../../tokens/radius.dart';
+import '../../tokens/shadows.dart';
 import '../../tokens/spacing.dart';
 import '../../tokens/typography.dart';
 
@@ -84,6 +85,7 @@ class _ListingCardState extends State<ListingCard> with SingleTickerProviderStat
   bool _cartAdded = false;
   bool _imageLoaded = false;
   bool _pressed = false;
+  bool _hovered = false;
   late final AnimationController _shimmerCtrl;
 
   @override
@@ -114,29 +116,40 @@ class _ListingCardState extends State<ListingCard> with SingleTickerProviderStat
   Widget build(BuildContext context) {
     final hasMultiple = widget.media.length > 1;
 
-    return GestureDetector(
-      onTap: widget.onTap != null ? () => widget.onTap!(widget.id) : null,
-      onTapDown: widget.onTap != null ? (_) => setState(() => _pressed = true) : null,
-      onTapUp: widget.onTap != null ? (_) => setState(() => _pressed = false) : null,
-      onTapCancel: widget.onTap != null ? () => setState(() => _pressed = false) : null,
-      child: AnimatedScale(
-        scale: _pressed ? 0.97 : 1.0,
-        duration: const Duration(milliseconds: 120),
-        curve: Curves.easeOut,
-        child: Container(
-          decoration: BoxDecoration(
-            color: MitumbaColors.surface,
-            borderRadius: BorderRadius.circular(MitumbaRadius.lg),
-            border: Border.all(color: MitumbaColors.border),
-          ),
-          clipBehavior: Clip.antiAlias,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              _buildMedia(hasMultiple),
-              _buildContent(),
-            ],
+    return MouseRegion(
+      onEnter: widget.onTap != null ? (_) => setState(() => _hovered = true) : null,
+      onExit: widget.onTap != null ? (_) => setState(() => _hovered = false) : null,
+      cursor: widget.onTap != null ? SystemMouseCursors.click : SystemMouseCursors.basic,
+      child: GestureDetector(
+        onTap: widget.onTap != null ? () => widget.onTap!(widget.id) : null,
+        onTapDown: widget.onTap != null ? (_) => setState(() => _pressed = true) : null,
+        onTapUp: widget.onTap != null ? (_) => setState(() => _pressed = false) : null,
+        onTapCancel: widget.onTap != null ? () => setState(() => _pressed = false) : null,
+        child: AnimatedScale(
+          scale: _pressed ? 0.97 : 1.0,
+          duration: const Duration(milliseconds: 120),
+          curve: Curves.easeOut,
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 200),
+            curve: Curves.easeOut,
+            transform: Matrix4.translationValues(0, _hovered ? -2 : 0, 0),
+            decoration: BoxDecoration(
+              color: MitumbaColors.surface,
+              borderRadius: BorderRadius.circular(MitumbaRadius.lg),
+              border: Border.all(
+                color: _hovered ? MitumbaColors.green : MitumbaColors.border,
+              ),
+              boxShadow: _hovered ? MitumbaShadows.elevated : null,
+            ),
+            clipBehavior: Clip.antiAlias,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                _buildMedia(hasMultiple),
+                _buildContent(),
+              ],
+            ),
           ),
         ),
       ),
