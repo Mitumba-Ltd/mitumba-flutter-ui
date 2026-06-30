@@ -30,6 +30,31 @@ class Conversation {
   final String? listingTitle;
 }
 
+/// Attachment type for a chat message.
+enum ChatAttachmentType { image, file }
+
+/// An attachment on a [ChatMessage].
+class ChatAttachment {
+  const ChatAttachment({
+    required this.type,
+    required this.name,
+    required this.url,
+    this.size,
+  });
+
+  /// Attachment type.
+  final ChatAttachmentType type;
+
+  /// File or image name.
+  final String name;
+
+  /// URL to the resource.
+  final String url;
+
+  /// Human-readable file size (e.g. "2.4 MB").
+  final String? size;
+}
+
 /// A single message in a chat thread.
 class ChatMessage {
   const ChatMessage({
@@ -37,12 +62,16 @@ class ChatMessage {
     required this.timestamp,
     required this.isMine,
     this.senderName,
+    this.attachment,
   });
 
   final String body;
   final String timestamp;
   final bool isMine;
   final String? senderName;
+
+  /// Optional file or image attachment.
+  final ChatAttachment? attachment;
 }
 
 // ─── InboxLayout ────────────────────────────────────────────────────────────
