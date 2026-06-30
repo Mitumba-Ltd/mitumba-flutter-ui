@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 import '../../tokens/colors.dart';
@@ -147,12 +148,32 @@ class _VAZIShowcaseState extends State<VAZIShowcase> {
   Widget _buildDesktop(BoxConstraints constraints) {
     final activeOutfit = widget.outfits[_current];
 
-    return Container(
-      width: double.infinity,
-      height: constraints.maxHeight > 0 ? constraints.maxHeight : 700,
-      color: const Color(0xFFE8F0F2),
-      child: Row(
-        children: [
+    return GestureDetector(
+      onVerticalDragEnd: (details) {
+        if (details.primaryVelocity == null) return;
+        if (details.primaryVelocity! < -200) {
+          _navigateTo(_current + 1);
+        } else if (details.primaryVelocity! > 200) {
+          _navigateTo(_current - 1);
+        }
+      },
+      child: Listener(
+        onPointerSignal: (event) {
+          if (event is PointerScrollEvent) {
+            if (event.scrollDelta.dy.abs() < 30) return;
+            if (event.scrollDelta.dy > 0) {
+              _navigateTo(_current + 1);
+            } else {
+              _navigateTo(_current - 1);
+            }
+          }
+        },
+        child: Container(
+        width: double.infinity,
+        height: constraints.maxHeight > 0 ? constraints.maxHeight : 700,
+        color: const Color(0xFFE8F0F2),
+        child: Row(
+          children: [
           // Left — collection info
           SizedBox(
             width: 240,
@@ -218,6 +239,8 @@ class _VAZIShowcaseState extends State<VAZIShowcase> {
             ),
           ),
         ],
+      ),
+      ),
       ),
     );
   }
