@@ -358,45 +358,70 @@ class _MessageBubble extends StatelessWidget {
   Widget build(BuildContext context) {
     return Align(
       alignment: message.isMine ? Alignment.centerRight : Alignment.centerLeft,
-      child: Container(
-        margin: EdgeInsets.only(bottom: MitumbaSpacing.md),
-        padding: EdgeInsets.symmetric(horizontal: MitumbaSpacing.base, vertical: MitumbaSpacing.md),
-        constraints: const BoxConstraints(maxWidth: 280),
-        decoration: BoxDecoration(
-          color: message.isMine ? MitumbaColors.green : MitumbaColors.background,
-          borderRadius: message.isMine
-              ? BorderRadius.only(
-                  topLeft: Radius.circular(MitumbaRadius.lg),
-                  topRight: Radius.circular(MitumbaRadius.lg),
-                  bottomLeft: Radius.circular(MitumbaRadius.lg),
-                  bottomRight: Radius.circular(MitumbaRadius.xs),
-                )
-              : BorderRadius.only(
-                  topLeft: Radius.circular(MitumbaRadius.lg),
-                  topRight: Radius.circular(MitumbaRadius.lg),
-                  bottomLeft: Radius.circular(MitumbaRadius.xs),
-                  bottomRight: Radius.circular(MitumbaRadius.lg),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          if (!message.isMine) ...[
+            CircleAvatar(
+              radius: 14,
+              backgroundColor: MitumbaColors.background,
+              child: Text(
+                message.senderName != null && message.senderName!.isNotEmpty
+                    ? message.senderName![0]
+                    : '?',
+                style: const TextStyle(
+                  fontSize: 11,
+                  fontWeight: FontWeight.w700,
+                  color: MitumbaColors.textSecondary,
                 ),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              message.body,
-              style: MitumbaTypography.body2.copyWith(
-                color: message.isMine ? MitumbaColors.white : MitumbaColors.textPrimary,
               ),
             ),
-            SizedBox(height: MitumbaSpacing.xxs),
-            Text(
-              message.timestamp,
-              style: MitumbaTypography.caption.copyWith(
-                fontSize: 10,
-                color: message.isMine ? MitumbaColors.white.withAlpha(180) : MitumbaColors.textDisabled,
-              ),
-            ),
+            SizedBox(width: MitumbaSpacing.sm),
           ],
-        ),
+          Flexible(
+            child: Container(
+              margin: EdgeInsets.only(bottom: MitumbaSpacing.md),
+              padding: EdgeInsets.symmetric(horizontal: MitumbaSpacing.base, vertical: MitumbaSpacing.md),
+              constraints: const BoxConstraints(maxWidth: 280),
+              decoration: BoxDecoration(
+                color: message.isMine ? MitumbaColors.green : MitumbaColors.background,
+                borderRadius: message.isMine
+                    ? BorderRadius.only(
+                        topLeft: Radius.circular(MitumbaRadius.lg),
+                        topRight: Radius.circular(MitumbaRadius.lg),
+                        bottomLeft: Radius.circular(MitumbaRadius.lg),
+                        bottomRight: Radius.circular(MitumbaRadius.xs),
+                      )
+                    : BorderRadius.only(
+                        topLeft: Radius.circular(MitumbaRadius.lg),
+                        topRight: Radius.circular(MitumbaRadius.lg),
+                        bottomLeft: Radius.circular(MitumbaRadius.xs),
+                        bottomRight: Radius.circular(MitumbaRadius.lg),
+                      ),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    message.body,
+                    style: MitumbaTypography.body2.copyWith(
+                      color: message.isMine ? MitumbaColors.white : MitumbaColors.textPrimary,
+                    ),
+                  ),
+                  SizedBox(height: MitumbaSpacing.xxs),
+                  Text(
+                    message.timestamp,
+                    style: MitumbaTypography.caption.copyWith(
+                      fontSize: 10,
+                      color: message.isMine ? MitumbaColors.white.withAlpha(180) : MitumbaColors.textDisabled,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
