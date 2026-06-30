@@ -364,7 +364,19 @@ class _MessageBubble extends StatelessWidget {
         constraints: const BoxConstraints(maxWidth: 280),
         decoration: BoxDecoration(
           color: message.isMine ? MitumbaColors.green : MitumbaColors.background,
-          borderRadius: BorderRadius.circular(MitumbaRadius.lg),
+          borderRadius: message.isMine
+              ? BorderRadius.only(
+                  topLeft: Radius.circular(MitumbaRadius.lg),
+                  topRight: Radius.circular(MitumbaRadius.lg),
+                  bottomLeft: Radius.circular(MitumbaRadius.lg),
+                  bottomRight: Radius.circular(MitumbaRadius.xs),
+                )
+              : BorderRadius.only(
+                  topLeft: Radius.circular(MitumbaRadius.lg),
+                  topRight: Radius.circular(MitumbaRadius.lg),
+                  bottomLeft: Radius.circular(MitumbaRadius.xs),
+                  bottomRight: Radius.circular(MitumbaRadius.lg),
+                ),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
