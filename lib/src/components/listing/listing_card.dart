@@ -79,9 +79,26 @@ class ListingCard extends StatefulWidget {
   State<ListingCard> createState() => _ListingCardState();
 }
 
-class _ListingCardState extends State<ListingCard> {
+class _ListingCardState extends State<ListingCard> with SingleTickerProviderStateMixin {
   int _activeIndex = 0;
   bool _cartAdded = false;
+  bool _imageLoaded = false;
+  late final AnimationController _shimmerCtrl;
+
+  @override
+  void initState() {
+    super.initState();
+    _shimmerCtrl = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1500),
+    )..repeat();
+  }
+
+  @override
+  void dispose() {
+    _shimmerCtrl.dispose();
+    super.dispose();
+  }
 
   void _handleCart() {
     if (_cartAdded) return;
@@ -192,13 +209,48 @@ class _ListingCardState extends State<ListingCard> {
   }
 
   Widget _mediaItem(String url) {
-    return Image.network(
-      url,
-      fit: BoxFit.cover,
-      errorBuilder: (_, __, ___) => Container(
-        color: MitumbaColors.background,
-        child: const Icon(Icons.image_not_supported_outlined, color: MitumbaColors.textDisabled),
-      ),
+    return Stack(
+      fit: StackFit.expand,
+      children: [
+        // Shimmer placeholder — visible until image loads
+        if (!_imageLoaded)
+          AnimatedBuilder(
+            animation: _shimmerCtrl,
+            builder: (_, __) => Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment(-1.0 + 2.0 * _shimmerCtrl.value, 0),
+                  end: Alignment(-1.0 + 2.0 * _shimmerCtrl.value + 1.0, 0),
+                  colors: const [
+                    MitumbaColors.background,
+                    MitumbaColors.divider,
+                    MitumbaColors.background,
+                  ],
+                ),
+              ),
+            ),
+          ),
+        Image.network(
+          url,
+          fit: BoxFit.cover,
+          frameBuilder: (_, child, frame, wasSynchronouslyLoaded) {
+            if (wasSynchronouslyLoaded) {
+              _imageLoaded = true;
+              return child;
+            }
+            if (frame != null && !_imageLoaded) {
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                if (mounted) setState(() => _imageLoaded = true);
+              });
+            }
+            return child;
+          },
+          errorBuilder: (_, __, ___) => Container(
+            color: MitumbaColors.background,
+            child: const Icon(Icons.image_not_supported_outlined, color: MitumbaColors.textDisabled),
+          ),
+        ),
+      ],
     );
   }
 
