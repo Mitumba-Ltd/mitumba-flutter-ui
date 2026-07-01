@@ -173,15 +173,19 @@ class _BuyerOnboardingPageState extends State<BuyerOnboardingPage> {
                     onChanged: (_) => setState(() {}),
                   ),
                   SizedBox(height: MitumbaSpacing.xxxl),
-                  ElevatedButton(
-                    onPressed: widget.loading || !_isValid ? null : _submit,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: MitumbaColors.green,
-                      foregroundColor: MitumbaColors.white,
-                      padding: EdgeInsets.symmetric(vertical: MitumbaSpacing.base),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(MitumbaRadius.md)),
+                  Semantics(
+                    button: true,
+                    label: widget.loading ? 'Setting up account' : 'Continue to complete onboarding',
+                    child: ElevatedButton(
+                      onPressed: widget.loading || !_isValid ? null : _submit,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: MitumbaColors.green,
+                        foregroundColor: MitumbaColors.white,
+                        padding: EdgeInsets.symmetric(vertical: MitumbaSpacing.base),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(MitumbaRadius.md)),
+                      ),
+                      child: Text(widget.loading ? 'Setting up...' : 'Continue'),
                     ),
-                    child: Text(widget.loading ? 'Setting up...' : 'Continue'),
                   ),
                 ],
               ),
