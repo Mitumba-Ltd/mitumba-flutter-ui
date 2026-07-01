@@ -455,3 +455,89 @@ class _CartButton extends StatelessWidget {
     );
   }
 }
+
+
+/// Skeleton loading placeholder for [ListingCard].
+class ListingCardSkeleton extends StatefulWidget {
+  const ListingCardSkeleton({super.key});
+
+  @override
+  State<ListingCardSkeleton> createState() => _ListingCardSkeletonState();
+}
+
+class _ListingCardSkeletonState extends State<ListingCardSkeleton>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _ctrl;
+
+  @override
+  void initState() {
+    super.initState();
+    _ctrl = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1500),
+    )..repeat();
+  }
+
+  @override
+  void dispose() {
+    _ctrl.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: _ctrl,
+      builder: (_, __) => Container(
+        decoration: BoxDecoration(
+          color: MitumbaColors.surface,
+          borderRadius: BorderRadius.circular(MitumbaRadius.lg),
+          border: Border.all(color: MitumbaColors.border),
+        ),
+        clipBehavior: Clip.antiAlias,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            AspectRatio(
+              aspectRatio: 3 / 4,
+              child: _shimmerBox(),
+            ),
+            Padding(
+              padding: EdgeInsets.all(MitumbaSpacing.base),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _shimmerBox(height: 14, width: double.infinity),
+                  SizedBox(height: MitumbaSpacing.sm),
+                  _shimmerBox(height: 14, width: 120),
+                  SizedBox(height: MitumbaSpacing.md),
+                  _shimmerBox(height: 18, width: 80),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _shimmerBox({double? height, double? width}) {
+    return Container(
+      height: height,
+      width: width,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(MitumbaRadius.sm),
+        gradient: LinearGradient(
+          begin: Alignment(-1.0 + 2.0 * _ctrl.value, 0),
+          end: Alignment(-1.0 + 2.0 * _ctrl.value + 1.0, 0),
+          colors: const [
+            MitumbaColors.background,
+            MitumbaColors.divider,
+            MitumbaColors.background,
+          ],
+        ),
+      ),
+    );
+  }
+}
