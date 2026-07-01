@@ -125,7 +125,11 @@ class _ListingCardState extends State<ListingCard> with SingleTickerProviderStat
       onEnter: widget.onTap != null ? (_) => setState(() => _hovered = true) : null,
       onExit: widget.onTap != null ? (_) => setState(() => _hovered = false) : null,
       cursor: widget.onTap != null ? SystemMouseCursors.click : SystemMouseCursors.basic,
-      child: GestureDetector(
+      child: Semantics(
+        label: '${widget.title}, KES ${_formatPrice(widget.price)}${widget.storeName != null ? ', ${widget.storeName}' : ''}',
+        button: widget.onTap != null,
+        image: true,
+        child: GestureDetector(
         onTap: widget.onTap != null ? () => widget.onTap!(widget.id) : null,
         onTapDown: widget.onTap != null ? (_) => setState(() => _pressed = true) : null,
         onTapUp: widget.onTap != null ? (_) => setState(() => _pressed = false) : null,
@@ -157,6 +161,7 @@ class _ListingCardState extends State<ListingCard> with SingleTickerProviderStat
             ),
           ),
         ),
+      ),
       ),
     );
   }
