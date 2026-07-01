@@ -34,4 +34,7 @@ class MitumbaShadows {
   static const earth = [
     BoxShadow(offset: Offset(0, 8), blurRadius: 20, color: Color(0x33A06235)),
   ];
+
+  /// No shadow — explicit empty list for toggling shadows off.
+  static const List<BoxShadow> none = [];
 }
