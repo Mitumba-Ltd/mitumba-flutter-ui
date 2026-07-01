@@ -27,6 +27,7 @@ class MitumbaColors {
   static const Color textDisabled = Color(0xFFADADA8);
   static const Color textOnGreen = Color(0xFFFFFFFF);
   static const Color textOnEarth = Color(0xFFFFFFFF);
+  static const Color textLink = Color(0xFF3D9A52);
 
   // Semantic
   static const Color success = Color(0xFF3D9A52);
