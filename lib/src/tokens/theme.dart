@@ -59,5 +59,14 @@ class MitumbaTheme {
         borderRadius: BorderRadius.vertical(top: Radius.circular(MitumbaRadius.xxl)),
       ),
     ),
+    chipTheme: ChipThemeData(
+      backgroundColor: MitumbaColors.background,
+      selectedColor: MitumbaColors.greenLight,
+      checkmarkColor: MitumbaColors.green,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(MitumbaRadius.full),
+      ),
+      labelStyle: MitumbaTypography.caption,
+    ),
   );
 }
