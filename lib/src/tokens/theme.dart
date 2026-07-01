@@ -93,5 +93,15 @@ class MitumbaTheme {
         ),
       ),
     ),
+    outlinedButtonTheme: OutlinedButtonThemeData(
+      style: OutlinedButton.styleFrom(
+        foregroundColor: MitumbaColors.textPrimary,
+        side: const BorderSide(color: MitumbaColors.border),
+        textStyle: MitumbaTypography.button,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(MitumbaRadius.md),
+        ),
+      ),
+    ),
   );
 }
