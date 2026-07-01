@@ -437,14 +437,18 @@ class _MessageBanner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(MitumbaSpacing.base),
-      decoration: BoxDecoration(
-        color: color.withAlpha(18),
-        borderRadius: BorderRadius.circular(MitumbaRadius.md),
-        border: Border.all(color: color.withAlpha(80)),
+    return Semantics(
+      liveRegion: true,
+      label: message,
+      child: Container(
+        padding: EdgeInsets.all(MitumbaSpacing.base),
+        decoration: BoxDecoration(
+          color: color.withAlpha(18),
+          borderRadius: BorderRadius.circular(MitumbaRadius.md),
+          border: Border.all(color: color.withAlpha(80)),
+        ),
+        child: Text(message, style: MitumbaTypography.body2.copyWith(color: color)),
       ),
-      child: Text(message, style: MitumbaTypography.body2.copyWith(color: color)),
     );
   }
 }
