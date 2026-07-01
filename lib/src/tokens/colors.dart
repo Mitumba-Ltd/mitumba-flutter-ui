@@ -49,8 +49,10 @@ class MitumbaColors {
   static const Color stiFlagged = Color(0xFFD93025);
   static const Color stiSuspended = Color(0xFF6B6B65);
 
-  /// Legacy aliases for backward compat.
   static const Color primary = green;
   static const Color primaryLight = greenLight;
   static const Color primaryDark = greenDark;
+
+  /// Fully transparent color.
+  static const Color transparent = Color(0x00000000);
 }
