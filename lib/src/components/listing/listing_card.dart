@@ -354,6 +354,17 @@ class _ListingCardState extends State<ListingCard> with SingleTickerProviderStat
                         fontWeight: FontWeight.w800,
                       ),
                     ),
+                    if (widget.originalPrice != null)
+                      Padding(
+                        padding: EdgeInsets.only(top: MitumbaSpacing.xxs),
+                        child: Text(
+                          'KES ${_formatPrice(widget.originalPrice!)}',
+                          style: MitumbaTypography.caption.copyWith(
+                            color: MitumbaColors.textDisabled,
+                            decoration: TextDecoration.lineThrough,
+                          ),
+                        ),
+                      ),
                     if (widget.storeName != null)
                       Padding(
                         padding: EdgeInsets.only(top: MitumbaSpacing.xxs),
