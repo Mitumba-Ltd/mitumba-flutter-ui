@@ -136,5 +136,15 @@ class MitumbaTheme {
       thickness: 1,
       space: 1,
     ),
+    switchTheme: SwitchThemeData(
+      thumbColor: WidgetStateProperty.resolveWith((states) {
+        if (states.contains(WidgetState.selected)) return MitumbaColors.white;
+        return MitumbaColors.textDisabled;
+      }),
+      trackColor: WidgetStateProperty.resolveWith((states) {
+        if (states.contains(WidgetState.selected)) return MitumbaColors.green;
+        return MitumbaColors.border;
+      }),
+    ),
   );
 }
