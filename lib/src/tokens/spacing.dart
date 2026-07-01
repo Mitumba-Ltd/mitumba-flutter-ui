@@ -17,4 +17,10 @@ class MitumbaSpacing {
 
   /// Alias for section padding.
   static const double section = xxl;
+
+  /// Alias for page padding.
+  static const double page = lg;
+
+  /// Alias for inline element gap.
+  static const double inlineGap = md;
 }
