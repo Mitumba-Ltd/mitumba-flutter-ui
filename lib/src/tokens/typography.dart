@@ -85,4 +85,13 @@ class MitumbaTypography {
     fontWeight: semibold,
     height: lineHeightNormal,
   );
+
+  /// Overline — small uppercase label text.
+  static const TextStyle overline = TextStyle(
+    fontFamily: fontFamily,
+    fontSize: fontSizeXs,
+    fontWeight: semibold,
+    height: lineHeightNormal,
+    letterSpacing: 1.5,
+  );
 }
