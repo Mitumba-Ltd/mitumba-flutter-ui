@@ -555,6 +555,25 @@ class _MessageBubble extends StatelessWidget {
 }
 
 
+class _StatusTicks extends StatelessWidget {
+  const _StatusTicks({required this.status});
+  final MessageStatus status;
+
+  @override
+  Widget build(BuildContext context) {
+    switch (status) {
+      case MessageStatus.sending:
+        return Icon(Icons.access_time, size: 12, color: MitumbaColors.white.withAlpha(150));
+      case MessageStatus.sent:
+        return Icon(Icons.check, size: 12, color: MitumbaColors.white.withAlpha(180));
+      case MessageStatus.delivered:
+        return Icon(Icons.done_all, size: 12, color: MitumbaColors.white.withAlpha(180));
+      case MessageStatus.read:
+        return const Icon(Icons.done_all, size: 12, color: MitumbaColors.white);
+    }
+  }
+}
+
 /// Animated typing indicator — three bouncing dots shown when partner is typing.
 class TypingIndicator extends StatefulWidget {
   const TypingIndicator({super.key});
