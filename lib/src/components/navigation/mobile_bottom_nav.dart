@@ -141,7 +141,9 @@ class _PressableNavItemState extends State<_PressableNavItem> {
       button: true,
       label: widget.label,
       selected: widget.isActive,
-      child: GestureDetector(
+      child: MouseRegion(
+        cursor: SystemMouseCursors.click,
+        child: GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: () {
         HapticFeedback.selectionClick();
@@ -155,6 +157,7 @@ class _PressableNavItemState extends State<_PressableNavItem> {
         duration: const Duration(milliseconds: 100),
         curve: Curves.easeOut,
         child: widget.child,
+      ),
       ),
       ),
     );
