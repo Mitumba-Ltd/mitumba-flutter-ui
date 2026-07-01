@@ -102,4 +102,12 @@ class MitumbaTypography {
     fontWeight: medium,
     height: lineHeightSnug,
   );
+
+  /// Label — small semibold text for form labels and captions.
+  static const TextStyle label = TextStyle(
+    fontFamily: fontFamily,
+    fontSize: fontSizeSm,
+    fontWeight: semibold,
+    height: lineHeightNormal,
+  );
 }
