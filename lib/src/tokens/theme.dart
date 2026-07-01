@@ -152,5 +152,15 @@ class MitumbaTheme {
         return MitumbaColors.textSecondary;
       }),
     ),
+    checkboxTheme: CheckboxThemeData(
+      fillColor: WidgetStateProperty.resolveWith((states) {
+        if (states.contains(WidgetState.selected)) return MitumbaColors.green;
+        return Colors.transparent;
+      }),
+      checkColor: WidgetStateProperty.all(MitumbaColors.white),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(MitumbaRadius.xs),
+      ),
+    ),
   );
 }
