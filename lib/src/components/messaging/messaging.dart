@@ -366,10 +366,14 @@ class _ChatThreadState extends State<ChatThread> {
                 ),
               ),
               SizedBox(width: MitumbaSpacing.md),
-              IconButton(
-                onPressed: widget.sending ? null : _send,
-                icon: const Icon(Icons.send),
-                color: MitumbaColors.green,
+              Semantics(
+                button: true,
+                label: 'Send message',
+                child: IconButton(
+                  onPressed: widget.sending ? null : _send,
+                  icon: const Icon(Icons.send),
+                  color: MitumbaColors.green,
+                ),
               ),
             ],
           ),
