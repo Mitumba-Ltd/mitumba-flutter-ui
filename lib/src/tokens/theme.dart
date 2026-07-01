@@ -46,5 +46,12 @@ class MitumbaTheme {
         textStyle: MitumbaTypography.button,
       ),
     ),
+    appBarTheme: AppBarTheme(
+      backgroundColor: MitumbaColors.surface,
+      foregroundColor: MitumbaColors.textPrimary,
+      elevation: 0,
+      centerTitle: false,
+      titleTextStyle: MitumbaTypography.h5.copyWith(color: MitumbaColors.textPrimary),
+    ),
   );
 }
