@@ -81,6 +81,7 @@ class SellerCard extends StatefulWidget {
 
 class _SellerCardState extends State<SellerCard> {
   bool _hovered = false;
+  bool _pressed = false;
 
   @override
   Widget build(BuildContext context) {
@@ -95,7 +96,14 @@ class _SellerCardState extends State<SellerCard> {
         cursor: widget.onTap != null ? SystemMouseCursors.click : SystemMouseCursors.basic,
         child: GestureDetector(
           onTap: widget.onTap,
-          child: AnimatedContainer(
+          onTapDown: widget.onTap != null ? (_) => setState(() => _pressed = true) : null,
+          onTapUp: widget.onTap != null ? (_) => setState(() => _pressed = false) : null,
+          onTapCancel: widget.onTap != null ? () => setState(() => _pressed = false) : null,
+          child: AnimatedScale(
+            scale: _pressed ? 0.97 : 1.0,
+            duration: const Duration(milliseconds: 100),
+            curve: Curves.easeOut,
+            child: AnimatedContainer(
             duration: const Duration(milliseconds: 200),
             curve: Curves.easeOut,
             padding: EdgeInsets.all(MitumbaSpacing.lg),
@@ -141,6 +149,7 @@ class _SellerCardState extends State<SellerCard> {
                 ),
               ],
             ],
+          ),
           ),
         ),
         ),
