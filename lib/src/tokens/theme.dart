@@ -146,5 +146,11 @@ class MitumbaTheme {
         return MitumbaColors.border;
       }),
     ),
+    radioTheme: RadioThemeData(
+      fillColor: WidgetStateProperty.resolveWith((states) {
+        if (states.contains(WidgetState.selected)) return MitumbaColors.green;
+        return MitumbaColors.textSecondary;
+      }),
+    ),
   );
 }
