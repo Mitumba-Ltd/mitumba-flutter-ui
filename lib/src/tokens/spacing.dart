@@ -14,4 +14,7 @@ class MitumbaSpacing {
   static const double xxxl = 32;
   static const double huge = 48;
   static const double giant = 64;
+
+  /// Alias for section padding.
+  static const double section = xxl;
 }
