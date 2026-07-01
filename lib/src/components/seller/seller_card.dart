@@ -165,7 +165,8 @@ class _Avatar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CircleAvatar(
+    return ExcludeSemantics(
+      child: CircleAvatar(
       radius: 20,
       backgroundColor: MitumbaColors.greenLight,
       backgroundImage: url != null ? NetworkImage(url!) : null,
@@ -179,6 +180,7 @@ class _Avatar extends StatelessWidget {
               ),
             )
           : null,
+      ),
     );
   }
 }
