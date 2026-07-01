@@ -259,9 +259,12 @@ class _PriceSection extends StatelessWidget {
           activeColor: MitumbaColors.green,
           onChanged: onChanged,
         ),
-        Text(
-          'KES ${range.start.round().toString().replaceAllMapped(RegExp(r'(\d)(?=(\d{3})+$)'), (m) => '${m[1]},')} – KES ${range.end.round().toString().replaceAllMapped(RegExp(r'(\d)(?=(\d{3})+$)'), (m) => '${m[1]},')}',
-          style: MitumbaTypography.caption.copyWith(color: MitumbaColors.textSecondary),
+        Semantics(
+          label: 'Price range: KES ${range.start.round()} to KES ${range.end.round()}',
+          child: Text(
+            'KES ${range.start.round().toString().replaceAllMapped(RegExp(r'(\d)(?=(\d{3})+$)'), (m) => '${m[1]},')} – KES ${range.end.round().toString().replaceAllMapped(RegExp(r'(\d)(?=(\d{3})+$)'), (m) => '${m[1]},')}',
+            style: MitumbaTypography.caption.copyWith(color: MitumbaColors.textSecondary),
+          ),
         ),
       ],
     );
