@@ -528,12 +528,21 @@ class _MessageBubble extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: MitumbaSpacing.xxs),
-                  Text(
-                    message.timestamp,
-                    style: MitumbaTypography.caption.copyWith(
-                      fontSize: 10,
-                      color: message.isMine ? MitumbaColors.white.withAlpha(180) : MitumbaColors.textDisabled,
-                    ),
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        message.timestamp,
+                        style: MitumbaTypography.caption.copyWith(
+                          fontSize: 10,
+                          color: message.isMine ? MitumbaColors.white.withAlpha(180) : MitumbaColors.textDisabled,
+                        ),
+                      ),
+                      if (message.isMine && message.status != null) ...[
+                        SizedBox(width: MitumbaSpacing.xs),
+                        _StatusTicks(status: message.status!),
+                      ],
+                    ],
                   ),
                 ],
               ),
