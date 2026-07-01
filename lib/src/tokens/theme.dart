@@ -126,5 +126,10 @@ class MitumbaTheme {
         ),
       ),
     ),
+    floatingActionButtonTheme: const FloatingActionButtonThemeData(
+      backgroundColor: MitumbaColors.green,
+      foregroundColor: MitumbaColors.white,
+      elevation: 4,
+    ),
   );
 }
