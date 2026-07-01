@@ -174,7 +174,10 @@ class _ListingCardState extends State<ListingCard> with SingleTickerProviderStat
           child: hasMultiple
               ? PageView.builder(
                   itemCount: widget.media.length,
-                  onPageChanged: (i) => setState(() => _activeIndex = i),
+                  onPageChanged: (i) => setState(() {
+                    _activeIndex = i;
+                    _imageLoaded = false;
+                  }),
                   itemBuilder: (_, i) => _mediaItem(widget.media[i]),
                 )
               : _mediaItem(widget.media.first),
