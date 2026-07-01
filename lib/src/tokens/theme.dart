@@ -8,6 +8,29 @@ import 'typography.dart';
 class MitumbaTheme {
   MitumbaTheme._();
 
+  static ThemeData get dark => ThemeData(
+    useMaterial3: true,
+    brightness: Brightness.dark,
+    fontFamily: MitumbaTypography.fontFamily,
+    colorScheme: ColorScheme.dark(
+      primary: MitumbaColors.green,
+      primaryContainer: MitumbaColors.greenDark,
+      secondary: MitumbaColors.earth,
+      secondaryContainer: MitumbaColors.earthDark,
+      surface: MitumbaColors.surfaceDark,
+      error: MitumbaColors.error,
+      errorContainer: MitumbaColors.errorDark,
+      onPrimary: MitumbaColors.white,
+      onSecondary: MitumbaColors.white,
+      onSurface: MitumbaColors.white,
+      onError: MitumbaColors.white,
+      outline: MitumbaColors.border,
+      outlineVariant: MitumbaColors.divider,
+    ),
+    scaffoldBackgroundColor: MitumbaColors.backgroundDark,
+    dividerColor: MitumbaColors.divider,
+  );
+
   static ThemeData get light => ThemeData(
     useMaterial3: true,
     fontFamily: MitumbaTypography.fontFamily,
