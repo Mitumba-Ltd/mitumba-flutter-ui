@@ -21,4 +21,7 @@ class MitumbaMotion {
 
   /// Named alias for the spring curve — use for interactive bounce effects.
   static const Cubic springCurve = spring;
+
+  /// Pre-composed transition string for interaction feedback.
+  static const Duration interaction = fast;
 }
