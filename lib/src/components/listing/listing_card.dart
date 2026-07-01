@@ -411,7 +411,10 @@ class _CartButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return Semantics(
+      button: true,
+      label: added ? 'Added to cart' : 'Add to cart',
+      child: GestureDetector(
       onTap: onTap,
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 300),
@@ -429,6 +432,7 @@ class _CartButton extends StatelessWidget {
               ? const Icon(Icons.check, key: ValueKey('check'), size: 18, color: MitumbaColors.white)
               : const Icon(Icons.add_shopping_cart, key: ValueKey('cart'), size: 16, color: MitumbaColors.white),
         ),
+      ),
       ),
     );
   }
