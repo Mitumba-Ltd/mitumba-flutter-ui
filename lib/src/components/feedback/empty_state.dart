@@ -68,7 +68,10 @@ class EmptyState extends StatelessWidget {
 
     final content = _isCompact ? _buildCompact(displayIcon) : _buildStandard(displayIcon);
 
-    return Container(
+    return Semantics(
+      liveRegion: true,
+      label: '$title. $subtitle',
+      child: Container(
       width: double.infinity,
       padding: EdgeInsets.symmetric(
         vertical: _isCompact ? MitumbaSpacing.xl : MitumbaSpacing.huge,
@@ -81,6 +84,7 @@ class EmptyState extends StatelessWidget {
         boxShadow: _isElevated ? MitumbaShadows.card : null,
       ),
       child: content,
+      ),
     );
   }
 
