@@ -17,4 +17,10 @@ class MitumbaRadius {
 
   /// Alias for button corner radius (same as md).
   static const double button = md;
+
+  /// Alias for input field corner radius (same as md).
+  static const double input = md;
+
+  /// Alias for chip corner radius (same as full).
+  static const double chip = full;
 }
