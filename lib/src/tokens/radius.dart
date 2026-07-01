@@ -14,4 +14,7 @@ class MitumbaRadius {
 
   /// Alias for card corner radius (same as xl).
   static const double card = xl;
+
+  /// Alias for button corner radius (same as md).
+  static const double button = md;
 }
