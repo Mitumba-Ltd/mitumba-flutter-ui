@@ -76,5 +76,13 @@ class MitumbaTheme {
       titleTextStyle: MitumbaTypography.h4.copyWith(color: MitumbaColors.textPrimary),
       contentTextStyle: MitumbaTypography.body2.copyWith(color: MitumbaColors.textSecondary),
     ),
+    snackBarTheme: SnackBarThemeData(
+      backgroundColor: MitumbaColors.textPrimary,
+      contentTextStyle: MitumbaTypography.body2.copyWith(color: MitumbaColors.white),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(MitumbaRadius.md),
+      ),
+      behavior: SnackBarBehavior.floating,
+    ),
   );
 }
