@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../../tokens/colors.dart';
 import '../../tokens/radius.dart';
@@ -16,6 +17,7 @@ class MobileBottomNavItem {
     required this.label,
     required this.icon,
     this.activeIcon,
+    this.badgeCount,
   });
 
   /// Unique tab identifier.
@@ -29,6 +31,9 @@ class MobileBottomNavItem {
 
   /// Icon shown when active (falls back to [icon]).
   final IconData? activeIcon;
+
+  /// Optional badge count (e.g. unread orders).
+  final int? badgeCount;
 }
 
 /// Default navigation items for the Mitumba marketplace.
@@ -88,6 +93,8 @@ class MobileBottomNav extends StatelessWidget {
           return Expanded(
             child: _PressableNavItem(
               onTap: () => onTabChange(item.id),
+              label: item.label,
+              isActive: isActive,
               child: _buildItem(item, isActive),
             ),
           );
@@ -119,9 +126,11 @@ class MobileBottomNav extends StatelessWidget {
 
 /// Wraps a nav item with press-down scale feedback (0.92 on press).
 class _PressableNavItem extends StatefulWidget {
-  const _PressableNavItem({required this.onTap, required this.child});
+  const _PressableNavItem({required this.onTap, required this.child, required this.label, required this.isActive});
   final VoidCallback onTap;
   final Widget child;
+  final String label;
+  final bool isActive;
 
   @override
   State<_PressableNavItem> createState() => _PressableNavItemState();
@@ -132,9 +141,18 @@ class _PressableNavItemState extends State<_PressableNavItem> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return Semantics(
+      button: true,
+      label: widget.label,
+      selected: widget.isActive,
+      child: MouseRegion(
+        cursor: SystemMouseCursors.click,
+        child: GestureDetector(
       behavior: HitTestBehavior.opaque,
-      onTap: widget.onTap,
+      onTap: () {
+        HapticFeedback.selectionClick();
+        widget.onTap();
+      },
       onTapDown: (_) => setState(() => _pressed = true),
       onTapUp: (_) => setState(() => _pressed = false),
       onTapCancel: () => setState(() => _pressed = false),
@@ -143,6 +161,8 @@ class _PressableNavItemState extends State<_PressableNavItem> {
         duration: const Duration(milliseconds: 100),
         curve: Curves.easeOut,
         child: widget.child,
+      ),
+      ),
       ),
     );
   }

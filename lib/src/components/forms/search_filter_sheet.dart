@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../../tokens/colors.dart';
 import '../../tokens/radius.dart';
@@ -229,7 +230,10 @@ class _ChipSection extends StatelessWidget {
             return FilterChip(
               label: Text(o),
               selected: isSelected,
-              onSelected: (_) => onToggle(o),
+              onSelected: (_) {
+                HapticFeedback.selectionClick();
+                onToggle(o);
+              },
               selectedColor: MitumbaColors.greenLight,
               checkmarkColor: MitumbaColors.green,
             );
@@ -259,9 +263,12 @@ class _PriceSection extends StatelessWidget {
           activeColor: MitumbaColors.green,
           onChanged: onChanged,
         ),
-        Text(
-          'KES ${range.start.round().toString().replaceAllMapped(RegExp(r'(\d)(?=(\d{3})+$)'), (m) => '${m[1]},')} – KES ${range.end.round().toString().replaceAllMapped(RegExp(r'(\d)(?=(\d{3})+$)'), (m) => '${m[1]},')}',
-          style: MitumbaTypography.caption.copyWith(color: MitumbaColors.textSecondary),
+        Semantics(
+          label: 'Price range: KES ${range.start.round()} to KES ${range.end.round()}',
+          child: Text(
+            'KES ${range.start.round().toString().replaceAllMapped(RegExp(r'(\d)(?=(\d{3})+$)'), (m) => '${m[1]},')} – KES ${range.end.round().toString().replaceAllMapped(RegExp(r'(\d)(?=(\d{3})+$)'), (m) => '${m[1]},')}',
+            style: MitumbaTypography.caption.copyWith(color: MitumbaColors.textSecondary),
+          ),
         ),
       ],
     );

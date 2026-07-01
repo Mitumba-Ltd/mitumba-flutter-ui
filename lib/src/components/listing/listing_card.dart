@@ -49,6 +49,7 @@ class ListingCard extends StatefulWidget {
     this.onSaveToggle,
     this.onTap,
     this.onAddToCart,
+    this.originalPrice,
   });
 
   /// Unique listing identifier.
@@ -80,6 +81,9 @@ class ListingCard extends StatefulWidget {
 
   /// Called when "Add to cart" is tapped.
   final ValueChanged<String>? onAddToCart;
+
+  /// Original price before discount (shown with strikethrough).
+  final int? originalPrice;
 
   @override
   State<ListingCard> createState() => _ListingCardState();
@@ -125,7 +129,11 @@ class _ListingCardState extends State<ListingCard> with SingleTickerProviderStat
       onEnter: widget.onTap != null ? (_) => setState(() => _hovered = true) : null,
       onExit: widget.onTap != null ? (_) => setState(() => _hovered = false) : null,
       cursor: widget.onTap != null ? SystemMouseCursors.click : SystemMouseCursors.basic,
-      child: GestureDetector(
+      child: Semantics(
+        label: '${widget.title}, KES ${_formatPrice(widget.price)}${widget.storeName != null ? ', ${widget.storeName}' : ''}',
+        button: widget.onTap != null,
+        image: true,
+        child: GestureDetector(
         onTap: widget.onTap != null ? () => widget.onTap!(widget.id) : null,
         onTapDown: widget.onTap != null ? (_) => setState(() => _pressed = true) : null,
         onTapUp: widget.onTap != null ? (_) => setState(() => _pressed = false) : null,
@@ -158,6 +166,7 @@ class _ListingCardState extends State<ListingCard> with SingleTickerProviderStat
           ),
         ),
       ),
+      ),
     );
   }
 
@@ -169,7 +178,10 @@ class _ListingCardState extends State<ListingCard> with SingleTickerProviderStat
           child: hasMultiple
               ? PageView.builder(
                   itemCount: widget.media.length,
-                  onPageChanged: (i) => setState(() => _activeIndex = i),
+                  onPageChanged: (i) => setState(() {
+                    _activeIndex = i;
+                    _imageLoaded = false;
+                  }),
                   itemBuilder: (_, i) => _mediaItem(widget.media[i]),
                 )
               : _mediaItem(widget.media.first),
@@ -202,12 +214,16 @@ class _ListingCardState extends State<ListingCard> with SingleTickerProviderStat
           Positioned(
             top: MitumbaSpacing.md,
             right: MitumbaSpacing.md,
-            child: _IconOverlayButton(
-              onTap: () => widget.onSaveToggle!(widget.id),
-              child: Icon(
-                widget.isSaved ? Icons.favorite : Icons.favorite_border,
-                size: 18,
-                color: widget.isSaved ? MitumbaColors.error : MitumbaColors.textSecondary,
+            child: Semantics(
+              button: true,
+              label: widget.isSaved ? 'Remove from wishlist' : 'Save to wishlist',
+              child: _IconOverlayButton(
+                onTap: () => widget.onSaveToggle!(widget.id),
+                child: Icon(
+                  widget.isSaved ? Icons.favorite : Icons.favorite_border,
+                  size: 18,
+                  color: widget.isSaved ? MitumbaColors.error : MitumbaColors.textSecondary,
+                ),
               ),
             ),
           ),
@@ -338,6 +354,17 @@ class _ListingCardState extends State<ListingCard> with SingleTickerProviderStat
                         fontWeight: FontWeight.w800,
                       ),
                     ),
+                    if (widget.originalPrice != null)
+                      Padding(
+                        padding: EdgeInsets.only(top: MitumbaSpacing.xxs),
+                        child: Text(
+                          'KES ${_formatPrice(widget.originalPrice!)}',
+                          style: MitumbaTypography.caption.copyWith(
+                            color: MitumbaColors.textDisabled,
+                            decoration: TextDecoration.lineThrough,
+                          ),
+                        ),
+                      ),
                     if (widget.storeName != null)
                       Padding(
                         padding: EdgeInsets.only(top: MitumbaSpacing.xxs),
@@ -402,11 +429,14 @@ class _CartButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return Semantics(
+      button: true,
+      label: added ? 'Added to cart' : 'Add to cart',
+      child: GestureDetector(
       onTap: onTap,
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 300),
-        curve: Curves.elasticOut,
+        curve: const Cubic(0.34, 1.56, 0.64, 1),
         width: 32,
         height: 32,
         decoration: const BoxDecoration(
@@ -419,6 +449,93 @@ class _CartButton extends StatelessWidget {
           child: added
               ? const Icon(Icons.check, key: ValueKey('check'), size: 18, color: MitumbaColors.white)
               : const Icon(Icons.add_shopping_cart, key: ValueKey('cart'), size: 16, color: MitumbaColors.white),
+        ),
+      ),
+      ),
+    );
+  }
+}
+
+
+/// Skeleton loading placeholder for [ListingCard].
+class ListingCardSkeleton extends StatefulWidget {
+  const ListingCardSkeleton({super.key});
+
+  @override
+  State<ListingCardSkeleton> createState() => _ListingCardSkeletonState();
+}
+
+class _ListingCardSkeletonState extends State<ListingCardSkeleton>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _ctrl;
+
+  @override
+  void initState() {
+    super.initState();
+    _ctrl = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1500),
+    )..repeat();
+  }
+
+  @override
+  void dispose() {
+    _ctrl.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: _ctrl,
+      builder: (_, __) => Container(
+        decoration: BoxDecoration(
+          color: MitumbaColors.surface,
+          borderRadius: BorderRadius.circular(MitumbaRadius.lg),
+          border: Border.all(color: MitumbaColors.border),
+        ),
+        clipBehavior: Clip.antiAlias,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            AspectRatio(
+              aspectRatio: 3 / 4,
+              child: _shimmerBox(),
+            ),
+            Padding(
+              padding: EdgeInsets.all(MitumbaSpacing.base),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _shimmerBox(height: 14, width: double.infinity),
+                  SizedBox(height: MitumbaSpacing.sm),
+                  _shimmerBox(height: 14, width: 120),
+                  SizedBox(height: MitumbaSpacing.md),
+                  _shimmerBox(height: 18, width: 80),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _shimmerBox({double? height, double? width}) {
+    return Container(
+      height: height,
+      width: width,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(MitumbaRadius.sm),
+        gradient: LinearGradient(
+          begin: Alignment(-1.0 + 2.0 * _ctrl.value, 0),
+          end: Alignment(-1.0 + 2.0 * _ctrl.value + 1.0, 0),
+          colors: const [
+            MitumbaColors.background,
+            MitumbaColors.divider,
+            MitumbaColors.background,
+          ],
         ),
       ),
     );

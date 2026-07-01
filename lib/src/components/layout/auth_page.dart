@@ -340,19 +340,30 @@ class _EmailField extends StatelessWidget {
   }
 }
 
-class _PasswordField extends StatelessWidget {
+class _PasswordField extends StatefulWidget {
   const _PasswordField({required this.controller, this.label = 'Password'});
   final TextEditingController controller;
   final String label;
 
   @override
+  State<_PasswordField> createState() => _PasswordFieldState();
+}
+
+class _PasswordFieldState extends State<_PasswordField> {
+  bool _obscured = true;
+
+  @override
   Widget build(BuildContext context) {
     return TextField(
-      controller: controller,
-      obscureText: true,
+      controller: widget.controller,
+      obscureText: _obscured,
       decoration: InputDecoration(
-        labelText: label,
+        labelText: widget.label,
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(MitumbaRadius.md)),
+        suffixIcon: IconButton(
+          icon: Icon(_obscured ? Icons.visibility_off_outlined : Icons.visibility_outlined, size: 20),
+          onPressed: () => setState(() => _obscured = !_obscured),
+        ),
       ),
     );
   }
@@ -375,7 +386,16 @@ class _SubmitButton extends StatelessWidget {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(MitumbaRadius.md)),
         textStyle: MitumbaTypography.button,
       ),
-      child: Text(label),
+      child: loading
+          ? const SizedBox(
+              width: 20,
+              height: 20,
+              child: CircularProgressIndicator(
+                strokeWidth: 2,
+                color: MitumbaColors.white,
+              ),
+            )
+          : Text(label),
     );
   }
 }
@@ -417,14 +437,18 @@ class _MessageBanner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(MitumbaSpacing.base),
-      decoration: BoxDecoration(
-        color: color.withAlpha(18),
-        borderRadius: BorderRadius.circular(MitumbaRadius.md),
-        border: Border.all(color: color.withAlpha(80)),
+    return Semantics(
+      liveRegion: true,
+      label: message,
+      child: Container(
+        padding: EdgeInsets.all(MitumbaSpacing.base),
+        decoration: BoxDecoration(
+          color: color.withAlpha(18),
+          borderRadius: BorderRadius.circular(MitumbaRadius.md),
+          border: Border.all(color: color.withAlpha(80)),
+        ),
+        child: Text(message, style: MitumbaTypography.body2.copyWith(color: color)),
       ),
-      child: Text(message, style: MitumbaTypography.body2.copyWith(color: color)),
     );
   }
 }

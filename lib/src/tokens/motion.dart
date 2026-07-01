@@ -18,4 +18,16 @@ class MitumbaMotion {
   static const Curve exit = Curves.easeIn;
   static const spring = Cubic(0.34, 1.56, 0.64, 1);
   static const smooth = Cubic(0.65, 0, 0.35, 1);
+
+  /// Named alias for the spring curve — use for interactive bounce effects.
+  static const Cubic springCurve = spring;
+
+  /// Pre-composed transition string for interaction feedback.
+  static const Duration interaction = fast;
+
+  /// Duration for page transitions.
+  static const Duration pageTransition = normal;
+
+  /// Duration for loading skeletons.
+  static const Duration skeleton = Duration(milliseconds: 1500);
 }

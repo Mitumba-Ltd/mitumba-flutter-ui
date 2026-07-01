@@ -163,25 +163,31 @@ class _BuyerOnboardingPageState extends State<BuyerOnboardingPage> {
                   TextField(
                     controller: _phoneCtrl,
                     keyboardType: TextInputType.phone,
+                    maxLength: 10,
                     decoration: InputDecoration(
                       labelText: 'Phone number',
                       hintText: '712 345 678',
                       helperText: 'For delivery updates and M-Pesa payments',
                       prefixText: '+254 ',
+                      counterText: '',
                       border: OutlineInputBorder(borderRadius: BorderRadius.circular(MitumbaRadius.md)),
                     ),
                     onChanged: (_) => setState(() {}),
                   ),
                   SizedBox(height: MitumbaSpacing.xxxl),
-                  ElevatedButton(
-                    onPressed: widget.loading || !_isValid ? null : _submit,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: MitumbaColors.green,
-                      foregroundColor: MitumbaColors.white,
-                      padding: EdgeInsets.symmetric(vertical: MitumbaSpacing.base),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(MitumbaRadius.md)),
+                  Semantics(
+                    button: true,
+                    label: widget.loading ? 'Setting up account' : 'Continue to complete onboarding',
+                    child: ElevatedButton(
+                      onPressed: widget.loading || !_isValid ? null : _submit,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: MitumbaColors.green,
+                        foregroundColor: MitumbaColors.white,
+                        padding: EdgeInsets.symmetric(vertical: MitumbaSpacing.base),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(MitumbaRadius.md)),
+                      ),
+                      child: Text(widget.loading ? 'Setting up...' : 'Continue'),
                     ),
-                    child: Text(widget.loading ? 'Setting up...' : 'Continue'),
                   ),
                 ],
               ),

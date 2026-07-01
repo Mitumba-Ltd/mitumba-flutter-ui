@@ -85,4 +85,37 @@ class MitumbaTypography {
     fontWeight: semibold,
     height: lineHeightNormal,
   );
+
+  /// Overline — small uppercase label text.
+  static const TextStyle overline = TextStyle(
+    fontFamily: fontFamily,
+    fontSize: fontSizeXs,
+    fontWeight: semibold,
+    height: lineHeightNormal,
+    letterSpacing: 1.5,
+  );
+
+  /// Subtitle — medium weight supporting text.
+  static const TextStyle subtitle = TextStyle(
+    fontFamily: fontFamily,
+    fontSize: fontSizeMd,
+    fontWeight: medium,
+    height: lineHeightSnug,
+  );
+
+  /// Label — small semibold text for form labels and captions.
+  static const TextStyle label = TextStyle(
+    fontFamily: fontFamily,
+    fontSize: fontSizeSm,
+    fontWeight: semibold,
+    height: lineHeightNormal,
+  );
+
+  /// Price — bold text for monetary values.
+  static const TextStyle price = TextStyle(
+    fontFamily: fontFamily,
+    fontSize: fontSizeMd,
+    fontWeight: extrabold,
+    height: lineHeightTight,
+  );
 }

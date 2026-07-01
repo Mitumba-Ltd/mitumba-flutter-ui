@@ -2,6 +2,7 @@
 class MitumbaSpacing {
   MitumbaSpacing._();
 
+  static const double zero = 0;
   static const double xxs = 2;
   static const double xs = 4;
   static const double sm = 6;
@@ -13,4 +14,13 @@ class MitumbaSpacing {
   static const double xxxl = 32;
   static const double huge = 48;
   static const double giant = 64;
+
+  /// Alias for section padding.
+  static const double section = xxl;
+
+  /// Alias for page padding.
+  static const double page = lg;
+
+  /// Alias for inline element gap.
+  static const double inlineGap = md;
 }

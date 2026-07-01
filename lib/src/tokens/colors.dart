@@ -27,6 +27,7 @@ class MitumbaColors {
   static const Color textDisabled = Color(0xFFADADA8);
   static const Color textOnGreen = Color(0xFFFFFFFF);
   static const Color textOnEarth = Color(0xFFFFFFFF);
+  static const Color textLink = Color(0xFF3D9A52);
 
   // Semantic
   static const Color success = Color(0xFF3D9A52);
@@ -49,8 +50,19 @@ class MitumbaColors {
   static const Color stiFlagged = Color(0xFFD93025);
   static const Color stiSuspended = Color(0xFF6B6B65);
 
-  /// Legacy aliases for backward compat.
   static const Color primary = green;
   static const Color primaryLight = greenLight;
   static const Color primaryDark = greenDark;
+
+  /// Fully transparent color.
+  static const Color transparent = Color(0x00000000);
+
+  /// Scrim overlay for modals/sheets.
+  static const Color scrim = Color(0x33000000);
+
+  /// Dark scrim for fullscreen overlays.
+  static const Color scrimDark = Color(0x80000000);
+
+  /// Highlight color for search results.
+  static const Color highlight = Color(0xFFFFF3CD);
 }

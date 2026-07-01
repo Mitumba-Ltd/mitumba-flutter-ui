@@ -63,6 +63,7 @@ class ChatMessage {
     required this.isMine,
     this.senderName,
     this.attachment,
+    this.status,
   });
 
   final String body;
@@ -72,7 +73,13 @@ class ChatMessage {
 
   /// Optional file or image attachment.
   final ChatAttachment? attachment;
+
+  /// Delivery status for own messages.
+  final MessageStatus? status;
 }
+
+/// Delivery status for a sent message.
+enum MessageStatus { sending, sent, delivered, read }
 
 // ─── InboxLayout ────────────────────────────────────────────────────────────
 
@@ -181,7 +188,18 @@ class ConversationList extends StatelessWidget {
         Expanded(
           child: loading
               ? const Center(child: CircularProgressIndicator())
-              : ListView.builder(
+              : conversations.isEmpty
+                  ? Center(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(Icons.chat_bubble_outline, size: 48, color: MitumbaColors.textDisabled),
+                          SizedBox(height: MitumbaSpacing.md),
+                          Text('No conversations yet', style: MitumbaTypography.body2.copyWith(color: MitumbaColors.textSecondary)),
+                        ],
+                      ),
+                    )
+                  : ListView.builder(
                   itemCount: conversations.length,
                   itemBuilder: (_, i) => _ConversationTile(
                     conversation: conversations[i],
@@ -366,10 +384,14 @@ class _ChatThreadState extends State<ChatThread> {
                 ),
               ),
               SizedBox(width: MitumbaSpacing.md),
-              IconButton(
-                onPressed: widget.sending ? null : _send,
-                icon: const Icon(Icons.send),
-                color: MitumbaColors.green,
+              Semantics(
+                button: true,
+                label: 'Send message',
+                child: IconButton(
+                  onPressed: widget.sending ? null : _send,
+                  icon: const Icon(Icons.send),
+                  color: MitumbaColors.green,
+                ),
               ),
             ],
           ),
@@ -506,18 +528,123 @@ class _MessageBubble extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: MitumbaSpacing.xxs),
-                  Text(
-                    message.timestamp,
-                    style: MitumbaTypography.caption.copyWith(
-                      fontSize: 10,
-                      color: message.isMine ? MitumbaColors.white.withAlpha(180) : MitumbaColors.textDisabled,
-                    ),
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        message.timestamp,
+                        style: MitumbaTypography.caption.copyWith(
+                          fontSize: 10,
+                          color: message.isMine ? MitumbaColors.white.withAlpha(180) : MitumbaColors.textDisabled,
+                        ),
+                      ),
+                      if (message.isMine && message.status != null) ...[
+                        SizedBox(width: MitumbaSpacing.xs),
+                        _StatusTicks(status: message.status!),
+                      ],
+                    ],
                   ),
                 ],
               ),
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+
+class _StatusTicks extends StatelessWidget {
+  const _StatusTicks({required this.status});
+  final MessageStatus status;
+
+  @override
+  Widget build(BuildContext context) {
+    switch (status) {
+      case MessageStatus.sending:
+        return Icon(Icons.access_time, size: 12, color: MitumbaColors.white.withAlpha(150));
+      case MessageStatus.sent:
+        return Icon(Icons.check, size: 12, color: MitumbaColors.white.withAlpha(180));
+      case MessageStatus.delivered:
+        return Icon(Icons.done_all, size: 12, color: MitumbaColors.white.withAlpha(180));
+      case MessageStatus.read:
+        return const Icon(Icons.done_all, size: 12, color: MitumbaColors.white);
+    }
+  }
+}
+
+/// Animated typing indicator — three bouncing dots shown when partner is typing.
+class TypingIndicator extends StatefulWidget {
+  const TypingIndicator({super.key});
+
+  @override
+  State<TypingIndicator> createState() => _TypingIndicatorState();
+}
+
+class _TypingIndicatorState extends State<TypingIndicator> with TickerProviderStateMixin {
+  late final List<AnimationController> _controllers;
+
+  @override
+  void initState() {
+    super.initState();
+    _controllers = List.generate(3, (i) {
+      return AnimationController(
+        vsync: this,
+        duration: const Duration(milliseconds: 600),
+      )..repeat(reverse: true);
+    });
+    // Stagger the animations
+    for (var i = 0; i < _controllers.length; i++) {
+      Future.delayed(Duration(milliseconds: i * 150), () {
+        if (mounted) _controllers[i].forward();
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    for (final c in _controllers) {
+      c.dispose();
+    }
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: Container(
+        margin: EdgeInsets.only(bottom: MitumbaSpacing.md),
+        padding: EdgeInsets.symmetric(horizontal: MitumbaSpacing.base, vertical: MitumbaSpacing.md),
+        decoration: BoxDecoration(
+          color: MitumbaColors.background,
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(MitumbaRadius.lg),
+            topRight: Radius.circular(MitumbaRadius.lg),
+            bottomLeft: Radius.circular(MitumbaRadius.xs),
+            bottomRight: Radius.circular(MitumbaRadius.lg),
+          ),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: List.generate(3, (i) {
+            return AnimatedBuilder(
+              animation: _controllers[i],
+              builder: (_, __) => Container(
+                margin: const EdgeInsets.symmetric(horizontal: 2),
+                width: 8,
+                height: 8,
+                decoration: BoxDecoration(
+                  color: MitumbaColors.textDisabled.withAlpha(
+                    (100 + 155 * _controllers[i].value).toInt(),
+                  ),
+                  shape: BoxShape.circle,
+                ),
+              ),
+            );
+          }),
+        ),
       ),
     );
   }
