@@ -418,7 +418,7 @@ class _CartButton extends StatelessWidget {
       onTap: onTap,
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 300),
-        curve: Curves.elasticOut,
+        curve: const Cubic(0.34, 1.56, 0.64, 1),
         width: 32,
         height: 32,
         decoration: const BoxDecoration(
