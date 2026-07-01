@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../../tokens/colors.dart';
 import '../../tokens/radius.dart';
@@ -229,7 +230,10 @@ class _ChipSection extends StatelessWidget {
             return FilterChip(
               label: Text(o),
               selected: isSelected,
-              onSelected: (_) => onToggle(o),
+              onSelected: (_) {
+                HapticFeedback.selectionClick();
+                onToggle(o);
+              },
               selectedColor: MitumbaColors.greenLight,
               checkmarkColor: MitumbaColors.green,
             );
