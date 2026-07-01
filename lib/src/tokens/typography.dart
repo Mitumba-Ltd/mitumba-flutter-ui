@@ -110,4 +110,12 @@ class MitumbaTypography {
     fontWeight: semibold,
     height: lineHeightNormal,
   );
+
+  /// Price — bold text for monetary values.
+  static const TextStyle price = TextStyle(
+    fontFamily: fontFamily,
+    fontSize: fontSizeMd,
+    fontWeight: extrabold,
+    height: lineHeightTight,
+  );
 }
