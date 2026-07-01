@@ -63,6 +63,7 @@ class ChatMessage {
     required this.isMine,
     this.senderName,
     this.attachment,
+    this.status,
   });
 
   final String body;
@@ -72,7 +73,13 @@ class ChatMessage {
 
   /// Optional file or image attachment.
   final ChatAttachment? attachment;
+
+  /// Delivery status for own messages.
+  final MessageStatus? status;
 }
+
+/// Delivery status for a sent message.
+enum MessageStatus { sending, sent, delivered, read }
 
 // ─── InboxLayout ────────────────────────────────────────────────────────────
 
