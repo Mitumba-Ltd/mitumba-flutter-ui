@@ -2,6 +2,7 @@
 class MitumbaSpacing {
   MitumbaSpacing._();
 
+  static const double zero = 0;
   static const double xxs = 2;
   static const double xs = 4;
   static const double sm = 6;
