@@ -68,5 +68,13 @@ class MitumbaTheme {
       ),
       labelStyle: MitumbaTypography.caption,
     ),
+    dialogTheme: DialogThemeData(
+      backgroundColor: MitumbaColors.surface,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(MitumbaRadius.xxxl),
+      ),
+      titleTextStyle: MitumbaTypography.h4.copyWith(color: MitumbaColors.textPrimary),
+      contentTextStyle: MitumbaTypography.body2.copyWith(color: MitumbaColors.textSecondary),
+    ),
   );
 }
