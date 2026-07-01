@@ -17,6 +17,7 @@ class MobileBottomNavItem {
     required this.label,
     required this.icon,
     this.activeIcon,
+    this.badgeCount,
   });
 
   /// Unique tab identifier.
@@ -30,6 +31,9 @@ class MobileBottomNavItem {
 
   /// Icon shown when active (falls back to [icon]).
   final IconData? activeIcon;
+
+  /// Optional badge count (e.g. unread orders).
+  final int? badgeCount;
 }
 
 /// Default navigation items for the Mitumba marketplace.
