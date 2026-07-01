@@ -49,6 +49,7 @@ class ListingCard extends StatefulWidget {
     this.onSaveToggle,
     this.onTap,
     this.onAddToCart,
+    this.originalPrice,
   });
 
   /// Unique listing identifier.
@@ -80,6 +81,9 @@ class ListingCard extends StatefulWidget {
 
   /// Called when "Add to cart" is tapped.
   final ValueChanged<String>? onAddToCart;
+
+  /// Original price before discount (shown with strikethrough).
+  final int? originalPrice;
 
   @override
   State<ListingCard> createState() => _ListingCardState();
