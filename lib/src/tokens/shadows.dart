@@ -42,4 +42,9 @@ class MitumbaShadows {
   static const inset = [
     BoxShadow(offset: Offset(0, 2), blurRadius: 4, color: Color(0x14000000), blurStyle: BlurStyle.inner),
   ];
+
+  /// Floating action button shadow.
+  static const fab = [
+    BoxShadow(offset: Offset(0, 6), blurRadius: 16, spreadRadius: -2, color: Color(0x263D9A52)),
+  ];
 }
