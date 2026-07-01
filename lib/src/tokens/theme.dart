@@ -84,5 +84,14 @@ class MitumbaTheme {
       ),
       behavior: SnackBarBehavior.floating,
     ),
+    textButtonTheme: TextButtonThemeData(
+      style: TextButton.styleFrom(
+        foregroundColor: MitumbaColors.green,
+        textStyle: MitumbaTypography.button,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(MitumbaRadius.md),
+        ),
+      ),
+    ),
   );
 }
