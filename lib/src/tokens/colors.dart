@@ -62,4 +62,7 @@ class MitumbaColors {
 
   /// Dark scrim for fullscreen overlays.
   static const Color scrimDark = Color(0x80000000);
+
+  /// Highlight color for search results.
+  static const Color highlight = Color(0xFFFFF3CD);
 }
