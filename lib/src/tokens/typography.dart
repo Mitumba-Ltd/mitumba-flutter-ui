@@ -94,4 +94,12 @@ class MitumbaTypography {
     height: lineHeightNormal,
     letterSpacing: 1.5,
   );
+
+  /// Subtitle — medium weight supporting text.
+  static const TextStyle subtitle = TextStyle(
+    fontFamily: fontFamily,
+    fontSize: fontSizeMd,
+    fontWeight: medium,
+    height: lineHeightSnug,
+  );
 }
