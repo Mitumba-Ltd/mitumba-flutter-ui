@@ -375,7 +375,16 @@ class _SubmitButton extends StatelessWidget {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(MitumbaRadius.md)),
         textStyle: MitumbaTypography.button,
       ),
-      child: Text(label),
+      child: loading
+          ? const SizedBox(
+              width: 20,
+              height: 20,
+              child: CircularProgressIndicator(
+                strokeWidth: 2,
+                color: MitumbaColors.white,
+              ),
+            )
+          : Text(label),
     );
   }
 }
