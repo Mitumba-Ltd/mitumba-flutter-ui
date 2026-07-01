@@ -58,4 +58,7 @@ class MitumbaColors {
 
   /// Scrim overlay for modals/sheets.
   static const Color scrim = Color(0x33000000);
+
+  /// Dark scrim for fullscreen overlays.
+  static const Color scrimDark = Color(0x80000000);
 }
