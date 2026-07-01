@@ -11,4 +11,7 @@ class MitumbaRadius {
   static const double xxl = 24;
   static const double xxxl = 32;
   static const double full = 9999;
+
+  /// Alias for card corner radius (same as xl).
+  static const double card = xl;
 }
