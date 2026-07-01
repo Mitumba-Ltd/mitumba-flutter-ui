@@ -53,5 +53,11 @@ class MitumbaTheme {
       centerTitle: false,
       titleTextStyle: MitumbaTypography.h5.copyWith(color: MitumbaColors.textPrimary),
     ),
+    bottomSheetTheme: BottomSheetThemeData(
+      backgroundColor: MitumbaColors.surface,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(MitumbaRadius.xxl)),
+      ),
+    ),
   );
 }
