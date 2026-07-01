@@ -207,12 +207,16 @@ class _ListingCardState extends State<ListingCard> with SingleTickerProviderStat
           Positioned(
             top: MitumbaSpacing.md,
             right: MitumbaSpacing.md,
-            child: _IconOverlayButton(
-              onTap: () => widget.onSaveToggle!(widget.id),
-              child: Icon(
-                widget.isSaved ? Icons.favorite : Icons.favorite_border,
-                size: 18,
-                color: widget.isSaved ? MitumbaColors.error : MitumbaColors.textSecondary,
+            child: Semantics(
+              button: true,
+              label: widget.isSaved ? 'Remove from wishlist' : 'Save to wishlist',
+              child: _IconOverlayButton(
+                onTap: () => widget.onSaveToggle!(widget.id),
+                child: Icon(
+                  widget.isSaved ? Icons.favorite : Icons.favorite_border,
+                  size: 18,
+                  color: widget.isSaved ? MitumbaColors.error : MitumbaColors.textSecondary,
+                ),
               ),
             ),
           ),
