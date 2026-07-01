@@ -340,19 +340,30 @@ class _EmailField extends StatelessWidget {
   }
 }
 
-class _PasswordField extends StatelessWidget {
+class _PasswordField extends StatefulWidget {
   const _PasswordField({required this.controller, this.label = 'Password'});
   final TextEditingController controller;
   final String label;
 
   @override
+  State<_PasswordField> createState() => _PasswordFieldState();
+}
+
+class _PasswordFieldState extends State<_PasswordField> {
+  bool _obscured = true;
+
+  @override
   Widget build(BuildContext context) {
     return TextField(
-      controller: controller,
-      obscureText: true,
+      controller: widget.controller,
+      obscureText: _obscured,
       decoration: InputDecoration(
-        labelText: label,
+        labelText: widget.label,
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(MitumbaRadius.md)),
+        suffixIcon: IconButton(
+          icon: Icon(_obscured ? Icons.visibility_off_outlined : Icons.visibility_outlined, size: 20),
+          onPressed: () => setState(() => _obscured = !_obscured),
+        ),
       ),
     );
   }
