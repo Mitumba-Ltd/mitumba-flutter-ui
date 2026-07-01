@@ -88,6 +88,8 @@ class MobileBottomNav extends StatelessWidget {
           return Expanded(
             child: _PressableNavItem(
               onTap: () => onTabChange(item.id),
+              label: item.label,
+              isActive: isActive,
               child: _buildItem(item, isActive),
             ),
           );
@@ -119,9 +121,11 @@ class MobileBottomNav extends StatelessWidget {
 
 /// Wraps a nav item with press-down scale feedback (0.92 on press).
 class _PressableNavItem extends StatefulWidget {
-  const _PressableNavItem({required this.onTap, required this.child});
+  const _PressableNavItem({required this.onTap, required this.child, required this.label, required this.isActive});
   final VoidCallback onTap;
   final Widget child;
+  final String label;
+  final bool isActive;
 
   @override
   State<_PressableNavItem> createState() => _PressableNavItemState();
@@ -132,7 +136,11 @@ class _PressableNavItemState extends State<_PressableNavItem> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return Semantics(
+      button: true,
+      label: widget.label,
+      selected: widget.isActive,
+      child: GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: widget.onTap,
       onTapDown: (_) => setState(() => _pressed = true),
@@ -143,6 +151,7 @@ class _PressableNavItemState extends State<_PressableNavItem> {
         duration: const Duration(milliseconds: 100),
         curve: Curves.easeOut,
         child: widget.child,
+      ),
       ),
     );
   }
