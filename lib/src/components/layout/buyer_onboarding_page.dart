@@ -163,11 +163,13 @@ class _BuyerOnboardingPageState extends State<BuyerOnboardingPage> {
                   TextField(
                     controller: _phoneCtrl,
                     keyboardType: TextInputType.phone,
+                    maxLength: 10,
                     decoration: InputDecoration(
                       labelText: 'Phone number',
                       hintText: '712 345 678',
                       helperText: 'For delivery updates and M-Pesa payments',
                       prefixText: '+254 ',
+                      counterText: '',
                       border: OutlineInputBorder(borderRadius: BorderRadius.circular(MitumbaRadius.md)),
                     ),
                     onChanged: (_) => setState(() {}),
