@@ -55,4 +55,7 @@ class MitumbaColors {
 
   /// Fully transparent color.
   static const Color transparent = Color(0x00000000);
+
+  /// Scrim overlay for modals/sheets.
+  static const Color scrim = Color(0x33000000);
 }
