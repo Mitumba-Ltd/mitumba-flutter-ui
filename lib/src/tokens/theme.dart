@@ -166,5 +166,12 @@ class MitumbaTheme {
       color: MitumbaColors.green,
       linearTrackColor: MitumbaColors.greenLight,
     ),
+    tooltipTheme: TooltipThemeData(
+      decoration: BoxDecoration(
+        color: MitumbaColors.textPrimary,
+        borderRadius: BorderRadius.circular(MitumbaRadius.sm),
+      ),
+      textStyle: MitumbaTypography.caption.copyWith(color: MitumbaColors.white),
+    ),
   );
 }
