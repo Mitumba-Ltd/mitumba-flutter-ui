@@ -131,5 +131,10 @@ class MitumbaTheme {
       foregroundColor: MitumbaColors.white,
       elevation: 4,
     ),
+    dividerTheme: const DividerThemeData(
+      color: MitumbaColors.divider,
+      thickness: 1,
+      space: 1,
+    ),
   );
 }
