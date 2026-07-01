@@ -37,4 +37,9 @@ class MitumbaShadows {
 
   /// No shadow — explicit empty list for toggling shadows off.
   static const List<BoxShadow> none = [];
+
+  /// Subtle inner shadow for pressed/inset states.
+  static const inset = [
+    BoxShadow(offset: Offset(0, 2), blurRadius: 4, color: Color(0x14000000), blurStyle: BlurStyle.inner),
+  ];
 }
