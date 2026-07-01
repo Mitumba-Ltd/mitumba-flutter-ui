@@ -24,4 +24,10 @@ class MitumbaMotion {
 
   /// Pre-composed transition string for interaction feedback.
   static const Duration interaction = fast;
+
+  /// Duration for page transitions.
+  static const Duration pageTransition = normal;
+
+  /// Duration for loading skeletons.
+  static const Duration skeleton = Duration(milliseconds: 1500);
 }
