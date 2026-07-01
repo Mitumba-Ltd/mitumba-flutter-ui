@@ -162,5 +162,9 @@ class MitumbaTheme {
         borderRadius: BorderRadius.circular(MitumbaRadius.xs),
       ),
     ),
+    progressIndicatorTheme: const ProgressIndicatorThemeData(
+      color: MitumbaColors.green,
+      linearTrackColor: MitumbaColors.greenLight,
+    ),
   );
 }
