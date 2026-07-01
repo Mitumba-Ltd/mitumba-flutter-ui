@@ -181,7 +181,18 @@ class ConversationList extends StatelessWidget {
         Expanded(
           child: loading
               ? const Center(child: CircularProgressIndicator())
-              : ListView.builder(
+              : conversations.isEmpty
+                  ? Center(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(Icons.chat_bubble_outline, size: 48, color: MitumbaColors.textDisabled),
+                          SizedBox(height: MitumbaSpacing.md),
+                          Text('No conversations yet', style: MitumbaTypography.body2.copyWith(color: MitumbaColors.textSecondary)),
+                        ],
+                      ),
+                    )
+                  : ListView.builder(
                   itemCount: conversations.length,
                   itemBuilder: (_, i) => _ConversationTile(
                     conversation: conversations[i],
