@@ -7,13 +7,38 @@ export 'src/tokens/shadows.dart';
 export 'src/tokens/motion.dart';
 export 'src/tokens/theme.dart';
 
-// Components
+// Components — Foundation
+export 'src/components/foundation/mitumba_primary_button.dart';
+
+// Components — Listing
 export 'src/components/listing/listing_card.dart';
+export 'src/components/listing/condition_badge.dart';
+export 'src/components/listing/listing_grid.dart';
+
+// Components — Navigation
 export 'src/components/navigation/mobile_bottom_nav.dart';
+
+// Components — Seller
 export 'src/components/seller/seller_card.dart';
+export 'src/components/seller/sti_score_chip.dart';
+
+// Components — Commerce
+export 'src/components/commerce/order_status_timeline.dart';
+export 'src/components/commerce/dispute_status_timeline.dart';
+
+// Components — Feedback
 export 'src/components/feedback/empty_state.dart';
+export 'src/components/feedback/mitumba_toast.dart';
+
+// Components — Layout
 export 'src/components/layout/auth_page.dart';
 export 'src/components/layout/buyer_onboarding_page.dart';
+
+// Components — Forms
 export 'src/components/forms/search_filter_sheet.dart';
+
+// Components — VAZI
 export 'src/components/vazi/vazi_showcase.dart';
+
+// Components — Messaging
 export 'src/components/messaging/messaging.dart';
