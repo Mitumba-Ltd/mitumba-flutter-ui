@@ -261,6 +261,65 @@ class WidgetbookApp extends StatelessWidget {
                 ),
               ],
             ),
+            WidgetbookComponent(
+              name: 'MitumbaChip',
+              useCases: [
+                WidgetbookUseCase(
+                  name: 'Interactive',
+                  builder: (context) {
+                    final variant = context.knobs.object.dropdown(
+                      label: 'Variant',
+                      options: MitumbaChipVariant.values,
+                      labelBuilder: (v) => v.name,
+                      initialOption: MitumbaChipVariant.outline,
+                    );
+                    final status = context.knobs.object.dropdown(
+                      label: 'Status Category',
+                      options: MitumbaChipStatus.values,
+                      labelBuilder: (s) => s.name,
+                      initialOption: MitumbaChipStatus.defaultStatus,
+                    );
+                    final rounding = context.knobs.object.dropdown(
+                      label: 'Rounding',
+                      options: MitumbaChipRounding.values,
+                      labelBuilder: (r) => r.name,
+                      initialOption: MitumbaChipRounding.rounded,
+                    );
+                    final size = context.knobs.object.dropdown(
+                      label: 'Size',
+                      options: const ['small', 'medium'],
+                      initialOption: 'medium',
+                    );
+                    final showIcon = context.knobs.boolean(label: 'Show Leading Icon', initialValue: false);
+                    final showAvatar = context.knobs.boolean(label: 'Show Avatar', initialValue: false);
+                    final showBadge = context.knobs.boolean(label: 'Show Badge', initialValue: false);
+                    final showDelete = context.knobs.boolean(label: 'Show Delete Button', initialValue: false);
+
+                    return Center(
+                      child: MitumbaChip(
+                        label: context.knobs.string(label: 'Label', initialValue: 'Vintage'),
+                        variant: variant,
+                        status: status,
+                        rounding: rounding,
+                        size: size,
+                        selected: context.knobs.boolean(label: 'Selected', initialValue: false),
+                        disabled: context.knobs.boolean(label: 'Disabled', initialValue: false),
+                        icon: showIcon ? const Icon(Icons.star) : null,
+                        avatar: showAvatar
+                            ? const MitumbaAvatar(
+                                size: MitumbaAvatarSize.xs,
+                                name: 'Alice',
+                              )
+                            : null,
+                        badge: showBadge ? 42 : null,
+                        onClick: () {},
+                        onDelete: showDelete ? () {} : null,
+                      ),
+                    );
+                  },
+                ),
+              ],
+            ),
           ],
         ),
         WidgetbookCategory(
