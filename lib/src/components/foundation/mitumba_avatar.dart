@@ -1,8 +1,6 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import '../../tokens/colors.dart';
-import '../../tokens/radius.dart';
-import '../../tokens/spacing.dart';
 import '../../tokens/typography.dart';
 
 enum MitumbaAvatarSize { xs, sm, md, lg, xl }
