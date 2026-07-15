@@ -445,6 +445,95 @@ class WidgetbookApp extends StatelessWidget {
                 ),
               ],
             ),
+            WidgetbookComponent(
+              name: 'MitumbaGlass',
+              useCases: [
+                WidgetbookUseCase(
+                  name: 'Interactive Panel',
+                  builder: (context) {
+                    final rounding = context.knobs.object.dropdown(
+                      label: 'Rounding',
+                      options: MitumbaGlassRounding.values,
+                      labelBuilder: (r) => r.name,
+                      initialOption: MitumbaGlassRounding.large,
+                    );
+                    final blur = context.knobs.double.slider(label: 'Blur sigmaX/Y', initialValue: 24, min: 0, max: 64);
+                    final opacity = context.knobs.double.slider(label: 'Opacity', initialValue: 0.5, min: 0.0, max: 1.0);
+                    final hasBorder = context.knobs.boolean(label: 'Border', initialValue: true);
+
+                    return Container(
+                      width: double.infinity,
+                      height: double.infinity,
+                      decoration: const BoxDecoration(
+                        image: DecorationImage(
+                          image: NetworkImage('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=600'),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                      alignment: Alignment.center,
+                      child: Padding(
+                        padding: const EdgeInsets.all(32.0),
+                        child: MitumbaGlass(
+                          blur: blur,
+                          opacity: opacity,
+                          rounding: rounding,
+                          border: hasBorder,
+                          child: Padding(
+                            padding: const EdgeInsets.all(24.0),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text(
+                                  'GLASSMORPHISM',
+                                  style: TextStyle(
+                                    fontFamily: 'Nunito',
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w800,
+                                    color: MitumbaColors.green,
+                                    letterSpacing: 1.5,
+                                  ),
+                                ),
+                                const SizedBox(height: 8),
+                                const Text(
+                                  'Optical Depth Panel',
+                                  style: TextStyle(
+                                    fontFamily: 'Nunito',
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w700,
+                                    color: MitumbaColors.textPrimary,
+                                  ),
+                                ),
+                                const SizedBox(height: 12),
+                                Text(
+                                  'Experience high-end design aesthetics with real-time blur and light-leak shine overlays.',
+                                  style: TextStyle(
+                                    fontFamily: 'Nunito',
+                                    fontSize: 14,
+                                    color: MitumbaColors.textPrimary.withOpacity(0.7),
+                                  ),
+                                ),
+                                const SizedBox(height: 24),
+                                Row(
+                                  children: [
+                                    MitumbaPrimaryButton(
+                                      label: 'EXPLORE',
+                                      onPressed: () {},
+                                    ),
+                                    const SizedBox(width: 12),
+                                    const MitumbaChip(label: 'PREMIUM'),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ],
+            ),
           ],
         ),
         WidgetbookCategory(
