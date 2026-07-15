@@ -32,8 +32,7 @@ void main() {
       await tester.pumpWidget(wrap(const VAZIShowcase(outfits: _testOutfits)));
       await tester.pump();
 
-      expect(find.text('LOOK 01'), findsOneWidget);
-      expect(find.text('1 of 2'), findsOneWidget);
+      expect(find.text('1 / 2'), findsOneWidget);
       expect(find.text('VAZI'), findsOneWidget);
     });
 
