@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.0](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/compare/v1.2.0...v1.3.0) (2026-07-15)
+
+
+### Features
+
+* **foundation:** implement MitumbaTextField component ([4b4b074](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/commit/4b4b074a3500b01cf1c6fd2fd6d3deeb774d4608))
+
 ## [1.2.0](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/compare/v1.1.0...v1.2.0) (2026-07-15)
 
 
