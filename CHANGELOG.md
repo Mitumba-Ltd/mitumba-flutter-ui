@@ -1,5 +1,47 @@
 # Changelog
 
+## [1.1.0](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/compare/v1.0.0...v1.1.0) (2026-07-02)
+
+
+### Features
+
+* **foundation:** MitumbaPrimaryButton with 5 variants and 3 sizes ([#21](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/pull/21))
+* **listing:** ConditionBadge standalone widget ([#21](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/pull/21))
+* **listing:** ListingGrid responsive widget with loading skeleton ([#21](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/pull/21))
+* **listing:** ListingCardSkeleton shimmer widget ([#20](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/pull/20))
+* **listing:** originalPrice prop with strikethrough ([#20](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/pull/20))
+* **seller:** STIScoreChip standalone widget ([#21](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/pull/21))
+* **commerce:** OrderStatusTimeline with step nodes and connectors ([#21](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/pull/21))
+* **commerce:** DisputeStatusTimeline with actor badges ([#21](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/pull/21))
+* **feedback:** MitumbaToast with variants and showMitumbaToast helper ([#21](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/pull/21))
+* **messaging:** TypingIndicator widget with bouncing dots ([#20](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/pull/20))
+* **messaging:** MessageStatus enum with delivery ticks ([#20](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/pull/20))
+* **messaging:** file and image attachment support ([#20](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/pull/20))
+* **navigation:** badgeCount property on MobileBottomNavItem ([#20](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/pull/20))
+* **auth:** password visibility toggle ([#20](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/pull/20))
+* **auth:** animated view transitions ([#18](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/pull/18))
+* **tokens:** dark theme variant (MitumbaTheme.dark) ([#20](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/pull/20))
+* **tokens:** 20 new design token additions (colors, spacing, radius, typography, motion, shadows) ([#20](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/pull/20))
+* **theme:** 14 additional theme configs (appBar, bottomSheet, chip, dialog, snackBar, buttons, etc.) ([#20](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/pull/20))
+* **vazi:** 3D perspective carousel for desktop ([#18](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/pull/18))
+* **vazi:** glassmorphism outfit panel ([#18](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/pull/18))
+
+
+### Enhancements
+
+* **listing:** shimmer loading, press/hover feedback, video detection ([#18](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/pull/18))
+* **navigation:** press scale, haptic feedback, Semantics ([#18](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/pull/18)) ([#20](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/pull/20))
+* **seller:** hover state, press scale, Semantics accessibility ([#18](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/pull/18)) ([#20](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/pull/20))
+* **messaging:** asymmetric bubble radius, avatars ([#18](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/pull/18))
+* Accessibility: Semantics wrappers across all interactive components ([#20](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/pull/20))
+
+
+### Bug Fixes
+
+* **forms:** replace non-existent RadioGroup with proper Radio widgets ([#18](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/pull/18))
+* **layout:** fix DropdownButtonFormField initialValue to value ([#18](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/pull/18))
+
+
 ## 1.0.0 (2026-06-15)
 
 
