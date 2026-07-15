@@ -325,7 +325,7 @@ class _MitumbaAvatarState extends State<MitumbaAvatar> with TickerProviderStateM
               border: Border.all(color: MitumbaColors.surface, width: 2),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.15),
+                  color: Colors.black.withValues(alpha: 0.15),
                   blurRadius: 4,
                   offset: const Offset(0, 2),
                 )
@@ -357,7 +357,7 @@ class _MitumbaAvatarState extends State<MitumbaAvatar> with TickerProviderStateM
               border: Border.all(color: MitumbaColors.divider),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.15),
+                  color: Colors.black.withValues(alpha: 0.15),
                   blurRadius: 4,
                   offset: const Offset(0, 2),
                 )
@@ -407,7 +407,7 @@ class _MitumbaAvatarState extends State<MitumbaAvatar> with TickerProviderStateM
               border: Border.all(color: MitumbaColors.divider),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.15),
+                  color: Colors.black.withValues(alpha: 0.15),
                   blurRadius: 4,
                   offset: const Offset(0, 2),
                 )
@@ -528,7 +528,7 @@ class _ConcentricRingPainter extends CustomPainter {
 
     // Draw Track
     final trackPaint = Paint()
-      ..color = trackColor.withOpacity(0.2)
+      ..color = trackColor.withValues(alpha: 0.2)
       ..style = PaintingStyle.stroke
       ..strokeWidth = 2.0;
     canvas.drawCircle(center, radius, trackPaint);
