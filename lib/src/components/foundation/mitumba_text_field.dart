@@ -243,7 +243,7 @@ class _MitumbaTextFieldState extends State<MitumbaTextField> {
               controller: _controller,
               onChanged: widget.onChange,
               obscureText: _obscureText,
-              disabled: widget.disabled,
+              enabled: !widget.disabled,
               readOnly: widget.readOnly,
               maxLines: widget.multiline ? widget.rows : 1,
               style: TextStyle(
