@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.0](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/compare/v1.4.0...v1.5.0) (2026-07-15)
+
+
+### Features
+
+* **foundation:** implement MitumbaGlass component ([f7de5b3](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/commit/f7de5b3b2745815ed9ffb88aec74a6720abb041c))
+
 ## [1.4.0](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/compare/v1.3.0...v1.4.0) (2026-07-15)
 
 
