@@ -278,7 +278,154 @@ class _MitumbaAvatarState extends State<MitumbaAvatar> with TickerProviderStateM
       );
     }
 
-    return avatarCircle;
+    final List<Widget> stackChildren = [avatarCircle];
+
+    // 1. Notification count (top right)
+    if (widget.notificationCount != null) {
+      stackChildren.add(
+        Positioned(
+          top: -2,
+          right: -2,
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+            constraints: const BoxConstraints(
+              minWidth: 18,
+              minHeight: 18,
+            ),
+            decoration: BoxDecoration(
+              color: widget.notificationColor ?? MitumbaColors.error,
+              shape: BoxShape.circle,
+              border: Border.all(color: MitumbaColors.surface, width: 2),
+            ),
+            alignment: Alignment.center,
+            child: Text(
+              '${widget.notificationCount}',
+              style: const TextStyle(
+                color: MitumbaColors.white,
+                fontSize: 10,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        ),
+      );
+    }
+
+    // 2. Selected tick (bottom right)
+    if (widget.selected) {
+      final double tickSize = math.max(16.0, _dimension * 0.35);
+      stackChildren.add(
+        Positioned(
+          bottom: -2,
+          right: -2,
+          child: Container(
+            width: tickSize,
+            height: tickSize,
+            decoration: BoxDecoration(
+              color: MitumbaColors.green,
+              shape: BoxShape.circle,
+              border: Border.all(color: MitumbaColors.surface, width: 2),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.15),
+                  blurRadius: 4,
+                  offset: const Offset(0, 2),
+                )
+              ],
+            ),
+            alignment: Alignment.center,
+            child: Icon(
+              Icons.check,
+              size: tickSize * 0.7,
+              color: MitumbaColors.white,
+            ),
+          ),
+        ),
+      );
+    } 
+    // 3. Action icon (bottom right)
+    else if (widget.actionIcon != null) {
+      final double iconSize = math.max(24.0, _dimension * 0.4);
+      stackChildren.add(
+        Positioned(
+          bottom: -2,
+          right: -2,
+          child: Container(
+            width: iconSize,
+            height: iconSize,
+            decoration: BoxDecoration(
+              color: MitumbaColors.surface,
+              shape: BoxShape.circle,
+              border: Border.all(color: MitumbaColors.divider),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.15),
+                  blurRadius: 4,
+                  offset: const Offset(0, 2),
+                )
+              ],
+            ),
+            alignment: Alignment.center,
+            child: IconTheme(
+              data: IconThemeData(size: iconSize * 0.5, color: MitumbaColors.textPrimary),
+              child: widget.actionIcon!,
+            ),
+          ),
+        ),
+      );
+    }
+    // 4. Status dot (bottom right)
+    else if (widget.status != null) {
+      final double dotSize = math.max(10.0, _dimension * 0.25);
+      stackChildren.add(
+        Positioned(
+          bottom: 2,
+          right: 2,
+          child: Container(
+            width: dotSize,
+            height: dotSize,
+            decoration: BoxDecoration(
+              color: widget.status == MitumbaAvatarStatus.online ? MitumbaColors.success : MitumbaColors.textDisabled,
+              shape: BoxShape.circle,
+              border: Border.all(color: MitumbaColors.surface, width: 2),
+            ),
+          ),
+        ),
+      );
+    }
+    // 5. Custom badge (bottom right)
+    else if (widget.badge != null) {
+      final double badgeSize = math.max(20.0, _dimension * 0.4);
+      stackChildren.add(
+        Positioned(
+          bottom: -2,
+          right: -2,
+          child: Container(
+            width: badgeSize,
+            height: badgeSize,
+            decoration: BoxDecoration(
+              color: MitumbaColors.surface,
+              shape: BoxShape.circle,
+              border: Border.all(color: MitumbaColors.divider),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.15),
+                  blurRadius: 4,
+                  offset: const Offset(0, 2),
+                )
+              ],
+            ),
+            alignment: Alignment.center,
+            child: widget.badge!,
+          ),
+        ),
+      );
+    }
+
+    return Stack(
+      clipBehavior: Clip.none,
+      children: stackChildren,
+    );
   }
 }
 
