@@ -10,6 +10,7 @@ export 'src/tokens/theme.dart';
 // Components — Foundation
 export 'src/components/foundation/mitumba_primary_button.dart';
 export 'src/components/foundation/mitumba_avatar.dart';
+export 'src/components/foundation/mitumba_chip.dart';
 
 // Components — Listing
 export 'src/components/listing/listing_card.dart';
