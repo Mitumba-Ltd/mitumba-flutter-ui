@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.0](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/compare/v1.3.0...v1.4.0) (2026-07-15)
+
+
+### Features
+
+* **foundation:** implement MitumbaSelect component ([e9ea961](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/commit/e9ea9619e598ab94d3fad38cf4fc2da178312a72))
+
 ## [1.3.0](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/compare/v1.2.0...v1.3.0) (2026-07-15)
 
 
