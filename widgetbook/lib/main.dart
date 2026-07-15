@@ -146,6 +146,121 @@ class WidgetbookApp extends StatelessWidget {
                 ),
               ],
             ),
+            WidgetbookComponent(
+              name: 'MitumbaPrimaryButton',
+              useCases: [
+                WidgetbookUseCase(
+                  name: 'Variants',
+                  builder: (context) {
+                    final variant = context.knobs.object.dropdown(
+                      label: 'Variant',
+                      options: ButtonVariant.values,
+                      labelBuilder: (v) => v.name,
+                      initialOption: ButtonVariant.primary,
+                    );
+                    final size = context.knobs.object.dropdown(
+                      label: 'Size',
+                      options: ButtonSize.values,
+                      labelBuilder: (s) => s.name,
+                      initialOption: ButtonSize.medium,
+                    );
+                    return Center(
+                      child: MitumbaPrimaryButton(
+                        label: context.knobs.string(label: 'Label', initialValue: 'Click me'),
+                        variant: variant,
+                        size: size,
+                        loading: context.knobs.boolean(label: 'Loading', initialValue: false),
+                        disabled: context.knobs.boolean(label: 'Disabled', initialValue: false),
+                        onPressed: () {},
+                      ),
+                    );
+                  },
+                ),
+              ],
+            ),
+            WidgetbookComponent(
+              name: 'MitumbaAvatar',
+              useCases: [
+                WidgetbookUseCase(
+                  name: 'Interactive',
+                  builder: (context) {
+                    final size = context.knobs.object.dropdown(
+                      label: 'Size',
+                      options: MitumbaAvatarSize.values,
+                      labelBuilder: (s) => s.name,
+                      initialOption: MitumbaAvatarSize.md,
+                    );
+                    final status = context.knobs.objectOrNull.dropdown(
+                      label: 'Status',
+                      options: MitumbaAvatarStatus.values,
+                      labelBuilder: (s) => s.name,
+                    );
+                    final align = context.knobs.objectOrNull.dropdown(
+                      label: 'Text Alignment',
+                      options: MitumbaAvatarTextAlignment.values,
+                      labelBuilder: (a) => a.name,
+                    );
+                    final progress = context.knobs.double.slider(
+                      label: 'Progress Percentage',
+                      initialValue: 0.0,
+                      min: 0.0,
+                      max: 100.0,
+                    );
+                    return Center(
+                      child: MitumbaAvatar(
+                        name: context.knobs.string(label: 'Name', initialValue: 'Isaac Stanley'),
+                        imageUrl: context.knobs.stringOrNull(label: 'Image URL', initialValue: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100'),
+                        size: size,
+                        status: status,
+                        textAlignment: align,
+                        subtitle: context.knobs.stringOrNull(label: 'Subtitle', initialValue: 'Verified Seller'),
+                        notificationCount: context.knobs.stringOrNull(label: 'Notification Badge', initialValue: '3'),
+                        progress: progress > 0 ? progress : null,
+                        hasNewEvent: context.knobs.boolean(label: 'New Event Ring', initialValue: false),
+                        selected: context.knobs.boolean(label: 'Selected Check', initialValue: false),
+                      ),
+                    );
+                  },
+                ),
+              ],
+            ),
+            WidgetbookComponent(
+              name: 'MitumbaAvatarGroup',
+              useCases: [
+                WidgetbookUseCase(
+                  name: 'Stacked List',
+                  builder: (context) {
+                    final size = context.knobs.object.dropdown(
+                      label: 'Avatar Size',
+                      options: MitumbaAvatarSize.values,
+                      labelBuilder: (s) => s.name,
+                      initialOption: MitumbaAvatarSize.md,
+                    );
+                    final overlap = context.knobs.object.dropdown(
+                      label: 'Overlap Amount',
+                      options: MitumbaAvatarOverlap.values,
+                      labelBuilder: (o) => o.name,
+                      initialOption: MitumbaAvatarOverlap.relaxed,
+                    );
+                    return Center(
+                      child: MitumbaAvatarGroup(
+                        size: size,
+                        overlap: overlap,
+                        max: context.knobs.int.slider(label: 'Max Displayed', initialValue: 4, min: 1, max: 10),
+                        onAdd: context.knobs.boolean(label: 'Show Add Button', initialValue: true) ? () {} : null,
+                        children: const [
+                          MitumbaAvatar(name: 'Alice Cooper', imageUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100'),
+                          MitumbaAvatar(name: 'Bob Dylan', imageUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100'),
+                          MitumbaAvatar(name: 'Charlie Chaplin'),
+                          MitumbaAvatar(name: 'Diana Prince', imageUrl: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100'),
+                          MitumbaAvatar(name: 'Edward Stark'),
+                        ],
+                      ),
+                    );
+                  },
+                ),
+              ],
+            ),
           ],
         ),
         WidgetbookCategory(
