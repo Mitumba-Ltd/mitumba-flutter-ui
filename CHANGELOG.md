@@ -1,5 +1,26 @@
 # Changelog
 
+## [1.1.0](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/compare/v1.0.0...v1.1.0) (2026-07-15)
+
+
+### Features
+
+* add 7 new components (Button, Grid, Timelines, Toast, Badges) ([5418080](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/commit/541808017fb4203f28d6fcd661373ddc3618637d))
+* **foundation:** add basic MitumbaAvatar component structure and styles ([cef7f29](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/commit/cef7f298954c18313de8910117bb9324fd161c58))
+* **foundation:** add status, selected tick, action icon, and notification badges to MitumbaAvatar ([7ae48f6](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/commit/7ae48f6d9dd90db98dbd7537ba7e46c714e7fd1a))
+* **foundation:** create MitumbaAvatarGroup component for avatar stacking ([9c7cda2](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/commit/9c7cda2e50540166b04b35b998da13ec31033f18))
+* **foundation:** export MitumbaAvatar and MitumbaAvatarGroup in barrel file ([d6bb3bc](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/commit/d6bb3bce58cb19d67942bb0ed614ce56afae05f3))
+* **foundation:** implement concentric progress and event animation for MitumbaAvatar ([195767a](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/commit/195767a812bbfc721051c99ca60c6a193d13f748))
+* **foundation:** implement MitumbaAvatar and MitumbaAvatarGroup ([cd2872d](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/commit/cd2872d544f21df7e144f3bd7c14f1da23e45493))
+* **foundation:** support name and subtitle text rendering on MitumbaAvatar ([910897d](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/commit/910897d4f5a6ae4a31cd646b452d834c799da3c1))
+* **widgetbook:** register MitumbaPrimaryButton, MitumbaAvatar, and MitumbaAvatarGroup in Widgetbook ([04d4ffd](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/commit/04d4ffd23d9b2c7d8b61aa9aa7718268f95a1c44))
+
+
+### Bug Fixes
+
+* **ci:** use latest stable Flutter for widgetbook deploy ([7920034](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/commit/792003417ea61f94bdbb36ab3a083d4636cee13d))
+* **commerce:** resolve BoxDecoration borderLeft compile error ([6d83434](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/commit/6d834345ee9fddded5fc26e83861738791dbb1e2))
+
 ## [1.1.0](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/compare/v1.0.0...v1.1.0) (2026-07-02)
 
 
