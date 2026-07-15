@@ -13,6 +13,7 @@ export 'src/components/foundation/mitumba_avatar.dart';
 export 'src/components/foundation/mitumba_chip.dart';
 export 'src/components/foundation/mitumba_text_field.dart';
 export 'src/components/foundation/mitumba_select.dart';
+export 'src/components/foundation/mitumba_glass.dart';
 
 // Components — Listing
 export 'src/components/listing/listing_card.dart';
