@@ -422,10 +422,87 @@ class _MitumbaAvatarState extends State<MitumbaAvatar> with TickerProviderStateM
       );
     }
 
-    return Stack(
+    final Widget mainAvatar = Stack(
       clipBehavior: Clip.none,
       children: stackChildren,
     );
+
+    final hasText = (widget.name != null || widget.subtitle != null || widget.progress != null) && widget.textAlignment != null;
+    if (hasText) {
+      final textChildren = <Widget>[];
+      if (widget.name != null) {
+        textChildren.add(
+          Text(
+            widget.name!,
+            style: MitumbaTypography.body1.copyWith(
+              fontWeight: FontWeight.bold,
+              color: MitumbaColors.textPrimary,
+              height: 1.1,
+            ),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
+        );
+      }
+
+      final showSubtitle = widget.subtitle != null || (widget.progress != null && widget.textAlignment == MitumbaAvatarTextAlignment.bottom);
+      if (showSubtitle) {
+        final text = (widget.progress != null && widget.textAlignment == MitumbaAvatarTextAlignment.bottom)
+            ? '${widget.progress!.toInt()}% complete'
+            : (widget.subtitle ?? '');
+        final isOnlineSide = widget.status == MitumbaAvatarStatus.online && widget.textAlignment == MitumbaAvatarTextAlignment.side;
+        textChildren.add(
+          Padding(
+            padding: const EdgeInsets.only(top: 2),
+            child: Text(
+              text,
+              style: MitumbaTypography.body2.copyWith(
+                color: isOnlineSide ? MitumbaColors.success : MitumbaColors.textSecondary,
+                fontWeight: isOnlineSide ? FontWeight.bold : FontWeight.normal,
+              ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+        );
+      }
+
+      final textBlock = Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: widget.textAlignment == MitumbaAvatarTextAlignment.bottom
+            ? CrossAxisAlignment.center
+            : CrossAxisAlignment.start,
+        children: textChildren,
+      );
+
+      if (widget.textAlignment == MitumbaAvatarTextAlignment.bottom) {
+        return GestureDetector(
+          onTap: widget.onClick,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              mainAvatar,
+              const SizedBox(height: 6),
+              textBlock,
+            ],
+          ),
+        );
+      } else {
+        return GestureDetector(
+          onTap: widget.onClick,
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              mainAvatar,
+              const SizedBox(width: 8),
+              textBlock,
+            ],
+          ),
+        );
+      }
+    }
+
+    return mainAvatar;
   }
 }
 
