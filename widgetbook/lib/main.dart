@@ -320,6 +320,72 @@ class WidgetbookApp extends StatelessWidget {
                 ),
               ],
             ),
+            WidgetbookComponent(
+              name: 'MitumbaTextField',
+              useCases: [
+                WidgetbookUseCase(
+                  name: 'Interactive',
+                  builder: (context) {
+                    final size = context.knobs.object.dropdown(
+                      label: 'Size',
+                      options: MitumbaTextFieldSize.values,
+                      labelBuilder: (s) => s.name,
+                      initialOption: MitumbaTextFieldSize.medium,
+                    );
+                    final rounding = context.knobs.object.dropdown(
+                      label: 'Rounding',
+                      options: MitumbaTextFieldRounding.values,
+                      labelBuilder: (r) => r.name,
+                      initialOption: MitumbaTextFieldRounding.rounded,
+                    );
+                    final status = context.knobs.objectOrNull.dropdown(
+                      label: 'Validation Status',
+                      options: MitumbaTextFieldStatus.values,
+                      labelBuilder: (s) => s.name,
+                    );
+
+                    final showPrefix = context.knobs.boolean(label: 'Show Prefix Icon', initialValue: false);
+                    final showSuffix = context.knobs.boolean(label: 'Show Suffix Icon', initialValue: false);
+                    final isPassword = context.knobs.boolean(label: 'Obscure (Password)', initialValue: false);
+                    final showEndButton = context.knobs.boolean(label: 'Show Integrated End Button', initialValue: false);
+
+                    return Center(
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: MitumbaTextField(
+                          label: context.knobs.stringOrNull(label: 'Label', initialValue: 'Search Items'),
+                          hint: context.knobs.string(label: 'Placeholder Hint', initialValue: 'Type vintage jacket...'),
+                          value: '',
+                          onChange: (_) {},
+                          size: size,
+                          rounding: rounding,
+                          status: status,
+                          disabled: context.knobs.boolean(label: 'Disabled', initialValue: false),
+                          readOnly: context.knobs.boolean(label: 'Read Only', initialValue: false),
+                          multiline: context.knobs.boolean(label: 'Multiline', initialValue: false),
+                          obscureText: isPassword,
+                          prefix: showPrefix ? const Icon(Icons.search) : null,
+                          suffix: showSuffix ? const Icon(Icons.info_outline) : null,
+                          helperText: context.knobs.stringOrNull(label: 'Helper Text', initialValue: 'Type something to search'),
+                          error: context.knobs.stringOrNull(label: 'Error Text'),
+                          endButton: showEndButton
+                              ? MitumbaPrimaryButton(
+                                  label: 'SEARCH',
+                                  size: size == MitumbaTextFieldSize.small
+                                      ? ButtonSize.small
+                                      : (size == MitumbaTextFieldSize.large
+                                          ? ButtonSize.large
+                                          : ButtonSize.medium),
+                                  onPressed: () {},
+                                )
+                              : null,
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ],
+            ),
           ],
         ),
         WidgetbookCategory(

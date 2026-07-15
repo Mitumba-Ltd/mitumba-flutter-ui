@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../tokens/colors.dart';
 import '../../tokens/radius.dart';
-import '../../tokens/typography.dart';
 
 enum MitumbaTextFieldSize { small, medium, large }
 enum MitumbaTextFieldStatus { success, warning, error }
