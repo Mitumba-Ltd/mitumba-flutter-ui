@@ -579,3 +579,126 @@ class _ConcentricRingPainter extends CustomPainter {
         oldDelegate.solidifyProgress != solidifyProgress;
   }
 }
+
+enum MitumbaAvatarOverlap { tight, standard, relaxed }
+
+/// A container that lays out a list of MitumbaAvatar widgets in a stacked horizontal arrangement with overlap.
+class MitumbaAvatarGroup extends StatelessWidget {
+  const MitumbaAvatarGroup({
+    super.key,
+    required this.children,
+    this.max = 5,
+    this.total,
+    this.size = MitumbaAvatarSize.md,
+    this.overlap = MitumbaAvatarOverlap.relaxed,
+    this.onAdd,
+  });
+
+  /// Collection of MitumbaAvatar widgets.
+  final List<MitumbaAvatar> children;
+
+  /// Maximum number of avatars to display before adding overflow. Defaults to 5.
+  final int max;
+
+  /// Manual total count if different from children.length.
+  final int? total;
+
+  /// Size for all avatars in the group.
+  final MitumbaAvatarSize size;
+
+  /// How much the avatars should overlap. Defaults to 'relaxed' (least overlap).
+  final MitumbaAvatarOverlap overlap;
+
+  /// Adds a CTA '+' button at the end of the stack and triggers this callback when clicked.
+  final VoidCallback? onAdd;
+
+  static const Map<MitumbaAvatarOverlap, double> _overlapFactorMap = {
+    MitumbaAvatarOverlap.tight: 0.5,
+    MitumbaAvatarOverlap.standard: 0.35,
+    MitumbaAvatarOverlap.relaxed: 0.2,
+  };
+
+  @override
+  Widget build(BuildContext context) {
+    final showCount = math.min(children.length, max);
+    final totalCount = total ?? children.length;
+    final overflow = totalCount - showCount;
+
+    final double overlapFactor = _overlapFactorMap[overlap]!;
+    final List<Widget> items = [];
+
+    for (int i = 0; i < showCount; i++) {
+      final isLastItem = (i == showCount - 1) && (overflow <= 0) && (onAdd == null);
+      final child = children[i];
+
+      final stackedChild = MitumbaAvatar(
+        key: child.key,
+        name: child.name,
+        imageUrl: child.imageUrl,
+        size: size,
+        badge: child.badge,
+        status: child.status,
+        actionIcon: child.actionIcon,
+        notificationCount: child.notificationCount,
+        notificationColor: child.notificationColor,
+        subtitle: child.subtitle,
+        textAlignment: child.textAlignment,
+        hasNewEvent: child.hasNewEvent,
+        progress: child.progress,
+        selected: child.selected,
+        isStacked: true,
+        isCTA: child.isCTA,
+        overflowCount: child.overflowCount,
+        onClick: child.onClick,
+      );
+
+      if (isLastItem) {
+        items.add(stackedChild);
+      } else {
+        items.add(
+          Align(
+            widthFactor: 1.0 - overlapFactor,
+            alignment: Alignment.centerLeft,
+            child: stackedChild,
+          ),
+        );
+      }
+    }
+
+    if (overflow > 0) {
+      final isLastItem = (onAdd == null);
+      final overflowWidget = MitumbaAvatar(
+        size: size,
+        overflowCount: overflow,
+        isStacked: true,
+      );
+
+      if (isLastItem) {
+        items.add(overflowWidget);
+      } else {
+        items.add(
+          Align(
+            widthFactor: 1.0 - overlapFactor,
+            alignment: Alignment.centerLeft,
+            child: overflowWidget,
+          ),
+        );
+      }
+    }
+
+    if (onAdd != null) {
+      items.add(
+        MitumbaAvatar(
+          size: size,
+          isCTA: true,
+          onClick: onAdd,
+        ),
+      );
+    }
+
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: items,
+    );
+  }
+}
