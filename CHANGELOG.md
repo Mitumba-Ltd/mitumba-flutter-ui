@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/compare/v1.1.0...v1.2.0) (2026-07-15)
+
+
+### Features
+
+* **foundation:** implement MitumbaChip component ([317d2ec](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/commit/317d2ec457df60dc3494ab31e8f1896a024db755))
+
 ## [1.1.0](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/compare/v1.0.0...v1.1.0) (2026-07-15)
 
 
