@@ -8,7 +8,7 @@ enum MitumbaGlassRounding { rounded, large, huge, full }
 class MitumbaGlass extends StatelessWidget {
   const MitumbaGlass({
     super.key,
-    required this.children,
+    required this.child,
     this.blur = 24.0,
     this.opacity = 0.5,
     this.rounding = MitumbaGlassRounding.large,
@@ -16,7 +16,7 @@ class MitumbaGlass extends StatelessWidget {
   });
 
   /// Content to be rendered inside the glass pane.
-  final Widget children;
+  final Widget child;
 
   /// Blur intensity in pixels.
   final double blur;
@@ -92,7 +92,7 @@ class MitumbaGlass extends StatelessWidget {
                     ),
                   ),
                 ),
-                children,
+                child,
               ],
             ),
           ),
