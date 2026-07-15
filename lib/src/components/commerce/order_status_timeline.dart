@@ -285,7 +285,9 @@ class OrderStatusTimeline extends StatelessWidget {
                     padding: EdgeInsets.symmetric(horizontal: MitumbaSpacing.sm, vertical: 2),
                     decoration: BoxDecoration(
                       color: color.withAlpha(12),
-                      borderLeft: BorderSide(color: color, width: 2),
+                      border: Border(
+                        left: BorderSide(color: color, width: 2),
+                      ),
                     ),
                     child: Text(
                       latestEvent!.note!,
