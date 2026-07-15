@@ -386,6 +386,65 @@ class WidgetbookApp extends StatelessWidget {
                 ),
               ],
             ),
+            WidgetbookComponent(
+              name: 'MitumbaSelect',
+              useCases: [
+                WidgetbookUseCase(
+                  name: 'Interactive',
+                  builder: (context) {
+                    final size = context.knobs.object.dropdown(
+                      label: 'Size',
+                      options: MitumbaSelectSize.values,
+                      labelBuilder: (s) => s.name,
+                      initialOption: MitumbaSelectSize.medium,
+                    );
+                    final rounding = context.knobs.object.dropdown(
+                      label: 'Rounding',
+                      options: MitumbaSelectRounding.values,
+                      labelBuilder: (r) => r.name,
+                      initialOption: MitumbaSelectRounding.rounded,
+                    );
+                    final multiple = context.knobs.boolean(label: 'Multiple Selection', initialValue: false);
+                    final showSearch = context.knobs.boolean(label: 'Show Search Input', initialValue: true);
+                    final inverted = context.knobs.boolean(label: 'Inverted (Dark Menu)', initialValue: false);
+
+                    final showStartIcon = context.knobs.boolean(label: 'Show Start Icon', initialValue: false);
+                    final hasError = context.knobs.boolean(label: 'Show Error State', initialValue: false);
+
+                    final selectOptions = [
+                      const MitumbaSelectOption(value: 'nbo', label: 'Nairobi', subtitle: 'Capital city of Kenya', group: 'East Africa', icon: Icon(Icons.location_city)),
+                      const MitumbaSelectOption(value: 'msa', label: 'Mombasa', subtitle: 'Coastal port city', group: 'East Africa', icon: Icon(Icons.beach_access)),
+                      const MitumbaSelectOption(value: 'kla', label: 'Kampala', subtitle: 'Capital city of Uganda', group: 'East Africa', icon: Icon(Icons.location_city)),
+                      const MitumbaSelectOption(value: 'dar', label: 'Dar es Salaam', subtitle: 'Coastal port city', group: 'East Africa', icon: Icon(Icons.beach_access), disabled: true),
+                      const MitumbaSelectOption(value: 'lon', label: 'London', subtitle: 'Capital of UK', group: 'Europe', icon: Icon(Icons.cloud)),
+                      const MitumbaSelectOption(value: 'par', label: 'Paris', subtitle: 'City of light', group: 'Europe', icon: Icon(Icons.favorite)),
+                    ];
+
+                    return Center(
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: MitumbaSelect(
+                          label: context.knobs.stringOrNull(label: 'Label', initialValue: 'Shipment Destination'),
+                          placeholder: context.knobs.string(label: 'Placeholder Hint', initialValue: 'Choose a city...'),
+                          value: multiple ? const ['nbo'] : 'nbo',
+                          options: selectOptions,
+                          onChange: (_) {},
+                          size: size,
+                          rounding: rounding,
+                          multiple: multiple,
+                          showSearch: showSearch,
+                          inverted: inverted,
+                          disabled: context.knobs.boolean(label: 'Disabled', initialValue: false),
+                          loading: context.knobs.boolean(label: 'Loading', initialValue: false),
+                          startIcon: showStartIcon ? const Icon(Icons.map) : null,
+                          error: hasError ? 'Please select a valid shipping zone' : null,
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ],
+            ),
           ],
         ),
         WidgetbookCategory(
