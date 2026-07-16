@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.6.0](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/compare/v1.5.0...v1.6.0) (2026-07-16)
+
+
+### Features
+
+* **widgetbook:** group components into subcategories and add brand theme customization ([8267f67](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/commit/8267f67f615000bc4dda3e32bba2dda038a70c18))
+* **widgetbook:** group components into subcategories and add brand theme customization ([0191d0d](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/commit/0191d0dc954dfd73031e92e20273e8b8d1f57ceb))
+
 ## [1.5.0](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/compare/v1.4.0...v1.5.0) (2026-07-15)
 
 
