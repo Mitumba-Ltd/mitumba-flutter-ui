@@ -568,6 +568,272 @@ class WidgetbookApp extends StatelessWidget {
                       ),
                     ],
                   ),
+                  WidgetbookComponent(
+                    name: 'PageContainer',
+                    useCases: [
+                      WidgetbookUseCase(
+                        name: 'Default',
+                        builder: (context) {
+                          final maxWidth = context.knobs.object.dropdown(
+                            label: 'Max Width',
+                            options: PageContainerMaxWidth.values,
+                            labelBuilder: (w) => w.name,
+                            initialOption: PageContainerMaxWidth.lg,
+                          );
+                          final noPadding = context.knobs.boolean(label: 'No Padding', initialValue: false);
+                          return PageContainer(
+                            maxWidth: maxWidth,
+                            noPadding: noPadding,
+                            child: Container(
+                              color: MitumbaColors.greenLight,
+                              height: 200,
+                              alignment: Alignment.center,
+                              child: Text(
+                                'PageContainer Content Area (maxWidth: ${maxWidth.name})',
+                                style: const TextStyle(color: MitumbaColors.green),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                  WidgetbookComponent(
+                    name: 'SectionHeader',
+                    useCases: [
+                      WidgetbookUseCase(
+                        name: 'Interactive',
+                        builder: (context) {
+                          final align = context.knobs.object.dropdown(
+                            label: 'Alignment',
+                            options: SectionHeaderAlign.values,
+                            labelBuilder: (a) => a.name,
+                            initialOption: SectionHeaderAlign.left,
+                          );
+                          final variant = context.knobs.object.dropdown(
+                            label: 'Variant Scale',
+                            options: SectionHeaderVariant.values,
+                            labelBuilder: (v) => v.name,
+                            initialOption: SectionHeaderVariant.standard,
+                          );
+                          final hasOverline = context.knobs.boolean(label: 'Show Overline', initialValue: true);
+                          final hasSubtitle = context.knobs.boolean(label: 'Show Subtitle', initialValue: true);
+                          final hasAction = context.knobs.boolean(label: 'Show Action Button', initialValue: true);
+
+                          return Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: SectionHeader(
+                              title: context.knobs.string(label: 'Title', initialValue: 'Vintage Outfits'),
+                              subtitle: hasSubtitle ? context.knobs.string(label: 'Subtitle', initialValue: 'Browse through our premium, hand-picked vintage jackets and pants.') : null,
+                              overline: hasOverline ? context.knobs.string(label: 'Overline', initialValue: 'New Arrivals') : null,
+                              align: align,
+                              variant: variant,
+                              actionLabel: hasAction ? 'SEE ALL' : null,
+                              onAction: () {},
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                  WidgetbookComponent(
+                    name: 'MitumbaDivider',
+                    useCases: [
+                      WidgetbookUseCase(
+                        name: 'Default',
+                        builder: (context) {
+                          final orientation = context.knobs.object.dropdown(
+                            label: 'Orientation',
+                            options: MitumbaDividerOrientation.values,
+                            labelBuilder: (o) => o.name,
+                            initialOption: MitumbaDividerOrientation.horizontal,
+                          );
+                          final thickness = context.knobs.double.slider(label: 'Thickness', initialValue: 1.0, min: 1.0, max: 10.0);
+                          final useBrandColor = context.knobs.boolean(label: 'Use Green Brand Color', initialValue: false);
+
+                          return Center(
+                            child: Container(
+                              width: orientation == MitumbaDividerOrientation.horizontal ? 300 : 24,
+                              height: orientation == MitumbaDividerOrientation.horizontal ? 24 : 300,
+                              alignment: Alignment.center,
+                              child: MitumbaDivider(
+                                orientation: orientation,
+                                thickness: thickness,
+                                color: useBrandColor ? MitumbaColors.green : null,
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                  WidgetbookComponent(
+                    name: 'MitumbaGrid',
+                    useCases: [
+                      WidgetbookUseCase(
+                        name: 'Responsive Grid',
+                        builder: (context) {
+                          final colCountXs = context.knobs.int.input(label: 'XS Columns', initialValue: 2);
+                          final colCountSm = context.knobs.int.input(label: 'SM Columns', initialValue: 3);
+                          final colCountMd = context.knobs.int.input(label: 'MD Columns', initialValue: 4);
+                          final colCountLg = context.knobs.int.input(label: 'LG Columns', initialValue: 6);
+                          final customGap = context.knobs.double.slider(label: 'Custom Spacing Gap', initialValue: 16.0, min: 4.0, max: 32.0);
+
+                          return SingleChildScrollView(
+                            padding: const EdgeInsets.all(16.0),
+                            child: MitumbaGrid(
+                              gap: customGap,
+                              columns: MitumbaGridColumns(
+                                xs: colCountXs,
+                                sm: colCountSm,
+                                md: colCountMd,
+                                lg: colCountLg,
+                              ),
+                              children: List.generate(12, (index) {
+                                return Container(
+                                  height: 80,
+                                  decoration: BoxDecoration(
+                                    color: MitumbaColors.greenLight,
+                                    borderRadius: BorderRadius.circular(8),
+                                    border: Border.all(color: MitumbaColors.green),
+                                  ),
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    'Cell $index',
+                                    style: const TextStyle(color: MitumbaColors.green, fontWeight: FontWeight.bold),
+                                  ),
+                                );
+                              }),
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                  WidgetbookComponent(
+                    name: 'ProfileCard',
+                    useCases: [
+                      WidgetbookUseCase(
+                        name: 'Interactive Card',
+                        builder: (context) {
+                          final showSubtitle = context.knobs.boolean(label: 'Show Subtitle', initialValue: true);
+                          final showRoles = context.knobs.boolean(label: 'Show Roles', initialValue: true);
+                          final showAction = context.knobs.boolean(label: 'Show Action Button', initialValue: true);
+
+                          return Center(
+                            child: Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: SizedBox(
+                                width: 340,
+                                child: ProfileCard(
+                                  name: context.knobs.string(label: 'Name', initialValue: 'Isaac Stanley'),
+                                  subtitle: showSubtitle ? context.knobs.string(label: 'Subtitle', initialValue: 'Verified Seller • Nairobi, KE') : null,
+                                  avatarUrl: context.knobs.stringOrNull(label: 'Avatar URL', initialValue: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100'),
+                                  roles: showRoles ? const [
+                                    ProfileCardRole(label: 'Seller', color: 'primary'),
+                                    ProfileCardRole(label: 'Vazi Stylist', color: 'secondary'),
+                                  ] : const [],
+                                  actionLabel: showAction ? 'EDIT PROFILE' : null,
+                                  onAction: () {},
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                  WidgetbookComponent(
+                    name: 'ProfileNavList',
+                    useCases: [
+                      WidgetbookUseCase(
+                        name: 'Menu List',
+                        builder: (context) {
+                          final badgeCount = context.knobs.int.slider(label: 'Messages Badge Count', initialValue: 4, min: 0, max: 10);
+                          final hasClickable = context.knobs.boolean(label: 'Items Clickable', initialValue: true);
+
+                          return Center(
+                            child: Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: SizedBox(
+                                width: 360,
+                                child: ProfileNavList(
+                                  items: [
+                                    ProfileNavItem(
+                                      label: 'My Orders',
+                                      icon: const Icon(Icons.shopping_bag_outlined),
+                                      onClick: hasClickable ? () {} : null,
+                                    ),
+                                    ProfileNavItem(
+                                      label: 'Inbox Messages',
+                                      icon: const Icon(Icons.mail_outline),
+                                      onClick: hasClickable ? () {} : null,
+                                      badge: badgeCount > 0 ? badgeCount : null,
+                                    ),
+                                    ProfileNavItem(
+                                      label: 'Saved Looks',
+                                      icon: const Icon(Icons.favorite_border),
+                                      onClick: hasClickable ? () {} : null,
+                                    ),
+                                    ProfileNavItem(
+                                      label: 'Help & Support',
+                                      icon: const Icon(Icons.help_outline),
+                                      onClick: hasClickable ? () {} : null,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                  WidgetbookComponent(
+                    name: 'FormCard',
+                    useCases: [
+                      WidgetbookUseCase(
+                        name: 'Interactive Form Box',
+                        builder: (context) {
+                          final showIcon = context.knobs.boolean(label: 'Show Header Icon', initialValue: true);
+                          final showSubtitle = context.knobs.boolean(label: 'Show Subtitle', initialValue: true);
+                          final errorText = context.knobs.stringOrNull(label: 'Error Alert Text');
+
+                          return Center(
+                            child: SingleChildScrollView(
+                              padding: const EdgeInsets.all(16.0),
+                              child: FormCard(
+                                title: context.knobs.string(label: 'Title', initialValue: 'Verify Mobile Phone'),
+                                subtitle: showSubtitle ? context.knobs.string(label: 'Subtitle', initialValue: 'We have sent a verification code to +254 712 *** 789.') : null,
+                                icon: showIcon ? const Icon(Icons.sms_outlined) : null,
+                                error: errorText,
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    MitumbaTextField(
+                                      label: 'Verification Code',
+                                      hint: 'Enter 6-digit code',
+                                      value: '',
+                                      onChange: (_) {},
+                                    ),
+                                    const SizedBox(height: 16),
+                                    SizedBox(
+                                      width: double.infinity,
+                                      child: MitumbaPrimaryButton(
+                                        label: 'SUBMIT CODE',
+                                        onPressed: () {},
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
                 ],
               ),
             ],
