@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.12.1](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/compare/v1.12.0...v1.12.1) (2026-07-16)
+
+
+### Bug Fixes
+
+* **vazi:** trigger release-please for VAZIShowcase redesign ([ba650bd](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/commit/ba650bd62b3c907ebfbcfa77680cefc92f1ec81c))
+* **vazi:** trigger release-please to include high-fashion VAZIShowcase overhaul ([ca34ed2](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/commit/ca34ed2ae09b69c1cb2cb1f792ca6640c8b6d10e))
+
 ## [1.12.0](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/compare/v1.11.0...v1.12.0) (2026-07-16)
 
 

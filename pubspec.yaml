@@ -1,6 +1,6 @@
 name: mitumba_ui
 description: Mitumba design system for Flutter — reusable widgets for Kenya's second-hand fashion marketplace.
-version: 1.12.0
+version: 1.12.1
 homepage: https://mitumba.stanl.ink
 publisher: mitumba.stanl.ink
 repository: https://github.com/Mitumba-Ltd/mitumba-flutter-ui
