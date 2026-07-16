@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.8.0](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/compare/v1.7.0...v1.8.0) (2026-07-16)
+
+
+### Features
+
+* **navigation:** export navigation components in barrel file ([f8eeb16](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/commit/f8eeb160dccefeefc1564604dce4e96564c49b06))
+* **navigation:** implement MitumbaBreadcrumb widget for hierarchy visualization ([d43648d](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/commit/d43648d663a080ef7bde0107a7dc0402c8656e7e))
+* **navigation:** implement MitumbaPagination page navigation widget ([460b099](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/commit/460b0991e8506704f2d3aae1462d5dfd055010ab))
+* **navigation:** implement MitumbaStepper progress stepper widget ([3368c3d](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/commit/3368c3dc980445532d5eaaf1b277526d95cb9cb5))
+* **navigation:** implement MitumbaTabs solid and underline styled variants ([b50fc2c](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/commit/b50fc2c68a0b7acf0411a636d1452f4b32a57fe0))
+* **navigation:** implement Phase 5 navigation primitives ([a417766](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/commit/a417766bb2335fae7232c7bd1bb7a867040b2860))
+* **navigation:** implement TopNav header bar widget with search and profile ([edafc8b](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/commit/edafc8b5187ea0174797d3e488f4fcaea4c19381))
+* **widgetbook:** register navigation components in Widgetbook ([f1b9ce3](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/commit/f1b9ce31ab65674abc154d784a60b06ff91922fb))
+
 ## [1.7.0](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/compare/v1.6.0...v1.7.0) (2026-07-16)
 
 
