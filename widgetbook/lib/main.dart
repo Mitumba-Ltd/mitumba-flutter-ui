@@ -537,6 +537,146 @@ class WidgetbookApp extends StatelessWidget {
                       ),
                     ],
                   ),
+                  WidgetbookComponent(
+                    name: 'MitumbaBreadcrumb',
+                    useCases: [
+                      WidgetbookUseCase(
+                        name: 'Default',
+                        builder: (context) {
+                          return Center(
+                            child: Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: MitumbaBreadcrumb(
+                                items: [
+                                  MitumbaBreadcrumbItem(label: 'Home', onTap: () {}),
+                                  MitumbaBreadcrumbItem(label: 'Catalog', onTap: () {}),
+                                  MitumbaBreadcrumbItem(label: 'Menswear', onTap: () {}),
+                                  const MitumbaBreadcrumbItem(label: 'Jackets'),
+                                ],
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                  WidgetbookComponent(
+                    name: 'MitumbaPagination',
+                    useCases: [
+                      WidgetbookUseCase(
+                        name: 'Interactive Pages',
+                        builder: (context) {
+                          final count = context.knobs.int.slider(label: 'Total Pages', initialValue: 10, min: 1, max: 20);
+                          final active = context.knobs.int.slider(label: 'Active Page', initialValue: 4, min: 1, max: 20);
+
+                          return Center(
+                            child: Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: MitumbaPagination(
+                                count: count,
+                                page: active <= count ? active : count,
+                                onChange: (_) {},
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                  WidgetbookComponent(
+                    name: 'MitumbaStepper',
+                    useCases: [
+                      WidgetbookUseCase(
+                        name: 'Interactive Process',
+                        builder: (context) {
+                          final activeStep = context.knobs.int.slider(label: 'Active Step', initialValue: 1, min: 0, max: 2);
+                          return Center(
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 24.0, horizontal: 16.0),
+                              child: MitumbaStepper(
+                                activeStep: activeStep,
+                                steps: const [
+                                  MitumbaStepOption(label: 'Details', subtitle: 'Step 1'),
+                                  MitumbaStepOption(label: 'Shipping', subtitle: 'Step 2'),
+                                  MitumbaStepOption(label: 'Payment'),
+                                ],
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                  WidgetbookComponent(
+                    name: 'MitumbaTabs',
+                    useCases: [
+                      WidgetbookUseCase(
+                        name: 'Interactive Tabs',
+                        builder: (context) {
+                          final variant = context.knobs.object.dropdown(
+                            label: 'Variant',
+                            options: MitumbaTabsVariant.values,
+                            labelBuilder: (v) => v.name,
+                            initialOption: MitumbaTabsVariant.primary,
+                          );
+                          final activeVal = context.knobs.object.dropdown(
+                            label: 'Active Value',
+                            options: const ['all', 'jackets', 'shoes'],
+                            initialOption: 'all',
+                          );
+
+                          return Center(
+                            child: Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: MitumbaTabs(
+                                value: activeVal,
+                                variant: variant,
+                                onChange: (_) {},
+                                tabs: const [
+                                  MitumbaTabOption(label: 'All Items', value: 'all', icon: Icon(Icons.grid_view)),
+                                  MitumbaTabOption(label: 'Jackets', value: 'jackets', icon: Icon(Icons.checkroom)),
+                                  MitumbaTabOption(label: 'Shoes', value: 'shoes', icon: Icon(Icons.shopping_bag_outlined)),
+                                  MitumbaTabOption(label: 'Disabled Tab', value: 'disabled', disabled: true),
+                                ],
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                  WidgetbookComponent(
+                    name: 'TopNav',
+                    useCases: [
+                      WidgetbookUseCase(
+                        name: 'Full Header',
+                        builder: (context) {
+                          final hasAnnouncement = context.knobs.boolean(label: 'Has Announcement', initialValue: true);
+                          final cartCount = context.knobs.int.slider(label: 'Cart Items Count', initialValue: 3, min: 0, max: 10);
+                          final isAuthenticated = context.knobs.boolean(label: 'Is Authenticated', initialValue: true);
+
+                          return Align(
+                            alignment: Alignment.topCenter,
+                            child: TopNav(
+                              announcement: hasAnnouncement ? const Text('Free delivery on orders above KES 5,000!') : null,
+                              cartCount: cartCount,
+                              isAuthenticated: isAuthenticated,
+                              user: const TopNavUser(name: 'Isaac Stanley'),
+                              links: const [
+                                TopNavLink(label: 'Home', href: '/', active: true),
+                                TopNavLink(label: 'Shop', href: '/shop'),
+                                TopNavLink(label: 'About', href: '/about'),
+                              ],
+                              onSearchSubmit: (_) {},
+                              onCartClick: () {},
+                              onAuthClick: () {},
+                              onProfileClick: () {},
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
                 ],
               ),
               WidgetbookCategory(

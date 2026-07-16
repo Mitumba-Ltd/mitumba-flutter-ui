@@ -3,7 +3,6 @@ import '../../tokens/colors.dart';
 import '../../tokens/radius.dart';
 import '../../tokens/spacing.dart';
 import '../../tokens/typography.dart';
-import '../../tokens/shadows.dart';
 import '../foundation/mitumba_avatar.dart';
 import '../foundation/mitumba_primary_button.dart';
 
