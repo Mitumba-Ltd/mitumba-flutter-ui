@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:widgetbook/widgetbook.dart';
 import 'package:mitumba_ui/mitumba_ui.dart';
+import 'responsive_device_preview.dart';
 
 void main() {
   runApp(const WidgetbookApp());
@@ -658,6 +659,32 @@ class WidgetbookApp extends StatelessWidget {
                           return Align(
                             alignment: Alignment.topCenter,
                             child: TopNav(
+                              announcement: hasAnnouncement ? const Text('Free delivery on orders above KES 5,000!') : null,
+                              cartCount: cartCount,
+                              isAuthenticated: isAuthenticated,
+                              user: const TopNavUser(name: 'Isaac Stanley'),
+                              links: const [
+                                TopNavLink(label: 'Home', href: '/', active: true),
+                                TopNavLink(label: 'Shop', href: '/shop'),
+                                TopNavLink(label: 'About', href: '/about'),
+                              ],
+                              onSearchSubmit: (_) {},
+                              onCartClick: () {},
+                              onAuthClick: () {},
+                              onProfileClick: () {},
+                            ),
+                          );
+                        },
+                      ),
+                      WidgetbookUseCase(
+                        name: 'Responsive Preview',
+                        builder: (context) {
+                          final hasAnnouncement = context.knobs.boolean(label: 'Has Announcement', initialValue: true);
+                          final cartCount = context.knobs.int.slider(label: 'Cart Items Count', initialValue: 3, min: 0, max: 10);
+                          final isAuthenticated = context.knobs.boolean(label: 'Is Authenticated', initialValue: true);
+
+                          return ResponsiveDevicePreview(
+                            builder: (context, constraints) => TopNav(
                               announcement: hasAnnouncement ? const Text('Free delivery on orders above KES 5,000!') : null,
                               cartCount: cartCount,
                               isAuthenticated: isAuthenticated,
