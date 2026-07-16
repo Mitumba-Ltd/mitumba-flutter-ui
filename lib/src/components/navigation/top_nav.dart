@@ -120,6 +120,13 @@ class TopNav extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
+    final double width = MediaQuery.maybeOf(context)?.size.width ?? 1200;
+
+    // Breakpoint visibility flags (matching React TopNav specs)
+    final bool showLinks = width >= 900;
+    final bool showSearch = width >= 1200 && onSearchSubmit != null;
+    final bool showCTA = width >= 600 && cta != null;
+
     return Container(
       color: transparent ? Colors.transparent : MitumbaColors.surface,
       child: Column(
@@ -167,7 +174,7 @@ class TopNav extends StatelessWidget implements PreferredSizeWidget {
 
                   // Spacer & Desktop Links
                   const Spacer(),
-                  if (links.isNotEmpty)
+                  if (showLinks && links.isNotEmpty)
                     Row(
                       mainAxisSize: MainAxisSize.min,
                       children: links.map((link) {
@@ -179,7 +186,7 @@ class TopNav extends StatelessWidget implements PreferredSizeWidget {
                     ),
 
                   // Search Bar Area
-                  if (onSearchSubmit != null) ...[
+                  if (showSearch) ...[
                     const Spacer(),
                     Container(
                       width: 240,
@@ -302,7 +309,7 @@ class TopNav extends StatelessWidget implements PreferredSizeWidget {
                           size: ButtonSize.small,
                         ),
 
-                      if (cta != null) ...[
+                      if (showCTA) ...[
                         const SizedBox(width: MitumbaSpacing.base),
                         cta!,
                       ],
