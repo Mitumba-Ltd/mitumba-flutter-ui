@@ -1,5 +1,21 @@
 # Changelog
 
+## [1.7.0](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/compare/v1.6.0...v1.7.0) (2026-07-16)
+
+
+### Features
+
+* **layout:** export layout components in barrel file ([8d3538b](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/commit/8d3538bedbd19477e121dfffea6f1213d7118f82))
+* **layout:** implement FormCard standard wrapper container for forms ([4a7afb8](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/commit/4a7afb85c4baf962f9eb5fd4a1cd096fddbf9771))
+* **layout:** implement MitumbaDivider widget with custom thickness, orientation, and color ([2fd8545](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/commit/2fd8545bb9b6e720bdd4b7eb22c161b1de468475))
+* **layout:** implement MitumbaGrid responsive CSS-Grid-like primitive ([e9d4505](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/commit/e9d4505b011ccfadffcd20c0671c035000ced666))
+* **layout:** implement PageContainer widget with responsive padding and max-width constraints ([71d6718](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/commit/71d67180092e1fd2fcf9b33e560d70d411052c29))
+* **layout:** implement Phase 4 layout primitives ([3b0ef08](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/commit/3b0ef0855a90ac7894bcfcc4b7ea8f8264277cbf))
+* **layout:** implement ProfileCard widget with user initials, roles, and action button ([292554c](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/commit/292554c8bd706c39c6f78cdef9738988c88b00e0))
+* **layout:** implement ProfileNavList menu item container widget ([b898478](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/commit/b8984786b096288af5a450a75cc15f653b347c95))
+* **layout:** implement SectionHeader widget with custom actions and overlines ([ae7afba](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/commit/ae7afba8682b898fe4f682eb656c046aef019856))
+* **widgetbook:** register layout components in Widgetbook ([2ce1a6c](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/commit/2ce1a6cc035e62fcfae849f0039a183d8be3bb99))
+
 ## [1.6.0](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/compare/v1.5.0...v1.6.0) (2026-07-16)
 
 
