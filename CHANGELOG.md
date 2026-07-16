@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.9.1](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/compare/v1.9.0...v1.9.1) (2026-07-16)
+
+
+### Bug Fixes
+
+* **navigation:** implement responsive breakpoint hiding for links, search, and CTA in TopNav ([41fb3f8](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/commit/41fb3f8b154e3b908a1bc2809ffb3fdc51820bb5))
+* **navigation:** implement responsive breakpoint hiding in TopNav ([638b502](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/commit/638b502ff5c3afd6f812c6152d9ff21e640b6a43))
+
 ## [1.9.0](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/compare/v1.8.0...v1.9.0) (2026-07-16)
 
 
