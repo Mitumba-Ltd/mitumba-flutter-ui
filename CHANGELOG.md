@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.9.0](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/compare/v1.8.0...v1.9.0) (2026-07-16)
+
+
+### Features
+
+* **widgetbook:** implement side-by-side ResponsiveDevicePreview matrix ([3229e14](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/commit/3229e143f1400fe3093fc52a43f3c96e4c9052d6))
+* **widgetbook:** implement side-by-side ResponsiveDevicePreview matrix ([de9cb6a](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/commit/de9cb6a0f754a92d0538b7f8e4f99b7d43ef3579))
+
 ## [1.8.0](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/compare/v1.7.0...v1.8.0) (2026-07-16)
 
 
