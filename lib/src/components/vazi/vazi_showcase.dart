@@ -1,16 +1,26 @@
 import 'dart:ui';
-
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-
 import '../../tokens/colors.dart';
 import '../../tokens/radius.dart';
+import '../../tokens/shadows.dart';
 import '../../tokens/spacing.dart';
-import '../../tokens/typography.dart';
+import '../feedback/mitumba_skeleton.dart';
+import '../foundation/mitumba_glass.dart';
+import '../foundation/mitumba_primary_button.dart';
+import 'vazi_badge.dart';
+
+/// Media type for VAZI model display.
+enum VAZIMediaType { image, video }
 
 /// A single item in a VAZI outfit.
 class VAZIShowcaseItem {
-  const VAZIShowcaseItem({required this.id, required this.title, required this.price, required this.imageUrl});
+  const VAZIShowcaseItem({
+    required this.id,
+    required this.title,
+    required this.price,
+    required this.imageUrl,
+  });
 
   /// Listing ID.
   final String id;
@@ -55,20 +65,8 @@ class VAZIShowcaseOutfit {
   final int totalPrice;
 }
 
-/// Media type for VAZI model display.
-enum VAZIMediaType { image, video }
-
-/// VAZIShowcase — vertical swipe carousel of AI-curated outfits.
-///
-/// Mirrors the web `VAZIShowcase` from `@mitumba/ui`.
-///
-/// ```dart
-/// VAZIShowcase(
-///   outfits: [outfit1, outfit2],
-///   onItemClick: (id) => navigateToListing(id),
-///   onShopAll: (outfitId) => addAllToCart(outfitId),
-/// )
-/// ```
+/// VAZIShowcase — high-fashion vertical/depth swipe carousel of AI-curated outfits.
+/// Engineered with atmospheric spotlights, floating glass panels, and living model float physics.
 class VAZIShowcase extends StatefulWidget {
   const VAZIShowcase({
     super.key,
@@ -102,21 +100,27 @@ class VAZIShowcase extends StatefulWidget {
   State<VAZIShowcase> createState() => _VAZIShowcaseState();
 }
 
-class _VAZIShowcaseState extends State<VAZIShowcase> {
+class _VAZIShowcaseState extends State<VAZIShowcase> with SingleTickerProviderStateMixin {
   late PageController _pageCtrl;
   late int _current;
   bool _isAnimating = false;
+  late AnimationController _floatController;
 
   @override
   void initState() {
     super.initState();
     _current = widget.activeIndex;
     _pageCtrl = PageController(initialPage: _current);
+    _floatController = AnimationController(
+      duration: const Duration(seconds: 4),
+      vsync: this,
+    )..repeat(reverse: true);
   }
 
   @override
   void dispose() {
     _pageCtrl.dispose();
+    _floatController.dispose();
     super.dispose();
   }
 
@@ -144,7 +148,7 @@ class _VAZIShowcaseState extends State<VAZIShowcase> {
     });
   }
 
-  // ═══ DESKTOP — 3D perspective carousel ═══
+  // ═══ DESKTOP — High Fashion Spotlight Stage ═══
   Widget _buildDesktop(BoxConstraints constraints) {
     final activeOutfit = widget.outfits[_current];
 
@@ -169,88 +173,213 @@ class _VAZIShowcaseState extends State<VAZIShowcase> {
           }
         },
         child: Container(
-        width: double.infinity,
-        height: constraints.maxHeight > 0 ? constraints.maxHeight : 700,
-        color: const Color(0xFFE8F0F2),
-        child: Row(
-          children: [
-          // Left — collection info
-          SizedBox(
-            width: 240,
-            child: Padding(
-              padding: EdgeInsets.symmetric(vertical: MitumbaSpacing.huge, horizontal: MitumbaSpacing.xxl),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('VAZI Collection', style: MitumbaTypography.caption.copyWith(
-                        letterSpacing: 2,
-                        color: MitumbaColors.textSecondary,
-                      )),
-                      SizedBox(height: MitumbaSpacing.lg),
-                      Text(
-                        'AI-curated outfit combinations from verified Mitumba sellers.',
-                        style: MitumbaTypography.body2.copyWith(color: MitumbaColors.textSecondary),
+          width: double.infinity,
+          height: constraints.maxHeight > 0 ? constraints.maxHeight : 700,
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                Color(0xFF0C110E), // deep forest green-black
+                Color(0xFF191A18), // rich charcoal-black
+              ],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+          ),
+          child: Stack(
+            children: [
+              // Ambient Glowing Spotlight Circle behind active model
+              Positioned(
+                left: 0,
+                right: 0,
+                top: 0,
+                bottom: 0,
+                child: Center(
+                  child: AnimatedContainer(
+                    duration: const Duration(milliseconds: 800),
+                    width: 380,
+                    height: 380,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      gradient: RadialGradient(
+                        colors: [
+                          MitumbaColors.green.withValues(alpha: 0.18),
+                          Colors.transparent,
+                        ],
                       ),
-                    ],
+                    ),
+                    child: BackdropFilter(
+                      filter: ImageFilter.blur(sigmaX: 40, sigmaY: 40),
+                      child: const SizedBox.shrink(),
+                    ),
                   ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'LOOK ${(_current + 1).toString().padLeft(2, '0')}',
-                        style: MitumbaTypography.h2.copyWith(fontWeight: FontWeight.w300, letterSpacing: 4),
+                ),
+              ),
+
+              // UI Content Layer
+              Row(
+                children: [
+                  // Left — Editorial Info Section
+                  SizedBox(
+                    width: 280,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: MitumbaSpacing.huge,
+                        horizontal: MitumbaSpacing.xxl,
                       ),
-                      Text(
-                        '${_current + 1} of ${widget.outfits.length}',
-                        style: MitumbaTypography.caption.copyWith(
-                          letterSpacing: 3,
-                          color: MitumbaColors.textDisabled,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: const [
+                                  Icon(
+                                    Icons.auto_awesome,
+                                    size: 16,
+                                    color: MitumbaColors.earth,
+                                  ),
+                                  SizedBox(width: 8),
+                                  Text(
+                                    'VAZI STYLIST',
+                                    style: TextStyle(
+                                      fontFamily: 'Nunito',
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w900,
+                                      color: MitumbaColors.earth,
+                                      letterSpacing: 2,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: MitumbaSpacing.lg),
+                              const Text(
+                                'AI-curated outfit lookbook matching the perfect designer taste.',
+                                style: TextStyle(
+                                  fontFamily: 'Nunito',
+                                  fontSize: 13,
+                                  color: MitumbaColors.textDisabled,
+                                  height: 1.5,
+                                ),
+                              ),
+                            ],
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'LOOK ${(_current + 1).toString().padLeft(2, '0')}',
+                                style: const TextStyle(
+                                  fontFamily: 'Nunito',
+                                  fontSize: 32,
+                                  fontWeight: FontWeight.w300,
+                                  color: MitumbaColors.white,
+                                  letterSpacing: 4,
+                                ),
+                              ),
+                              const SizedBox(height: 8),
+                              // Sleek Progress Line
+                              Stack(
+                                children: [
+                                  Container(
+                                    width: 140,
+                                    height: 2,
+                                    color: MitumbaColors.divider.withValues(alpha: 0.1),
+                                  ),
+                                  AnimatedContainer(
+                                    duration: const Duration(milliseconds: 300),
+                                    width: (140 / widget.outfits.length) * (_current + 1),
+                                    height: 2,
+                                    color: MitumbaColors.green,
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 12),
+                              Text(
+                                '${_current + 1} of ${widget.outfits.length}',
+                                style: const TextStyle(
+                                  fontFamily: 'Nunito',
+                                  fontSize: 11,
+                                  color: MitumbaColors.textDisabled,
+                                  letterSpacing: 2,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+
+                  // Center — 3D Living Model Carousel
+                  Expanded(
+                    flex: 2,
+                    child: _Desktop3DCarousel(
+                      outfits: widget.outfits,
+                      current: _current,
+                      onNavigate: _navigateTo,
+                      floatAnimation: _floatController,
+                    ),
+                  ),
+
+                  // Right — Floating Glassmorphism Outfit Panel
+                  SizedBox(
+                    width: 320,
+                    child: Padding(
+                      padding: const EdgeInsets.all(24.0),
+                      child: Center(
+                        child: _OutfitPanel(
+                          outfit: activeOutfit,
+                          onItemClick: widget.onItemClick,
+                          onShopAll: widget.onShopAll,
+                          onSaveLook: widget.onSaveLook,
                         ),
                       ),
-                    ],
+                    ),
                   ),
                 ],
               ),
-            ),
+            ],
           ),
-
-          // Center — 3D perspective model carousel
-          Expanded(
-            flex: 2,
-            child: _Desktop3DCarousel(
-              outfits: widget.outfits,
-              current: _current,
-              onNavigate: _navigateTo,
-            ),
-          ),
-
-          // Right — outfit panel (will be enhanced in glassmorphism task)
-          SizedBox(
-            width: 300,
-            child: _OutfitPanel(
-              outfit: activeOutfit,
-              onItemClick: widget.onItemClick,
-              onShopAll: widget.onShopAll,
-              onSaveLook: widget.onSaveLook,
-            ),
-          ),
-        ],
-      ),
-      ),
+        ),
       ),
     );
   }
 
-  // ═══ MOBILE — vertical swipe (existing behavior, kept here) ═══
+  // ═══ MOBILE — Vertical Swipe Feed ═══
   Widget _buildMobile() {
     return Container(
-      color: const Color(0xFFE8F0F2),
+      decoration: const BoxDecoration(
+        gradient: LinearGradient(
+          colors: [
+            Color(0xFF0C110E),
+            Color(0xFF191A18),
+          ],
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+        ),
+      ),
       child: Stack(
         children: [
+          // Spotlight glow in background
+          Positioned.fill(
+            child: Center(
+              child: Container(
+                width: 300,
+                height: 300,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: MitumbaColors.green.withValues(alpha: 0.12),
+                ),
+                child: BackdropFilter(
+                  filter: ImageFilter.blur(sigmaX: 40, sigmaY: 40),
+                  child: const SizedBox.shrink(),
+                ),
+              ),
+            ),
+          ),
+
           PageView.builder(
             controller: _pageCtrl,
             scrollDirection: Axis.vertical,
@@ -266,7 +395,8 @@ class _VAZIShowcaseState extends State<VAZIShowcase> {
               onSaveLook: widget.onSaveLook,
             ),
           ),
-          // Progress indicator
+
+          // Right vertical progress dots
           Positioned(
             right: MitumbaSpacing.lg,
             top: 0,
@@ -278,11 +408,11 @@ class _VAZIShowcaseState extends State<VAZIShowcase> {
                   final active = i == _current;
                   return AnimatedContainer(
                     duration: const Duration(milliseconds: 300),
-                    margin: const EdgeInsets.symmetric(vertical: 3),
+                    margin: const EdgeInsets.symmetric(vertical: 4),
                     width: 4,
-                    height: active ? 24 : 8,
+                    height: active ? 28 : 8,
                     decoration: BoxDecoration(
-                      color: active ? MitumbaColors.green : MitumbaColors.border,
+                      color: active ? MitumbaColors.green : MitumbaColors.textDisabled.withValues(alpha: 0.3),
                       borderRadius: BorderRadius.circular(MitumbaRadius.full),
                     ),
                   );
@@ -290,53 +420,12 @@ class _VAZIShowcaseState extends State<VAZIShowcase> {
               ),
             ),
           ),
-          // Look counter — glassmorphism pill
+
+          // VAZI Branding overlay
           Positioned(
             top: MitumbaSpacing.lg,
             left: MitumbaSpacing.lg,
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(MitumbaRadius.full),
-              child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
-                child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: MitumbaSpacing.md, vertical: MitumbaSpacing.xs),
-                  decoration: BoxDecoration(
-                    color: MitumbaColors.white.withAlpha(200),
-                    borderRadius: BorderRadius.circular(MitumbaRadius.full),
-                  ),
-                  child: Text(
-                    '${_current + 1} / ${widget.outfits.length}',
-                    style: MitumbaTypography.caption.copyWith(fontWeight: FontWeight.w700, color: MitumbaColors.textPrimary),
-                  ),
-                ),
-              ),
-            ),
-          ),
-          // VAZI pill — top right
-          Positioned(
-            top: MitumbaSpacing.lg,
-            right: MitumbaSpacing.lg,
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(MitumbaRadius.full),
-              child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
-                child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: MitumbaSpacing.md, vertical: MitumbaSpacing.xs),
-                  decoration: BoxDecoration(
-                    color: MitumbaColors.white.withAlpha(200),
-                    borderRadius: BorderRadius.circular(MitumbaRadius.full),
-                  ),
-                  child: Text(
-                    'VAZI',
-                    style: MitumbaTypography.caption.copyWith(
-                      fontWeight: FontWeight.w700,
-                      letterSpacing: 1.5,
-                      color: MitumbaColors.earth,
-                    ),
-                  ),
-                ),
-              ),
-            ),
+            child: const VAZIBadge(size: VAZIBadgeSize.small),
           ),
         ],
       ),
@@ -344,17 +433,19 @@ class _VAZIShowcaseState extends State<VAZIShowcase> {
   }
 }
 
-/// Desktop 3D perspective carousel — models arranged in depth with blur/scale falloff.
+/// Desktop 3D perspective carousel — models arranged in depth with blur/scale falloff and float physics.
 class _Desktop3DCarousel extends StatelessWidget {
   const _Desktop3DCarousel({
     required this.outfits,
     required this.current,
     required this.onNavigate,
+    required this.floatAnimation,
   });
 
   final List<VAZIShowcaseOutfit> outfits;
   final int current;
   final ValueChanged<int> onNavigate;
+  final Animation<double> floatAnimation;
 
   @override
   Widget build(BuildContext context) {
@@ -366,10 +457,43 @@ class _Desktop3DCarousel extends StatelessWidget {
         if (absDiff > 3) return const SizedBox.shrink();
 
         final isActive = diff == 0;
-        final scale = isActive ? 1.0 : (0.7 - absDiff * 0.15).clamp(0.3, 0.7);
-        final xOffset = diff * 140.0;
+        final scale = isActive ? 1.0 : (0.7 - absDiff * 0.15).clamp(0.35, 0.7);
+        final xOffset = diff * 150.0;
         final opacity = isActive ? 1.0 : (0.6 - (absDiff - 1) * 0.2).clamp(0.0, 0.6);
         final blur = isActive ? 0.0 : (absDiff * 4.0).clamp(0.0, 12.0);
+
+        Widget modelImg = Image.network(
+          outfits[i].modelMediaUrl,
+          height: 520,
+          fit: BoxFit.contain,
+          loadingBuilder: (context, child, loadingProgress) {
+            if (loadingProgress == null) return child;
+            return const SizedBox(
+              width: 240,
+              height: 480,
+              child: MitumbaSkeleton(variant: MitumbaSkeletonVariant.rectangular),
+            );
+          },
+          errorBuilder: (_, __, ___) => const SizedBox(
+            width: 240,
+            height: 480,
+            child: MitumbaSkeleton(variant: MitumbaSkeletonVariant.rectangular),
+          ),
+        );
+
+        // Apply dynamic float animation to active model
+        if (isActive) {
+          modelImg = AnimatedBuilder(
+            animation: floatAnimation,
+            builder: (context, child) {
+              return Transform.translate(
+                offset: Offset(0, floatAnimation.value * 12.0 - 6.0),
+                child: child,
+              );
+            },
+            child: modelImg,
+          );
+        }
 
         return AnimatedPositioned(
           duration: const Duration(milliseconds: 800),
@@ -397,16 +521,7 @@ class _Desktop3DCarousel extends StatelessWidget {
                     imageFilter: blur > 0
                         ? ImageFilter.blur(sigmaX: blur, sigmaY: blur)
                         : ImageFilter.blur(sigmaX: 0, sigmaY: 0),
-                    child: Image.network(
-                      outfits[i].modelMediaUrl,
-                      height: 500,
-                      fit: BoxFit.contain,
-                      errorBuilder: (_, __, ___) => Icon(
-                        Icons.person,
-                        size: 120,
-                        color: MitumbaColors.textDisabled,
-                      ),
-                    ),
+                    child: modelImg,
                   ),
                 ),
               ),
@@ -418,8 +533,15 @@ class _Desktop3DCarousel extends StatelessWidget {
   }
 }
 
+/// Slideshow item containing vertical full-page view for mobile layout.
 class _OutfitSlide extends StatelessWidget {
-  const _OutfitSlide({required this.outfit, this.onItemClick, this.onShopAll, this.onSaveLook});
+  const _OutfitSlide({
+    required this.outfit,
+    this.onItemClick,
+    this.onShopAll,
+    this.onSaveLook,
+  });
+
   final VAZIShowcaseOutfit outfit;
   final ValueChanged<String>? onItemClick;
   final ValueChanged<String>? onShopAll;
@@ -430,29 +552,49 @@ class _OutfitSlide extends StatelessWidget {
     return Stack(
       fit: StackFit.expand,
       children: [
-        // Model media
+        // Model Media Background
         Center(
-          child: Image.network(
-            outfit.modelMediaUrl,
-            fit: BoxFit.contain,
-            height: double.infinity,
-            errorBuilder: (_, __, ___) => Icon(Icons.person, size: 120, color: MitumbaColors.textDisabled),
+          child: Padding(
+            padding: const EdgeInsets.only(bottom: 220),
+            child: Image.network(
+              outfit.modelMediaUrl,
+              fit: BoxFit.contain,
+              height: double.infinity,
+              errorBuilder: (_, __, ___) => const SizedBox(
+                width: 200,
+                height: 400,
+                child: MitumbaSkeleton(variant: MitumbaSkeletonVariant.rectangular),
+              ),
+            ),
           ),
         ),
-        // Bottom outfit panel
+
+        // Bottom Outfit floating panel overlay
         Positioned(
-          left: 0,
-          right: 0,
-          bottom: 0,
-          child: _OutfitPanel(outfit: outfit, onItemClick: onItemClick, onShopAll: onShopAll, onSaveLook: onSaveLook),
+          left: 12,
+          right: 12,
+          bottom: 12,
+          child: _OutfitPanel(
+            outfit: outfit,
+            onItemClick: onItemClick,
+            onShopAll: onShopAll,
+            onSaveLook: onSaveLook,
+          ),
         ),
       ],
     );
   }
 }
 
+/// Premium Glassmorphic floating outfit display container.
 class _OutfitPanel extends StatelessWidget {
-  const _OutfitPanel({required this.outfit, this.onItemClick, this.onShopAll, this.onSaveLook});
+  const _OutfitPanel({
+    required this.outfit,
+    this.onItemClick,
+    this.onShopAll,
+    this.onSaveLook,
+  });
+
   final VAZIShowcaseOutfit outfit;
   final ValueChanged<String>? onItemClick;
   final ValueChanged<String>? onShopAll;
@@ -460,102 +602,145 @@ class _OutfitPanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(MitumbaRadius.xl),
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
-        child: Container(
-          margin: EdgeInsets.all(MitumbaSpacing.lg),
-          padding: EdgeInsets.all(MitumbaSpacing.lg),
-          decoration: BoxDecoration(
-            color: MitumbaColors.white.withAlpha(64),
-            borderRadius: BorderRadius.circular(MitumbaRadius.xl),
-            border: Border.all(color: MitumbaColors.white.withAlpha(102)),
-            boxShadow: const [
-              BoxShadow(
-                offset: Offset(0, 8),
-                blurRadius: 32,
-                color: Color(0x0D000000),
-              ),
-            ],
-          ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Expanded(
-                child: Text(
-                  'KES ${_formatPrice(outfit.totalPrice)}',
-                  style: MitumbaTypography.h5,
+    return MitumbaGlass(
+      rounding: MitumbaGlassRounding.large,
+      opacity: 0.1, // very sleek dark glass
+      blur: 24,
+      child: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Look Header Status
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'TOTAL LOOK PRICE',
+                      style: TextStyle(
+                        fontFamily: 'Nunito',
+                        fontSize: 9,
+                        fontWeight: FontWeight.w800,
+                        color: MitumbaColors.textDisabled,
+                      ),
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      'KES ${outfit.totalPrice.toString().replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}',
+                      style: const TextStyle(
+                        fontFamily: 'Nunito',
+                        fontSize: 18,
+                        fontWeight: FontWeight.w900,
+                        color: MitumbaColors.white,
+                      ),
+                    ),
+                  ],
+                ),
+                if (onSaveLook != null)
+                  IconButton(
+                    icon: const Icon(
+                      Icons.favorite_border,
+                      size: 20,
+                      color: MitumbaColors.white,
+                    ),
+                    onPressed: () => onSaveLook!(outfit.id),
+                    padding: EdgeInsets.zero,
+                    constraints: const BoxConstraints(),
+                  ),
+              ],
+            ),
+            const SizedBox(height: 16),
+
+            // Stylist items thumbs row
+            SizedBox(
+              height: 64,
+              child: ListView.separated(
+                scrollDirection: Axis.horizontal,
+                itemCount: outfit.items.length,
+                separatorBuilder: (_, __) => const SizedBox(width: 12),
+                itemBuilder: (_, i) => _ItemThumb(
+                  item: outfit.items[i],
+                  onTap: onItemClick,
                 ),
               ),
-              if (onSaveLook != null)
-                IconButton(
-                  icon: const Icon(Icons.favorite_border, size: 20),
-                  onPressed: () => onSaveLook!(outfit.id),
-                  padding: EdgeInsets.zero,
-                  constraints: const BoxConstraints(),
+            ),
+            const SizedBox(height: 20),
+
+            // Action Primary Button
+            if (onShopAll != null)
+              SizedBox(
+                width: double.infinity,
+                child: MitumbaPrimaryButton(
+                  label: 'Shop this look',
+                  variant: ButtonVariant.earth,
+                  size: ButtonSize.medium,
+                  onPressed: () => onShopAll!(outfit.id),
                 ),
-            ],
-          ),
-          SizedBox(height: MitumbaSpacing.md),
-          SizedBox(
-            height: 64,
-            child: ListView.separated(
-              scrollDirection: Axis.horizontal,
-              itemCount: outfit.items.length,
-              separatorBuilder: (_, __) => SizedBox(width: MitumbaSpacing.md),
-              itemBuilder: (_, i) => _ItemThumb(item: outfit.items[i], onTap: onItemClick),
-            ),
-          ),
-          SizedBox(height: MitumbaSpacing.md),
-          SizedBox(
-            width: double.infinity,
-            child: ElevatedButton(
-              onPressed: onShopAll != null ? () => onShopAll!(outfit.id) : null,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: MitumbaColors.green,
-                foregroundColor: MitumbaColors.white,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(MitumbaRadius.md)),
               ),
-              child: const Text('Shop this look'),
-            ),
-          ),
-        ],
-      ),
+          ],
         ),
       ),
     );
   }
-
-  String _formatPrice(int price) {
-    return price.toString().replaceAllMapped(RegExp(r'(\d)(?=(\d{3})+$)'), (m) => '${m[1]},');
-  }
 }
 
-class _ItemThumb extends StatelessWidget {
-  const _ItemThumb({required this.item, this.onTap});
+/// Floating list item thumbnail.
+class _ItemThumb extends StatefulWidget {
+  const _ItemThumb({
+    required this.item,
+    this.onTap,
+  });
+
   final VAZIShowcaseItem item;
   final ValueChanged<String>? onTap;
 
   @override
+  State<_ItemThumb> createState() => _ItemThumbState();
+}
+
+class _ItemThumbState extends State<_ItemThumb> {
+  bool _isHovered = false;
+
+  @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap != null ? () => onTap!(item.id) : null,
-      child: Container(
-        width: 64,
-        height: 64,
-        clipBehavior: Clip.antiAlias,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(MitumbaRadius.md),
-          border: Border.all(color: MitumbaColors.border),
-        ),
-        child: Image.network(
-          item.imageUrl,
-          fit: BoxFit.cover,
-          errorBuilder: (_, __, ___) => Container(color: MitumbaColors.background),
+    return MouseRegion(
+      onEnter: (_) => setState(() => _isHovered = true),
+      onExit: (_) => setState(() => _isHovered = false),
+      child: GestureDetector(
+        onTap: widget.onTap != null ? () => widget.onTap!(widget.item.id) : null,
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 200),
+          width: 64,
+          height: 64,
+          clipBehavior: Clip.antiAlias,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(MitumbaRadius.md),
+            border: Border.all(
+              color: _isHovered ? MitumbaColors.earth : MitumbaColors.white.withValues(alpha: 0.15),
+              width: 2,
+            ),
+            boxShadow: _isHovered ? MitumbaShadows.card : null,
+          ),
+          transform: Matrix4.identity()
+            ..translate(0.0, _isHovered ? -4.0 : 0.0)
+            ..scale(_isHovered ? 1.05 : 1.0),
+          transformAlignment: Alignment.center,
+          child: Image.network(
+            widget.item.imageUrl,
+            fit: BoxFit.cover,
+            errorBuilder: (_, __, ___) => Container(
+              color: MitumbaColors.divider.withValues(alpha: 0.2),
+              child: const Icon(
+                Icons.image_not_supported_outlined,
+                size: 16,
+                color: MitumbaColors.textDisabled,
+              ),
+            ),
+          ),
         ),
       ),
     );
