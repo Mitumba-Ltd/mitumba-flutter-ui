@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.11.0](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/compare/v1.10.0...v1.11.0) (2026-07-16)
+
+
+### Features
+
+* **widgetbook:** register MitumbaSkeleton, ListingCardSkeleton, and ListingImageGallery ([d35d8f6](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/commit/d35d8f6e259adf04acd8b9670b53f0d051bc82b3))
+* **widgetbook:** register skeleton and image gallery components ([f9838fe](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/commit/f9838feaef63892ea93eafd6e56281e94588a561))
+
 ## [1.10.0](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/compare/v1.9.1...v1.10.0) (2026-07-16)
 
 
