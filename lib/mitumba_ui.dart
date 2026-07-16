@@ -38,6 +38,13 @@ export 'src/components/feedback/mitumba_toast.dart';
 // Components — Layout
 export 'src/components/layout/auth_page.dart';
 export 'src/components/layout/buyer_onboarding_page.dart';
+export 'src/components/layout/page_container.dart';
+export 'src/components/layout/section_header.dart';
+export 'src/components/layout/mitumba_divider.dart';
+export 'src/components/layout/mitumba_grid.dart';
+export 'src/components/layout/profile_card.dart';
+export 'src/components/layout/profile_nav_list.dart';
+export 'src/components/layout/form_card.dart';
 
 // Components — Forms
 export 'src/components/forms/search_filter_sheet.dart';
