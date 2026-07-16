@@ -481,6 +481,50 @@ class WidgetbookApp extends StatelessWidget {
                       ),
                     ],
                   ),
+                  WidgetbookComponent(
+                    name: 'ListingCardSkeleton',
+                    useCases: [
+                      WidgetbookUseCase(
+                        name: 'Default',
+                        builder: (context) => const Center(
+                          child: SizedBox(
+                            width: 200,
+                            child: ListingCardSkeleton(),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  WidgetbookComponent(
+                    name: 'ListingImageGallery',
+                    useCases: [
+                      WidgetbookUseCase(
+                        name: 'Interactive Gallery',
+                        builder: (context) {
+                          final hasImages = context.knobs.boolean(label: 'Has Images', initialValue: true);
+
+                          return Center(
+                            child: Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: SizedBox(
+                                width: 340,
+                                child: ListingImageGallery(
+                                  images: hasImages
+                                      ? const [
+                                          'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400',
+                                          'https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=400',
+                                          'https://images.unsplash.com/photo-1440133590402-88b9e67d4f9b?w=400',
+                                        ]
+                                      : const [],
+                                  title: 'Vintage Sneakers',
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
                 ],
               ),
               WidgetbookCategory(
@@ -698,6 +742,37 @@ class WidgetbookApp extends StatelessWidget {
                               onCartClick: () {},
                               onAuthClick: () {},
                               onProfileClick: () {},
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              WidgetbookCategory(
+                name: 'Feedback',
+                children: [
+                  WidgetbookComponent(
+                    name: 'MitumbaSkeleton',
+                    useCases: [
+                      WidgetbookUseCase(
+                        name: 'Variants',
+                        builder: (context) {
+                          final variant = context.knobs.object.dropdown(
+                            label: 'Variant',
+                            options: MitumbaSkeletonVariant.values,
+                            labelBuilder: (v) => v.name,
+                            initialOption: MitumbaSkeletonVariant.rounded,
+                          );
+                          final width = context.knobs.double.slider(label: 'Width', initialValue: 200, min: 20, max: 400);
+                          final height = context.knobs.double.slider(label: 'Height', initialValue: 40, min: 10, max: 400);
+
+                          return Center(
+                            child: MitumbaSkeleton(
+                              variant: variant,
+                              width: width,
+                              height: height,
                             ),
                           );
                         },
