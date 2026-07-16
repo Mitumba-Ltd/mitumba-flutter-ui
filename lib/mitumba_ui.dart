@@ -59,6 +59,11 @@ export 'src/components/forms/search_filter_sheet.dart';
 
 // Components — VAZI
 export 'src/components/vazi/vazi_showcase.dart';
+export 'src/components/vazi/vazi_badge.dart';
+export 'src/components/vazi/vazi_outfit_card.dart';
+export 'src/components/vazi/vazi_outfit_card_skeleton.dart';
+export 'src/components/vazi/vazi_feed_section.dart';
+export 'src/components/vazi/complete_this_look_panel.dart';
 
 // Components — Messaging
 export 'src/components/messaging/messaging.dart';
