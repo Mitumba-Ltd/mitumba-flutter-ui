@@ -5,6 +5,8 @@ import 'package:mitumba_ui/src/components/foundation/mitumba_avatar.dart';
 
 void main() {
   testWidgets('TopNav renders announcement, logo, navigation links, and search bar', (WidgetTester tester) async {
+    tester.view.physicalSize = const Size(1280, 800);
+    tester.view.devicePixelRatio = 1.0;
     String searchSubmitted = '';
 
     await tester.pumpWidget(
@@ -35,6 +37,32 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(searchSubmitted, equals('vintage jacket'));
+
+    tester.view.resetPhysicalSize();
+    tester.view.resetDevicePixelRatio();
+  });
+
+  testWidgets('TopNav responsive hiding at mobile viewport width', (WidgetTester tester) async {
+    tester.view.physicalSize = const Size(500, 600);
+    tester.view.devicePixelRatio = 1.0;
+
+    await tester.pumpWidget(
+      MaterialApp(
+        home: const Scaffold(
+          appBar: TopNav(
+            links: [
+              TopNavLink(label: 'Home', href: '/'),
+            ],
+          ),
+        ),
+      ),
+    );
+
+    expect(find.text('Home'), findsNothing); // Hidden on mobile
+    expect(find.byType(TextField), findsNothing); // Hidden on mobile
+
+    tester.view.resetPhysicalSize();
+    tester.view.resetDevicePixelRatio();
   });
 
   testWidgets('TopNav cart count and auth click trigger handlers', (WidgetTester tester) async {
