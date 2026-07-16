@@ -32,7 +32,7 @@ void main() {
       await tester.pumpWidget(wrap(const VAZIShowcase(outfits: _testOutfits)));
       await tester.pump();
 
-      expect(find.text('1 / 2'), findsOneWidget);
+      expect(find.byType(VAZIBadge), findsOneWidget);
       expect(find.text('VAZI'), findsOneWidget);
     });
 
