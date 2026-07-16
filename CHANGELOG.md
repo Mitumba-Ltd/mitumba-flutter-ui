@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.10.0](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/compare/v1.9.1...v1.10.0) (2026-07-16)
+
+
+### Features
+
+* **feedback:** implement MitumbaSkeleton shimmering placeholder widget ([5dbf893](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/commit/5dbf893f18f5435eca209c0b5c898bb91f01cb29))
+* **listing:** export new listing and feedback components in barrel file ([7b43053](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/commit/7b430531edb32bbe1033956f597dc6cb8af78d95))
+* **listing:** implement ListingCardSkeleton loading state placeholder widget ([a545b88](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/commit/a545b88b02e6ac1f3ce2ac0618ce90e124e81974))
+* **listing:** implement ListingImageGallery swipeable product photo viewer ([6ce4759](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/commit/6ce47596d348e072f99b920021f15cc6cb0056a1))
+* **listing:** implement Phase 6 listing primitives and skeleton placeholders ([d23abe9](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/commit/d23abe9adb4aba6affb9331af1dbbe45ca03ef2f))
+
 ## [1.9.1](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/compare/v1.9.0...v1.9.1) (2026-07-16)
 
 
