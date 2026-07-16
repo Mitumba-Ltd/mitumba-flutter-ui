@@ -53,7 +53,7 @@ static const fontFamily = 'OpenSans';
   - Inject `MaterialThemeAddon` with `Mitumba Light` and `Mitumba Dark` brand themes (using Earth / Mitumba Green and Nunito font) so that component previews reflect brand styling.
 - Match the web component API as closely as Dart allows.
 - No third-party UI packages unless absolutely necessary (keep deps minimal).
-- Reference the web source at `../mitumba-ui` for design specs.
+- Reference the web source at `../mitumba-ui` for design specs. Dig deep into the React/MUI components and properties (such as custom MUI styles, padding, transitions, and hover states) of their building blocks. Replicate these token configurations and visual states precisely in Flutter.
 
 ## Web Component Reference
 
