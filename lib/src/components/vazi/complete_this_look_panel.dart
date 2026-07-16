@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../../tokens/colors.dart';
-import '../../tokens/spacing.dart';
 import '../../tokens/typography.dart';
 import '../layout/mitumba_grid.dart';
 import 'vazi_outfit_card.dart';

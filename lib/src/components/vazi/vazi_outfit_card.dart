@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import '../../tokens/colors.dart';
 import '../../tokens/radius.dart';
 import '../../tokens/shadows.dart';
-import '../../tokens/spacing.dart';
 import '../../tokens/typography.dart';
 import '../foundation/mitumba_glass.dart';
 import '../foundation/mitumba_primary_button.dart';

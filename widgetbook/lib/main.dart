@@ -1078,6 +1078,245 @@ class WidgetbookApp extends StatelessWidget {
                   ),
                 ],
               ),
+              WidgetbookCategory(
+                name: 'VAZI AI Stylist',
+                children: [
+                  WidgetbookComponent(
+                    name: 'VAZIBadge',
+                    useCases: [
+                      WidgetbookUseCase(
+                        name: 'Default',
+                        builder: (context) {
+                          final size = context.knobs.object.dropdown(
+                            label: 'Size',
+                            options: VAZIBadgeSize.values,
+                            labelBuilder: (s) => s.name,
+                            initialOption: VAZIBadgeSize.small,
+                          );
+                          return Center(
+                            child: VAZIBadge(size: size),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                  WidgetbookComponent(
+                    name: 'VAZIOutfitCard',
+                    useCases: [
+                      WidgetbookUseCase(
+                        name: 'Default',
+                        builder: (context) {
+                          final isMultiCity = context.knobs.boolean(label: 'Multi-City', initialValue: false);
+                          final sellersCount = context.knobs.int.input(label: 'Sellers Count', initialValue: 2);
+                          final price = context.knobs.int.input(label: 'Price (KES)', initialValue: 5400);
+
+                          return Center(
+                            child: Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: SizedBox(
+                                width: 320,
+                                child: VAZIOutfitCard(
+                                  outfitName: context.knobs.string(label: 'Outfit Name', initialValue: 'Weekend Brunch Chic'),
+                                  items: const [
+                                    VAZIOutfitItem(
+                                      listingId: '1',
+                                      imageUrl: 'https://images.unsplash.com/photo-1551028719-00167b16eac5?w=400',
+                                      garmentType: 'top',
+                                      priceKes: 1800,
+                                      sellerName: 'Jacket Shop',
+                                    ),
+                                    VAZIOutfitItem(
+                                      listingId: '2',
+                                      imageUrl: 'https://images.unsplash.com/photo-1559551409-dadc959f76b8?w=400',
+                                      garmentType: 'bottom',
+                                      priceKes: 2200,
+                                      sellerName: 'Denim Depot',
+                                    ),
+                                    VAZIOutfitItem(
+                                      listingId: '3',
+                                      imageUrl: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400',
+                                      garmentType: 'shoes',
+                                      priceKes: 1400,
+                                      sellerName: 'Sneaker Head',
+                                    ),
+                                  ],
+                                  totalPriceKes: price,
+                                  sellersCount: sellersCount,
+                                  isMultiCity: isMultiCity,
+                                  onTap: () {},
+                                  onBuyAll: () {},
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                  WidgetbookComponent(
+                    name: 'VAZIOutfitCardSkeleton',
+                    useCases: [
+                      WidgetbookUseCase(
+                        name: 'Default',
+                        builder: (context) => const Center(
+                          child: Padding(
+                            padding: EdgeInsets.all(16.0),
+                            child: SizedBox(
+                              width: 320,
+                              child: VAZIOutfitCardSkeleton(),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  WidgetbookComponent(
+                    name: 'VAZIFeedSection',
+                    useCases: [
+                      WidgetbookUseCase(
+                        name: 'Grid Feed',
+                        builder: (context) {
+                          final loading = context.knobs.boolean(label: 'Loading Skeletons', initialValue: false);
+
+                          return SingleChildScrollView(
+                            child: Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: VAZIFeedSection(
+                                loading: loading,
+                                outfits: [
+                                  VAZIOutfitCard(
+                                    outfitName: 'Weekend Chill',
+                                    items: const [
+                                      VAZIOutfitItem(
+                                        listingId: '1',
+                                        imageUrl: 'https://images.unsplash.com/photo-1551028719-00167b16eac5?w=400',
+                                        garmentType: 'top',
+                                        priceKes: 1800,
+                                        sellerName: 'Shop A',
+                                      ),
+                                    ],
+                                    totalPriceKes: 1800,
+                                    sellersCount: 1,
+                                    onTap: () {},
+                                  ),
+                                  VAZIOutfitCard(
+                                    outfitName: 'Street Vibe',
+                                    items: const [
+                                      VAZIOutfitItem(
+                                        listingId: '2',
+                                        imageUrl: 'https://images.unsplash.com/photo-1559551409-dadc959f76b8?w=400',
+                                        garmentType: 'bottom',
+                                        priceKes: 2200,
+                                        sellerName: 'Shop B',
+                                      ),
+                                    ],
+                                    totalPriceKes: 2200,
+                                    sellersCount: 1,
+                                    onTap: () {},
+                                  ),
+                                ],
+                                onSeeAll: () {},
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                  WidgetbookComponent(
+                    name: 'CompleteThisLookPanel',
+                    useCases: [
+                      WidgetbookUseCase(
+                        name: 'Recommendations',
+                        builder: (context) {
+                          final loading = context.knobs.boolean(label: 'Loading Skeletons', initialValue: false);
+
+                          return SingleChildScrollView(
+                            child: Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: CompleteThisLookPanel(
+                                loading: loading,
+                                outfits: [
+                                  VAZIOutfitCard(
+                                    outfitName: 'Chic Style',
+                                    items: const [
+                                      VAZIOutfitItem(
+                                        listingId: '1',
+                                        imageUrl: 'https://images.unsplash.com/photo-1551028719-00167b16eac5?w=400',
+                                        garmentType: 'top',
+                                        priceKes: 2000,
+                                        sellerName: 'Shop C',
+                                      ),
+                                    ],
+                                    totalPriceKes: 2000,
+                                    sellersCount: 1,
+                                    onTap: () {},
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                  WidgetbookComponent(
+                    name: 'VAZIShowcase',
+                    useCases: [
+                      WidgetbookUseCase(
+                        name: '3D Feed',
+                        builder: (context) {
+                          return VAZIShowcase(
+                            outfits: [
+                              VAZIShowcaseOutfit(
+                                id: 'o1',
+                                modelMediaUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=600',
+                                modelMediaType: VAZIMediaType.image,
+                                items: const [
+                                  VAZIShowcaseItem(
+                                    id: 'i1',
+                                    title: 'Over-sized Graphic Tee',
+                                    price: 1800,
+                                    imageUrl: 'https://images.unsplash.com/photo-1551028719-00167b16eac5?w=200',
+                                  ),
+                                  VAZIShowcaseItem(
+                                    id: 'i2',
+                                    title: 'Cuffed Cargo Trousers',
+                                    price: 3000,
+                                    imageUrl: 'https://images.unsplash.com/photo-1559551409-dadc959f76b8?w=200',
+                                  ),
+                                ],
+                                totalPrice: 4800,
+                              ),
+                              VAZIShowcaseOutfit(
+                                id: 'o2',
+                                modelMediaUrl: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=600',
+                                modelMediaType: VAZIMediaType.image,
+                                items: const [
+                                  VAZIShowcaseItem(
+                                    id: 'i3',
+                                    title: 'Floral Summer Dress',
+                                    price: 3200,
+                                    imageUrl: 'https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=200',
+                                  ),
+                                  VAZIShowcaseItem(
+                                    id: 'i4',
+                                    title: 'Vintage Leather Sandals',
+                                    price: 2000,
+                                    imageUrl: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=200',
+                                  ),
+                                ],
+                                totalPrice: 5200,
+                              ),
+                            ],
+                            onItemClick: (_) {},
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ],
           ),
           WidgetbookCategory(
