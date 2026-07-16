@@ -43,6 +43,14 @@ static const fontFamily = 'OpenSans';
 - Atomic commits always. One widget per commit.
 - Never push to main. Branch → PR → merge.
 - Every PR must pass `flutter analyze` + `flutter test`.
+- CI Analysis Rules:
+  - If deprecated member warnings (e.g. `withOpacity`) block `flutter analyze` on CI, use `deprecated_member_use: ignore` in `analysis_options.yaml` but actively use modern equivalents (like `withValues` or `initialValue`) in source code.
+- Sequential Release Merge Pipeline:
+  - When releasing multiple components, merge them one-by-one sequentially.
+  - For each component: checkout branch, merge `main` into the branch, resolve conflicts, push, merge the feature PR, wait for the CI run to pass and `release-please` to open the release PR, merge the release PR to cut the version, and only then proceed to the next component.
+- Widgetbook Structure & Branding:
+  - Organize components in folders/subcategories: `Foundation`, `Marketplace`, `Navigation`, `Layout`, `Pages`.
+  - Inject `MaterialThemeAddon` with `Mitumba Light` and `Mitumba Dark` brand themes (using Earth / Mitumba Green and Nunito font) so that component previews reflect brand styling.
 - Match the web component API as closely as Dart allows.
 - No third-party UI packages unless absolutely necessary (keep deps minimal).
 - Reference the web source at `../mitumba-ui` for design specs.
