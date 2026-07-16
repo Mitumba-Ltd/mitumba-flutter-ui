@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.12.0](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/compare/v1.11.0...v1.12.0) (2026-07-16)
+
+
+### Features
+
+* **vazi:** export new VAZI components in barrel file ([9c87b90](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/commit/9c87b908efcaaebc541b0d8b8adbdc4d46a06988))
+* **vazi:** implement Phase 7 VAZI AI stylist curation components ([95692bc](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/commit/95692bc87b6dd076bdcc997731191a50dcfe91e1))
+* **vazi:** implement VAZIBadge curation indicator widget ([06ba697](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/commit/06ba69720909372fb82ccd709ddf6e59a11110c0))
+* **vazi:** implement VAZIFeedSection and CompleteThisLookPanel suggestion grids ([acb5924](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/commit/acb5924217983a434ad9b38af4352ece9a4febc1))
+* **vazi:** implement VAZIOutfitCard and VAZIOutfitCardSkeleton collage widgets ([e9a595d](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/commit/e9a595d0f21d9446b7d481133fcbc279025175af))
+* **widgetbook:** register VAZI components and resolve unused imports ([dd159ae](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/commit/dd159ae898b65af740c72b9320faadbc1e0e7539))
+
 ## [1.11.0](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/compare/v1.10.0...v1.11.0) (2026-07-16)
 
 
