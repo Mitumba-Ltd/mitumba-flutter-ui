@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.16.0](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/compare/v1.15.0...v1.16.0) (2026-07-17)
+
+
+### Features
+
+* **commerce-feedback:** implement PriceTag, DeliveryBadge, CartItem, EscrowStatusBanner, and MitumbaBanner ([4f7bc92](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/commit/4f7bc923918b67367584df7a6e3931bbaac6afa3))
+
 ## [1.15.0](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/compare/v1.14.0...v1.15.0) (2026-07-17)
 
 
