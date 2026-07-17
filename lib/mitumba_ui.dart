@@ -67,3 +67,14 @@ export 'src/components/vazi/complete_this_look_panel.dart';
 
 // Components — Messaging
 export 'src/components/messaging/messaging.dart';
+
+// Components — Data
+export 'src/components/data/stats_card.dart';
+export 'src/components/data/activity_feed.dart';
+
+// Components — Selection
+export 'src/components/selection/mitumba_checkbox.dart';
+export 'src/components/selection/mitumba_radio.dart';
+export 'src/components/selection/mitumba_switch.dart';
+export 'src/components/selection/mitumba_slider.dart';
+export 'src/components/selection/style_picker.dart';

@@ -1317,6 +1317,263 @@ class WidgetbookApp extends StatelessWidget {
                   ),
                 ],
               ),
+              WidgetbookCategory(
+                name: 'Data Visualizations',
+                children: [
+                  WidgetbookComponent(
+                    name: 'StatsCard',
+                    useCases: [
+                      WidgetbookUseCase(
+                        name: 'Variants',
+                        builder: (context) {
+                          final variant = context.knobs.object.dropdown(
+                            label: 'Variant',
+                            options: StatsCardVariant.values,
+                            labelBuilder: (v) => v.name,
+                            initialOption: StatsCardVariant.standard,
+                          );
+                          final trendDirection = context.knobs.object.dropdown(
+                            label: 'Trend Direction',
+                            options: const ['up', 'down', 'neutral'],
+                            initialOption: 'up',
+                          );
+                          final showTrend = context.knobs.boolean(label: 'Show Trend', initialValue: true);
+
+                          return Center(
+                            child: Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: SizedBox(
+                                width: 280,
+                                child: StatsCard(
+                                  label: context.knobs.string(label: 'Label', initialValue: 'Total Sales'),
+                                  value: context.knobs.string(label: 'Value', initialValue: '124,500'),
+                                  unit: context.knobs.string(label: 'Unit', initialValue: 'KES'),
+                                  icon: const Icon(Icons.show_chart),
+                                  variant: variant,
+                                  trend: showTrend
+                                      ? StatsCardTrend(
+                                          direction: trendDirection,
+                                          percent: 18.0,
+                                          label: 'vs last week',
+                                        )
+                                      : null,
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                  WidgetbookComponent(
+                    name: 'ActivityFeed',
+                    useCases: [
+                      WidgetbookUseCase(
+                        name: 'Timeline',
+                        builder: (context) {
+                          final variant = context.knobs.object.dropdown(
+                            label: 'Variant',
+                            options: ActivityFeedVariant.values,
+                            labelBuilder: (v) => v.name,
+                            initialOption: ActivityFeedVariant.standard,
+                          );
+                          final showTimeline = context.knobs.boolean(label: 'Show Timeline Line', initialValue: true);
+                          final loading = context.knobs.boolean(label: 'Loading Skeletons', initialValue: false);
+
+                          return SingleChildScrollView(
+                            padding: const EdgeInsets.all(16.0),
+                            child: ActivityFeed(
+                              loading: loading,
+                              variant: variant,
+                              showTimeline: showTimeline,
+                              events: const [
+                                ActivityEvent(
+                                  id: '1',
+                                  type: ActivityType.order,
+                                  title: 'Order Completed',
+                                  subtitle: 'Seller shipped order #8492 via G4S.',
+                                  timestamp: '2 min ago',
+                                ),
+                                ActivityEvent(
+                                  id: '2',
+                                  type: ActivityType.sti_change,
+                                  title: 'STI Rating Increased',
+                                  subtitle: 'Seller rating rose to 9.2/10!',
+                                  timestamp: '1 hour ago',
+                                ),
+                                ActivityEvent(
+                                  id: '3',
+                                  type: ActivityType.payout,
+                                  title: 'Payout Disbursed',
+                                  subtitle: 'M-PESA transaction of KES 8,400 completed.',
+                                  timestamp: '1 day ago',
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              WidgetbookCategory(
+                name: 'Selections',
+                children: [
+                  WidgetbookComponent(
+                    name: 'MitumbaCheckbox',
+                    useCases: [
+                      WidgetbookUseCase(
+                        name: 'Default',
+                        builder: (context) {
+                          final label = context.knobs.stringOrNull(label: 'Label', initialValue: 'Agree to terms and conditions');
+                          final disabled = context.knobs.boolean(label: 'Disabled', initialValue: false);
+                          final indeterminate = context.knobs.boolean(label: 'Indeterminate', initialValue: false);
+
+                          return Center(
+                            child: StatefulBuilder(
+                              builder: (context, setState) {
+                                return MitumbaCheckbox(
+                                  checked: context.knobs.boolean(label: 'Checked State', initialValue: false),
+                                  label: label,
+                                  disabled: disabled,
+                                  indeterminate: indeterminate,
+                                  onChange: (val) {},
+                                );
+                              },
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                  WidgetbookComponent(
+                    name: 'MitumbaRadio',
+                    useCases: [
+                      WidgetbookUseCase(
+                        name: 'Default',
+                        builder: (context) {
+                          final label = context.knobs.stringOrNull(label: 'Label', initialValue: 'Select Option');
+                          final disabled = context.knobs.boolean(label: 'Disabled', initialValue: false);
+
+                          return Center(
+                            child: MitumbaRadio(
+                              selected: context.knobs.boolean(label: 'Selected State', initialValue: true),
+                              value: 'value',
+                              label: label,
+                              disabled: disabled,
+                              onChange: (_) {},
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                  WidgetbookComponent(
+                    name: 'MitumbaSwitch',
+                    useCases: [
+                      WidgetbookUseCase(
+                        name: 'Default',
+                        builder: (context) {
+                          final label = context.knobs.stringOrNull(label: 'Label', initialValue: 'Toggle Dark Mode');
+                          final disabled = context.knobs.boolean(label: 'Disabled', initialValue: false);
+
+                          return Center(
+                            child: MitumbaSwitch(
+                              on: context.knobs.boolean(label: 'Switch State', initialValue: false),
+                              label: label,
+                              disabled: disabled,
+                              onChange: (_) {},
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                  WidgetbookComponent(
+                    name: 'MitumbaSlider',
+                    useCases: [
+                      WidgetbookUseCase(
+                        name: 'Single Value',
+                        builder: (context) {
+                          final label = context.knobs.stringOrNull(label: 'Label', initialValue: 'Volume Level');
+                          final disabled = context.knobs.boolean(label: 'Disabled', initialValue: false);
+                          final stepValue = context.knobs.double.slider(label: 'Step', initialValue: 1.0, min: 1.0, max: 10.0);
+
+                          return Center(
+                            child: Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: MitumbaSlider(
+                                value: context.knobs.double.slider(label: 'Slider Value', initialValue: 45.0, min: 0.0, max: 100.0),
+                                label: label,
+                                disabled: disabled,
+                                step: stepValue,
+                                onChange: (_) {},
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                      WidgetbookUseCase(
+                        name: 'Range Values',
+                        builder: (context) {
+                          final disabled = context.knobs.boolean(label: 'Disabled', initialValue: false);
+
+                          return Center(
+                            child: Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: MitumbaSlider(
+                                rangeValue: const RangeValues(25.0, 75.0),
+                                min: 0.0,
+                                max: 100.0,
+                                label: 'Price Bounds (KES)',
+                                disabled: disabled,
+                                onChange: (_) {},
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                  WidgetbookComponent(
+                    name: 'StylePicker',
+                    useCases: [
+                      WidgetbookUseCase(
+                        name: 'Grid Picker',
+                        builder: (context) {
+                          final cols = context.knobs.int.input(label: 'Columns', initialValue: 2);
+
+                          return SingleChildScrollView(
+                            padding: const EdgeInsets.all(16.0),
+                            child: StylePicker(
+                              title: 'Navigation Layout',
+                              subtitle: 'Select your preferred main header visual styling.',
+                              value: 'top',
+                              columns: cols,
+                              options: const [
+                                StylePickerOption(
+                                  id: 'top',
+                                  label: 'Top Nav Standard',
+                                  description: 'Static horizontal navigation header',
+                                  preview: Center(child: Text('Top Nav')),
+                                ),
+                                StylePickerOption(
+                                  id: 'sidebar',
+                                  label: 'Sidebar Collapsible',
+                                  description: 'Slide-out vertical panel',
+                                  preview: Center(child: Text('Sidebar Nav')),
+                                ),
+                              ],
+                              onChange: (_) {},
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ],
           ),
           WidgetbookCategory(
