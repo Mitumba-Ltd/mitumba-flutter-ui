@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.17.0](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/compare/v1.16.0...v1.17.0) (2026-07-17)
+
+
+### Features
+
+* **commerce-remaining:** implement remaining Commerce components and MitumbaModal ([a2f53bd](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/commit/a2f53bd944dd9122b50d1c2d193cc014f5c7f1a6))
+* **components:** implement Phase 10 & 11 form and feedback widgets and overhaul VAZIShowcase ([0f88767](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/commit/0f8876714c1298644274bfd0a903d9af21118997))
+
 ## [1.16.0](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/compare/v1.15.0...v1.16.0) (2026-07-17)
 
 
