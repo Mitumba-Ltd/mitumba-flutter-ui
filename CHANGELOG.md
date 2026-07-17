@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.14.0](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/compare/v1.13.0...v1.14.0) (2026-07-17)
+
+
+### Features
+
+* **date-picker:** implement MitumbaDatePicker popover component ([a3532d2](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/commit/a3532d2b74c65924ce59f380f082f5d8c8be9f12))
+* **date-picker:** implement MitumbaDatePicker visual popover component ([f562150](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/commit/f562150750f0eea1e50cb4cb97894fbc87950bca))
+
 ## [1.13.0](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/compare/v1.12.1...v1.13.0) (2026-07-17)
 
 
