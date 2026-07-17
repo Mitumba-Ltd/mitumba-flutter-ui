@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.15.0](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/compare/v1.14.0...v1.15.0) (2026-07-17)
+
+
+### Features
+
+* **vazi-seller:** implement outstanding VAZIHeroSpotlight, STIBreakdownPanel, and StoreCard ([5019a2e](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/commit/5019a2ea5243d1f5438eaf208860742e04106884))
+* **vazi-seller:** implement outstanding VAZIHeroSpotlight, STIBreakdownPanel, and StoreCard ([abf9f04](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/commit/abf9f04a2eafabc061601afb898f20a3afa74cf1))
+
 ## [1.14.0](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/compare/v1.13.0...v1.14.0) (2026-07-17)
 
 
