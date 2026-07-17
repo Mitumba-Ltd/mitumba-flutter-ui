@@ -78,3 +78,4 @@ export 'src/components/selection/mitumba_radio.dart';
 export 'src/components/selection/mitumba_switch.dart';
 export 'src/components/selection/mitumba_slider.dart';
 export 'src/components/selection/style_picker.dart';
+export 'src/components/selection/mitumba_date_picker.dart';

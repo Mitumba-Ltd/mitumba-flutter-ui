@@ -1421,6 +1421,39 @@ class WidgetbookApp extends StatelessWidget {
                 name: 'Selections',
                 children: [
                   WidgetbookComponent(
+                    name: 'MitumbaDatePicker',
+                    useCases: [
+                      WidgetbookUseCase(
+                        name: 'Default',
+                        builder: (context) {
+                          final label = context.knobs.stringOrNull(label: 'Label', initialValue: 'Shipping Date');
+                          final hint = context.knobs.string(label: 'Hint', initialValue: 'Pick date');
+                          final disabled = context.knobs.boolean(label: 'Disabled', initialValue: false);
+
+                          return Center(
+                            child: Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: SizedBox(
+                                width: 280,
+                                child: StatefulBuilder(
+                                  builder: (context, setState) {
+                                    return MitumbaDatePicker(
+                                      value: DateTime.now(),
+                                      label: label,
+                                      hint: hint,
+                                      disabled: disabled,
+                                      onChange: (_) {},
+                                    );
+                                  },
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                  WidgetbookComponent(
                     name: 'MitumbaCheckbox',
                     useCases: [
                       WidgetbookUseCase(
