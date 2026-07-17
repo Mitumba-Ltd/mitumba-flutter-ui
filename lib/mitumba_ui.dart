@@ -43,12 +43,18 @@ export 'src/components/commerce/price_tag.dart';
 export 'src/components/commerce/delivery_badge.dart';
 export 'src/components/commerce/cart_item.dart';
 export 'src/components/commerce/escrow_status_banner.dart';
+export 'src/components/commerce/raise_dispute_modal.dart';
+export 'src/components/commerce/dispute_evidence_gallery.dart';
+export 'src/components/commerce/seller_dispute_response_card.dart';
+export 'src/components/commerce/order_summary_card.dart';
+export 'src/components/commerce/order_card.dart';
 
 // Components — Feedback
 export 'src/components/feedback/empty_state.dart';
 export 'src/components/feedback/mitumba_toast.dart';
 export 'src/components/feedback/mitumba_skeleton.dart';
 export 'src/components/feedback/mitumba_banner.dart';
+export 'src/components/feedback/mitumba_modal.dart';
 
 // Components — Layout
 export 'src/components/layout/auth_page.dart';

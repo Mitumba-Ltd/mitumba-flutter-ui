@@ -894,6 +894,31 @@ class WidgetbookApp extends StatelessWidget {
                       ),
                     ],
                   ),
+                  WidgetbookComponent(
+                    name: 'MitumbaModal',
+                    useCases: [
+                      WidgetbookUseCase(
+                        name: 'Default',
+                        builder: (context) {
+                          final title = context.knobs.string(label: 'Title', initialValue: 'Payment Processing');
+                          final subtitle = context.knobs.stringOrNull(label: 'Subtitle', initialValue: 'Transacting with Mitumba Escrow');
+                          final loading = context.knobs.boolean(label: 'Loading Overlay', initialValue: false);
+
+                          return Center(
+                            child: MitumbaModal(
+                              title: title,
+                              subtitle: subtitle,
+                              loading: loading,
+                              child: const Padding(
+                                padding: EdgeInsets.all(16.0),
+                                child: Text('This is the content within the MitumbaModal container.'),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
                 ],
               ),
               WidgetbookCategory(
@@ -1881,6 +1906,158 @@ class WidgetbookApp extends StatelessWidget {
                                   onRemove: () {},
                                   onQuantityChange: (_) {},
                                   onSizeChange: (_) {},
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                  WidgetbookComponent(
+                    name: 'RaiseDisputeModal',
+                    useCases: [
+                      WidgetbookUseCase(
+                        name: 'Default',
+                        builder: (context) {
+                          final orderId = context.knobs.string(label: 'Order ID', initialValue: '29841');
+                          final submitting = context.knobs.boolean(label: 'Submitting State', initialValue: false);
+
+                          return Center(
+                            child: RaiseDisputeModal(
+                              orderShortId: orderId,
+                              submitting: submitting,
+                              onSubmit: (_) {},
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                  WidgetbookComponent(
+                    name: 'DisputeEvidenceGallery',
+                    useCases: [
+                      WidgetbookUseCase(
+                        name: 'Default',
+                        builder: (context) {
+                          return const SingleChildScrollView(
+                            padding: EdgeInsets.all(16.0),
+                            child: DisputeEvidenceGallery(
+                              evidence: [
+                                DisputeEvidenceItem(
+                                  type: 'image',
+                                  content: 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=100',
+                                  uploaderRole: UploaderRole.buyer,
+                                  createdAt: '3 hours ago',
+                                ),
+                                DisputeEvidenceItem(
+                                  type: 'text',
+                                  content: 'Package arrived open with item missing.',
+                                  uploaderRole: UploaderRole.buyer,
+                                  createdAt: '3 hours ago',
+                                ),
+                                DisputeEvidenceItem(
+                                  type: 'text',
+                                  content: 'Double-sealed bag dispatched via rider.',
+                                  uploaderRole: UploaderRole.seller,
+                                  createdAt: '1 hour ago',
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                  WidgetbookComponent(
+                    name: 'SellerDisputeResponseCard',
+                    useCases: [
+                      WidgetbookUseCase(
+                        name: 'Default',
+                        builder: (context) {
+                          final reason = context.knobs.string(label: 'Reason', initialValue: 'Damaged Item');
+                          final desc = context.knobs.string(label: 'Description', initialValue: 'The buyer claims the jacket is ripped.');
+                          final submitting = context.knobs.boolean(label: 'Submitting State', initialValue: false);
+
+                          return SingleChildScrollView(
+                            padding: const EdgeInsets.all(16.0),
+                            child: SellerDisputeResponseCard(
+                              reason: reason,
+                              description: desc,
+                              submitting: submitting,
+                              onAccept: () {},
+                              onContest: (_, __) {},
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                  WidgetbookComponent(
+                    name: 'OrderSummaryCard',
+                    useCases: [
+                      WidgetbookUseCase(
+                        name: 'Default',
+                        builder: (context) {
+                          final total = context.knobs.double.slider(label: 'Total (KES)', initialValue: 6200, min: 0, max: 20000);
+                          final label = context.knobs.string(label: 'Action Label', initialValue: 'Checkout');
+                          final loading = context.knobs.boolean(label: 'Loading State', initialValue: false);
+                          final trustLine = context.knobs.stringOrNull(label: 'Trust Line', initialValue: 'Escrow Protected Payment');
+
+                          return Center(
+                            child: Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: SizedBox(
+                                width: 340,
+                                child: OrderSummaryCard(
+                                  items: const [
+                                    OrderSummaryItem(label: 'Subtotal', amountKes: 6400),
+                                    OrderSummaryItem(label: 'Delivery', amountKes: 300),
+                                    OrderSummaryItem(label: 'Discounts', amountKes: 500, isDiscount: true),
+                                  ],
+                                  totalKes: total,
+                                  actionLabel: label,
+                                  onAction: () {},
+                                  loading: loading,
+                                  trustLine: trustLine,
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                  WidgetbookComponent(
+                    name: 'OrderCard',
+                    useCases: [
+                      WidgetbookUseCase(
+                        name: 'Default',
+                        builder: (context) {
+                          final title = context.knobs.string(label: 'Title', initialValue: 'Vintage Denim Set + Boots');
+                          final price = context.knobs.double.slider(label: 'Total (KES)', initialValue: 7400, min: 0, max: 20000);
+                          final delivery = context.knobs.double.slider(label: 'Delivery Fee (KES)', initialValue: 350, min: 0, max: 1000);
+                          final status = context.knobs.object.dropdown(
+                            label: 'Status',
+                            options: OrderCardStatus.values,
+                            labelBuilder: (s) => s.name,
+                            initialOption: OrderCardStatus.shipped,
+                          );
+
+                          return Center(
+                            child: Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: SizedBox(
+                                width: 340,
+                                child: OrderCard(
+                                  orderShortId: 'tr894',
+                                  title: title,
+                                  imageUrl: 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=200',
+                                  totalKes: price,
+                                  deliveryFeeKes: delivery,
+                                  status: status,
+                                  createdAt: '2 days ago',
+                                  onClick: () {},
                                 ),
                               ),
                             ),
