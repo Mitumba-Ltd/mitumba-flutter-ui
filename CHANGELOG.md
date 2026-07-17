@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.13.0](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/compare/v1.12.1...v1.13.0) (2026-07-17)
+
+
+### Features
+
+* **data-selection:** implement Phase 8 Data and Selection primitives ([e26c8a3](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/commit/e26c8a3e0c3198ec71d655745a541a95f7dc5132))
+* **data-selection:** implement Phase 8 Data and Selection primitives ([b6967f8](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/commit/b6967f827551947b9cd105554322f6c54c08c9d7))
+
 ## [1.12.1](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/compare/v1.12.0...v1.12.1) (2026-07-16)
 
 
