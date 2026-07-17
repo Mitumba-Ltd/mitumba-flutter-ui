@@ -419,6 +419,25 @@ class WidgetbookApp extends StatelessWidget {
                       ),
                     ],
                   ),
+                  WidgetbookComponent(
+                    name: 'AuthSubmitButton',
+                    useCases: [
+                      WidgetbookUseCase(
+                        name: 'Interactive',
+                        builder: (context) {
+                          return Center(
+                            child: AuthSubmitButton(
+                              label: context.knobs.string(label: 'Label', initialValue: 'Verify & Submit'),
+                              loading: context.knobs.boolean(label: 'Loading', initialValue: false),
+                              disabled: context.knobs.boolean(label: 'Disabled', initialValue: false),
+                              fullWidth: context.knobs.boolean(label: 'Full Width', initialValue: false),
+                              onClick: () {},
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
                 ],
               ),
               WidgetbookCategory(
@@ -632,6 +651,25 @@ class WidgetbookApp extends StatelessWidget {
                             onLogin: (_, __, ___) {},
                             onSignUp: (_, __) {},
                             onForgotPassword: (_) {},
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                  WidgetbookComponent(
+                    name: 'EmailVerificationPage',
+                    useCases: [
+                      WidgetbookUseCase(
+                        name: 'Default',
+                        builder: (context) {
+                          return EmailVerificationPage(
+                            email: context.knobs.string(label: 'Email', initialValue: 'buyer@mitumba.com'),
+                            onVerify: (code) {},
+                            onResend: () {},
+                            loading: context.knobs.boolean(label: 'Loading', initialValue: false),
+                            error: context.knobs.stringOrNull(label: 'Error', initialValue: null),
+                            resendSuccess: context.knobs.boolean(label: 'Resend Success', initialValue: false),
+                            onGoBack: () {},
                           );
                         },
                       ),
@@ -1289,6 +1327,31 @@ class WidgetbookApp extends StatelessWidget {
                               requireTotp: context.knobs.boolean(label: 'Require TOTP', initialValue: true),
                               blockers: blockers,
                               onConfirm: ({code}) async {},
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                  WidgetbookComponent(
+                    name: 'UnauthenticatedState',
+                    useCases: [
+                      WidgetbookUseCase(
+                        name: 'Default',
+                        builder: (context) {
+                          final hasSecondary = context.knobs.boolean(label: 'Secondary Action', initialValue: true);
+                          return Center(
+                            child: UnauthenticatedState(
+                              title: context.knobs.string(label: 'Title', initialValue: 'Please sign in to access chat'),
+                              subtitle: context.knobs.string(label: 'Subtitle', initialValue: 'You need an account to message buyers and sellers directly.'),
+                              signInLabel: context.knobs.string(label: 'Sign In Label', initialValue: 'Sign In'),
+                              onSignIn: () {},
+                              secondaryAction: hasSecondary
+                                  ? MitumbaSecondaryAction(
+                                      label: 'Browse catalog instead',
+                                      onClick: () {},
+                                    )
+                                  : null,
                             ),
                           );
                         },

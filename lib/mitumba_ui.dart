@@ -14,6 +14,7 @@ export 'src/components/foundation/mitumba_chip.dart';
 export 'src/components/foundation/mitumba_text_field.dart';
 export 'src/components/foundation/mitumba_select.dart';
 export 'src/components/foundation/mitumba_glass.dart';
+export 'src/components/foundation/auth_submit_button.dart';
 
 // Components — Listing
 export 'src/components/listing/listing_card.dart';
@@ -58,6 +59,7 @@ export 'src/components/feedback/mitumba_modal.dart';
 export 'src/components/feedback/error_state.dart';
 export 'src/components/feedback/offline_banner.dart';
 export 'src/components/feedback/destructive_confirm_dialog.dart';
+export 'src/components/feedback/unauthenticated_state.dart';
 
 // Components — Layout
 export 'src/components/layout/auth_page.dart';
@@ -69,6 +71,7 @@ export 'src/components/layout/mitumba_grid.dart';
 export 'src/components/layout/profile_card.dart';
 export 'src/components/layout/profile_nav_list.dart';
 export 'src/components/layout/form_card.dart';
+export 'src/components/layout/email_verification_page.dart';
 
 // Components — Forms
 export 'src/components/forms/search_filter_sheet.dart';
