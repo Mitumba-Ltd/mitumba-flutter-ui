@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../../tokens/colors.dart';
 import '../../tokens/radius.dart';
-import '../../tokens/spacing.dart';
-import '../../tokens/shadows.dart';
 
 /// Kenya-specific phone number input with +254 prefix.
 /// Formats as 7XX XXX XXX on blur.

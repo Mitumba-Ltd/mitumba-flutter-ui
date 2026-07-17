@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import '../../tokens/colors.dart';
 import '../../tokens/radius.dart';
 import '../../tokens/spacing.dart';
-import '../../tokens/shadows.dart';
 import '../../tokens/typography.dart';
 
 /// 6-digit OTP entry field with auto-advance and paste support.

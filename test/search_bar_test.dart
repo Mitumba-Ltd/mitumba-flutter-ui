@@ -5,7 +5,6 @@ import 'package:mitumba_ui/mitumba_ui.dart';
 void main() {
   testWidgets('MitumbaSearchBar input, submit, clear and suggestions', (WidgetTester tester) async {
     String value = '';
-    String submittedQuery = '';
     String clickedSuggestion = '';
 
     final suggestions = ['Vintage jacket', 'Nike shoes', 'Levis 501'];
@@ -18,7 +17,7 @@ void main() {
               return MitumbaSearchBar(
                 value: value,
                 onChanged: (val) => setState(() => value = val),
-                onSubmit: (q) => setState(() => submittedQuery = q),
+                onSubmit: (_) {},
                 suggestions: suggestions,
                 onSuggestionClick: (s) => setState(() => clickedSuggestion = s),
               );

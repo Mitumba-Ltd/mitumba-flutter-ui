@@ -23,7 +23,6 @@ void main() {
     ];
 
     bool addTapped = false;
-    String? setPrimaryId;
 
     await tester.pumpWidget(
       MaterialApp(
@@ -34,7 +33,7 @@ void main() {
             onEnable: (_) {},
             onDisable: (_) {},
             onDelete: (_) {},
-            onSetPrimary: (id) => setPrimaryId = id,
+            onSetPrimary: (_) {},
           ),
         ),
       ),

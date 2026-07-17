@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../tokens/colors.dart';
 import '../../tokens/radius.dart';
-import '../../tokens/spacing.dart';
 import '../../tokens/shadows.dart';
 
 /// Search bar with optional suggestions dropdown.
