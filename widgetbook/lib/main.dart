@@ -482,6 +482,90 @@ class WidgetbookApp extends StatelessWidget {
                     ],
                   ),
                   WidgetbookComponent(
+                    name: 'STIScoreChip',
+                    useCases: [
+                      WidgetbookUseCase(
+                        name: 'Default',
+                        builder: (context) {
+                          final score = context.knobs.int.slider(label: 'Score', initialValue: 85, min: 0, max: 100);
+                          return Center(
+                            child: STIScoreChip(score: score),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                  WidgetbookComponent(
+                    name: 'STIBreakdownPanel',
+                    useCases: [
+                      WidgetbookUseCase(
+                        name: 'Default',
+                        builder: (context) {
+                          final score = context.knobs.int.slider(label: 'Score', initialValue: 85, min: 0, max: 100);
+                          final fulfillment = context.knobs.double.slider(label: 'Fulfillment Rate', initialValue: 0.96, min: 0.0, max: 1.0);
+                          final accuracy = context.knobs.double.slider(label: 'Accuracy Rate', initialValue: 0.98, min: 0.0, max: 1.0);
+
+                          return SingleChildScrollView(
+                            padding: const EdgeInsets.all(16.0),
+                            child: Center(
+                              child: SizedBox(
+                                width: 340,
+                                child: STIBreakdownPanel(
+                                  score: score,
+                                  fulfillmentRate: fulfillment,
+                                  accuracyRate: accuracy,
+                                  avgResponseHours: 1.5,
+                                  daysActive: 140,
+                                  recentEvents: const [
+                                    STIEvent(
+                                      type: 'positive',
+                                      reason: 'Fast shipping on #2984',
+                                      timestamp: '3 hours ago',
+                                      pointsChange: 2,
+                                    ),
+                                    STIEvent(
+                                      type: 'negative',
+                                      reason: 'Late response on thread',
+                                      timestamp: '1 day ago',
+                                      pointsChange: 1,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                  WidgetbookComponent(
+                    name: 'StoreCard',
+                    useCases: [
+                      WidgetbookUseCase(
+                        name: 'Default',
+                        builder: (context) {
+                          final name = context.knobs.string(label: 'Store Name', initialValue: 'Gikomba Luxury');
+                          final subtitle = context.knobs.stringOrNull(label: 'Subtitle', initialValue: '12 active listings');
+                          final hasClick = context.knobs.boolean(label: 'Actionable', initialValue: true);
+
+                          return Center(
+                            child: Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: SizedBox(
+                                width: 340,
+                                child: StoreCard(
+                                  name: name,
+                                  subtitle: subtitle,
+                                  onClick: hasClick ? () {} : null,
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                  WidgetbookComponent(
                     name: 'ListingCardSkeleton',
                     useCases: [
                       WidgetbookUseCase(
@@ -1310,6 +1394,53 @@ class WidgetbookApp extends StatelessWidget {
                               ),
                             ],
                             onItemClick: (_) {},
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                  WidgetbookComponent(
+                    name: 'VAZIHeroSpotlight',
+                    useCases: [
+                      WidgetbookUseCase(
+                        name: 'Featured Models',
+                        builder: (context) {
+                          final title = context.knobs.string(label: 'Title', initialValue: 'VAZI Featured');
+
+                          return SingleChildScrollView(
+                            padding: const EdgeInsets.all(16.0),
+                            child: VAZIHeroSpotlight(
+                              title: title,
+                              outfits: const [
+                                VAZIHeroOutfit(
+                                  id: 'outfit-1',
+                                  modelMediaUrl: 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=400',
+                                  modelMediaType: 'image',
+                                  modelAlt: 'Summer look',
+                                  name: 'Summer Breeze Look',
+                                  totalPrice: 4500,
+                                  items: [
+                                    VAZIShowcaseItem(id: 'item-1', imageUrl: 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=100', price: 2000, title: 'Shirt'),
+                                    VAZIShowcaseItem(id: 'item-2', imageUrl: 'https://images.unsplash.com/photo-1551028719-00167b16eac5?w=100', price: 2500, title: 'Pants'),
+                                  ],
+                                ),
+                                VAZIHeroOutfit(
+                                  id: 'outfit-2',
+                                  modelMediaUrl: 'https://images.unsplash.com/photo-1539109136881-3be0616acf4b?w=400',
+                                  modelMediaType: 'image',
+                                  modelAlt: 'Urban style',
+                                  name: 'Streetwear Fusion',
+                                  totalPrice: 6200,
+                                  items: [
+                                    VAZIShowcaseItem(id: 'item-3', imageUrl: 'https://images.unsplash.com/photo-1539109136881-3be0616acf4b?w=100', price: 3200, title: 'Jacket'),
+                                    VAZIShowcaseItem(id: 'item-4', imageUrl: 'https://images.unsplash.com/photo-1559551409-dadc959f76b8?w=100', price: 3000, title: 'Sneakers'),
+                                  ],
+                                ),
+                              ],
+                              onShopLook: (_) {},
+                              onItemClick: (_) {},
+                              onSeeAll: () {},
+                            ),
                           );
                         },
                       ),

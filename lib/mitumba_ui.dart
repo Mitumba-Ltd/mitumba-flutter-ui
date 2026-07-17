@@ -33,6 +33,8 @@ export 'src/components/navigation/top_nav.dart';
 // Components — Seller
 export 'src/components/seller/seller_card.dart';
 export 'src/components/seller/sti_score_chip.dart';
+export 'src/components/seller/store_card.dart';
+export 'src/components/seller/sti_breakdown_panel.dart';
 
 // Components — Commerce
 export 'src/components/commerce/order_status_timeline.dart';
@@ -64,6 +66,7 @@ export 'src/components/vazi/vazi_outfit_card.dart';
 export 'src/components/vazi/vazi_outfit_card_skeleton.dart';
 export 'src/components/vazi/vazi_feed_section.dart';
 export 'src/components/vazi/complete_this_look_panel.dart';
+export 'src/components/vazi/vazi_hero_spotlight.dart';
 
 // Components — Messaging
 export 'src/components/messaging/messaging.dart';
