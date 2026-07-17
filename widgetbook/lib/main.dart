@@ -1216,6 +1216,85 @@ class WidgetbookApp extends StatelessWidget {
                       ),
                     ],
                   ),
+                  WidgetbookComponent(
+                    name: 'MitumbaErrorState',
+                    useCases: [
+                      WidgetbookUseCase(
+                        name: 'Interactive',
+                        builder: (context) {
+                          final type = context.knobs.object.dropdown(
+                            label: 'Error Type',
+                            options: MitumbaErrorType.values,
+                            labelBuilder: (t) => t.name,
+                            initialOption: MitumbaErrorType.general,
+                          );
+                          final variant = context.knobs.object.dropdown(
+                            label: 'Variant',
+                            options: MitumbaErrorVariant.values,
+                            labelBuilder: (v) => v.name,
+                            initialOption: MitumbaErrorVariant.standard,
+                          );
+                          return Center(
+                            child: SizedBox(
+                              width: 500,
+                              child: MitumbaErrorState(
+                                title: context.knobs.string(label: 'Title', initialValue: 'Connection Lost'),
+                                subtitle: context.knobs.string(label: 'Subtitle', initialValue: 'Check your network details.'),
+                                type: type,
+                                variant: variant,
+                                onRetry: () {},
+                                onBack: () {},
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                  WidgetbookComponent(
+                    name: 'MitumbaOfflineBanner',
+                    useCases: [
+                      WidgetbookUseCase(
+                        name: 'Default',
+                        builder: (context) {
+                          return Center(
+                            child: SizedBox(
+                              width: 400,
+                              child: MitumbaOfflineBanner(
+                                isOffline: context.knobs.boolean(label: 'Is Offline', initialValue: true),
+                                onRetry: () {},
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                  WidgetbookComponent(
+                    name: 'DestructiveConfirmDialog',
+                    useCases: [
+                      WidgetbookUseCase(
+                        name: 'Default',
+                        builder: (context) {
+                          final blockers = context.knobs.boolean(label: 'Has Blockers', initialValue: false)
+                              ? ['You still have active payouts pending', 'There are unresolved buyer disputes']
+                              : const <String>[];
+                          return Center(
+                            child: DestructiveConfirmDialog(
+                              open: context.knobs.boolean(label: 'Open', initialValue: true),
+                              onClose: () {},
+                              title: context.knobs.string(label: 'Title', initialValue: 'Delete Shop permanently'),
+                              description: context.knobs.string(label: 'Description', initialValue: 'This action is completely irreversible and deletes all shop catalog data.'),
+                              confirmPhrase: context.knobs.string(label: 'Confirm Phrase', initialValue: 'DELETE'),
+                              requireTotp: context.knobs.boolean(label: 'Require TOTP', initialValue: true),
+                              blockers: blockers,
+                              onConfirm: ({code}) async {},
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
                 ],
               ),
               WidgetbookCategory(
@@ -2060,6 +2139,172 @@ class WidgetbookApp extends StatelessWidget {
                                   onClick: () {},
                                 ),
                               ),
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              WidgetbookCategory(
+                name: 'Forms',
+                children: [
+                  WidgetbookComponent(
+                    name: 'MitumbaPhoneInput',
+                    useCases: [
+                      WidgetbookUseCase(
+                        name: 'Interactive',
+                        builder: (context) {
+                          return Center(
+                            child: SizedBox(
+                              width: 320,
+                              child: MitumbaPhoneInput(
+                                value: context.knobs.string(label: 'Value', initialValue: '712345678'),
+                                onChanged: (val) {},
+                                label: context.knobs.stringOrNull(label: 'Label', initialValue: 'Phone Number'),
+                                error: context.knobs.stringOrNull(label: 'Error', initialValue: null),
+                                disabled: context.knobs.boolean(label: 'Disabled', initialValue: false),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                  WidgetbookComponent(
+                    name: 'MitumbaOTPInput',
+                    useCases: [
+                      WidgetbookUseCase(
+                        name: 'Interactive',
+                        builder: (context) {
+                          return Center(
+                            child: MitumbaOTPInput(
+                              value: context.knobs.string(label: 'Initial Value (6 chars)', initialValue: ''),
+                              onChanged: (val) {},
+                              onComplete: (otp) {},
+                              error: context.knobs.boolean(label: 'Error Shake', initialValue: false),
+                              loading: context.knobs.boolean(label: 'Loading', initialValue: false),
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                  WidgetbookComponent(
+                    name: 'MitumbaImageUploader',
+                    useCases: [
+                      WidgetbookUseCase(
+                        name: 'Interactive',
+                        builder: (context) {
+                          final maxImages = context.knobs.double.slider(label: 'Max Images', initialValue: 6, min: 1, max: 12).toInt();
+                          final variant = context.knobs.object.dropdown(
+                            label: 'Layout Mode',
+                            options: ImageUploaderVariant.values,
+                            labelBuilder: (v) => v.name,
+                            initialOption: ImageUploaderVariant.grid,
+                          );
+                          return Center(
+                            child: SizedBox(
+                              width: 400,
+                              child: MitumbaImageUploader(
+                                images: const [
+                                  UploadedImage(id: '1', url: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=100', status: UploadedImageStatus.done, isPrimary: true),
+                                  UploadedImage(id: '2', url: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=100', status: UploadedImageStatus.uploading, isPrimary: false),
+                                  UploadedImage(id: '3', url: 'https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=100', status: UploadedImageStatus.error, isPrimary: false),
+                                ],
+                                maxImages: maxImages,
+                                variant: variant,
+                                onAddTap: () {},
+                                onRemove: (_) {},
+                                onReorder: (_) {},
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                  WidgetbookComponent(
+                    name: 'MitumbaSearchBar',
+                    useCases: [
+                      WidgetbookUseCase(
+                        name: 'Interactive',
+                        builder: (context) {
+                          return Center(
+                            child: SizedBox(
+                              width: 360,
+                              child: MitumbaSearchBar(
+                                value: context.knobs.string(label: 'Value', initialValue: ''),
+                                onChanged: (val) {},
+                                onSubmit: (q) {},
+                                placeholder: context.knobs.string(label: 'Placeholder', initialValue: 'Search items...'),
+                                suggestions: const ['Nike shoes', 'Vintage jacket', 'Levi Jeans'],
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                  WidgetbookComponent(
+                    name: 'AddAddressModal',
+                    useCases: [
+                      WidgetbookUseCase(
+                        name: 'Default',
+                        builder: (context) {
+                          return Center(
+                            child: AddAddressModal(
+                              open: context.knobs.boolean(label: 'Open', initialValue: true),
+                              onClose: () {},
+                              onSave: (_) {},
+                              saving: context.knobs.boolean(label: 'Saving', initialValue: false),
+                              error: context.knobs.stringOrNull(label: 'Save Error', initialValue: null),
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                  WidgetbookComponent(
+                    name: 'TwoFactorMethodList',
+                    useCases: [
+                      WidgetbookUseCase(
+                        name: 'Default',
+                        builder: (context) {
+                          return Center(
+                            child: SizedBox(
+                              width: 400,
+                              child: TwoFactorMethodList(
+                                methods: const [
+                                  TwoFactorMethodView(id: '1', type: TwoFactorMethodType.totp, label: 'Google Authenticator', enabled: true, isPrimary: true, pending: false, lastUsedAt: '2 hours ago'),
+                                  TwoFactorMethodView(id: '2', type: TwoFactorMethodType.sms, label: '+254 712 *** 678', enabled: false, isPrimary: false, pending: true),
+                                ],
+                                loading: context.knobs.boolean(label: 'Loading', initialValue: false),
+                                onAdd: () {},
+                                onEnable: (_) {},
+                                onDisable: (_) {},
+                                onDelete: (_) {},
+                                onSetPrimary: (_) {},
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                  WidgetbookComponent(
+                    name: 'AddTwoFactorMethodModal',
+                    useCases: [
+                      WidgetbookUseCase(
+                        name: 'Default',
+                        builder: (context) {
+                          return Center(
+                            child: AddTwoFactorMethodModal(
+                              open: context.knobs.boolean(label: 'Open', initialValue: true),
+                              onClose: () {},
+                              availableTypes: const [TwoFactorMethodType.totp, TwoFactorMethodType.passkey, TwoFactorMethodType.sms],
+                              onSelectType: (_) {},
                             ),
                           );
                         },

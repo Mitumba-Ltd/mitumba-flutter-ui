@@ -55,6 +55,9 @@ export 'src/components/feedback/mitumba_toast.dart';
 export 'src/components/feedback/mitumba_skeleton.dart';
 export 'src/components/feedback/mitumba_banner.dart';
 export 'src/components/feedback/mitumba_modal.dart';
+export 'src/components/feedback/error_state.dart';
+export 'src/components/feedback/offline_banner.dart';
+export 'src/components/feedback/destructive_confirm_dialog.dart';
 
 // Components — Layout
 export 'src/components/layout/auth_page.dart';
@@ -69,6 +72,13 @@ export 'src/components/layout/form_card.dart';
 
 // Components — Forms
 export 'src/components/forms/search_filter_sheet.dart';
+export 'src/components/forms/phone_input.dart';
+export 'src/components/forms/otp_input.dart';
+export 'src/components/forms/image_uploader.dart';
+export 'src/components/forms/search_bar.dart';
+export 'src/components/forms/add_address_modal.dart';
+export 'src/components/forms/two_factor_method_list.dart';
+export 'src/components/forms/add_two_factor_method_modal.dart';
 
 // Components — VAZI
 export 'src/components/vazi/vazi_showcase.dart';

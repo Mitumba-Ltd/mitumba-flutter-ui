@@ -100,11 +100,13 @@ class VAZIShowcase extends StatefulWidget {
   State<VAZIShowcase> createState() => _VAZIShowcaseState();
 }
 
-class _VAZIShowcaseState extends State<VAZIShowcase> with SingleTickerProviderStateMixin {
+class _VAZIShowcaseState extends State<VAZIShowcase> with TickerProviderStateMixin {
   late PageController _pageCtrl;
   late int _current;
   bool _isAnimating = false;
   late AnimationController _floatController;
+  late AnimationController _heartController;
+  bool _showHeart = false;
 
   @override
   void initState() {
@@ -115,12 +117,18 @@ class _VAZIShowcaseState extends State<VAZIShowcase> with SingleTickerProviderSt
       duration: const Duration(seconds: 4),
       vsync: this,
     )..repeat(reverse: true);
+
+    _heartController = AnimationController(
+      duration: const Duration(milliseconds: 700),
+      vsync: this,
+    );
   }
 
   @override
   void dispose() {
     _pageCtrl.dispose();
     _floatController.dispose();
+    _heartController.dispose();
     super.dispose();
   }
 
@@ -133,6 +141,22 @@ class _VAZIShowcaseState extends State<VAZIShowcase> with SingleTickerProviderSt
     widget.onIndexChange?.call(index);
     Future.delayed(const Duration(milliseconds: 800), () {
       if (mounted) setState(() => _isAnimating = false);
+    });
+  }
+
+  void _triggerHeartPop() {
+    if (widget.onSaveLook != null) {
+      widget.onSaveLook!(widget.outfits[_current].id);
+    }
+    setState(() {
+      _showHeart = true;
+    });
+    _heartController.forward(from: 0.0).then((_) {
+      if (mounted) {
+        setState(() {
+          _showHeart = false;
+        });
+      }
     });
   }
 
@@ -178,8 +202,8 @@ class _VAZIShowcaseState extends State<VAZIShowcase> with SingleTickerProviderSt
           decoration: const BoxDecoration(
             gradient: LinearGradient(
               colors: [
-                Color(0xFF0C110E), // deep forest green-black
-                Color(0xFF191A18), // rich charcoal-black
+                Color(0xFF070B08), // deep forest green-black
+                Color(0xFF111210), // rich charcoal-black
               ],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
@@ -187,29 +211,68 @@ class _VAZIShowcaseState extends State<VAZIShowcase> with SingleTickerProviderSt
           ),
           child: Stack(
             children: [
-              // Ambient Glowing Spotlight Circle behind active model
+              // Ambient soft Earth glow behind Left Editorial Panel
+              Positioned(
+                left: -150,
+                top: -150,
+                child: Container(
+                  width: 500,
+                  height: 500,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    gradient: RadialGradient(
+                      colors: [
+                        MitumbaColors.earth.withOpacity(0.06),
+                        Colors.transparent,
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+
+              // Ambient Glowing Spotlight Circle behind active model (breathing)
+              Positioned.fill(
+                child: Center(
+                  child: AnimatedBuilder(
+                    animation: _floatController,
+                    builder: (context, child) {
+                      final pulse = _floatController.value;
+                      final size = 350.0 + pulse * 60.0;
+                      final opacity = 0.12 + pulse * 0.08;
+                      return Container(
+                        width: size,
+                        height: size,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          gradient: RadialGradient(
+                            colors: [
+                              MitumbaColors.green.withOpacity(opacity),
+                              Colors.transparent,
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ),
+
+              // Runway Glossy Floor Shadow Reflection overlay
               Positioned(
                 left: 0,
                 right: 0,
-                top: 0,
                 bottom: 0,
-                child: Center(
-                  child: AnimatedContainer(
-                    duration: const Duration(milliseconds: 800),
-                    width: 380,
-                    height: 380,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      gradient: RadialGradient(
-                        colors: [
-                          MitumbaColors.green.withValues(alpha: 0.18),
-                          Colors.transparent,
-                        ],
-                      ),
-                    ),
-                    child: BackdropFilter(
-                      filter: ImageFilter.blur(sigmaX: 40, sigmaY: 40),
-                      child: const SizedBox.shrink(),
+                height: 140,
+                child: Container(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        Colors.transparent,
+                        const Color(0xFF070B08).withOpacity(0.8),
+                        const Color(0xFF070B08),
+                      ],
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
                     ),
                   ),
                 ),
@@ -285,7 +348,7 @@ class _VAZIShowcaseState extends State<VAZIShowcase> with SingleTickerProviderSt
                                   Container(
                                     width: 140,
                                     height: 2,
-                                    color: MitumbaColors.divider.withValues(alpha: 0.1),
+                                    color: MitumbaColors.divider.withOpacity(0.1),
                                   ),
                                   AnimatedContainer(
                                     duration: const Duration(milliseconds: 300),
@@ -320,6 +383,7 @@ class _VAZIShowcaseState extends State<VAZIShowcase> with SingleTickerProviderSt
                       current: _current,
                       onNavigate: _navigateTo,
                       floatAnimation: _floatController,
+                      onDoubleTap: _triggerHeartPop,
                     ),
                   ),
 
@@ -340,6 +404,41 @@ class _VAZIShowcaseState extends State<VAZIShowcase> with SingleTickerProviderSt
                   ),
                 ],
               ),
+
+              // Heart Pop overlay
+              if (_showHeart)
+                IgnorePointer(
+                  child: Center(
+                    child: AnimatedBuilder(
+                      animation: _heartController,
+                      builder: (context, child) {
+                        final scale = TweenSequence<double>([
+                          TweenSequenceItem(tween: Tween(begin: 0.0, end: 1.3), weight: 40),
+                          TweenSequenceItem(tween: Tween(begin: 1.3, end: 1.0), weight: 20),
+                          TweenSequenceItem(tween: Tween(begin: 1.0, end: 0.0), weight: 40),
+                        ]).evaluate(_heartController);
+
+                        final opacity = TweenSequence<double>([
+                          TweenSequenceItem(tween: Tween(begin: 0.0, end: 1.0), weight: 45),
+                          TweenSequenceItem(tween: Tween(begin: 1.0, end: 1.0), weight: 15),
+                          TweenSequenceItem(tween: Tween(begin: 1.0, end: 0.0), weight: 40),
+                        ]).evaluate(_heartController);
+
+                        return Opacity(
+                          opacity: opacity,
+                          child: Transform.scale(
+                            scale: scale,
+                            child: const Icon(
+                              Icons.favorite,
+                              color: Color(0xFFE74C3C),
+                              size: 100,
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ),
             ],
           ),
         ),
@@ -353,8 +452,8 @@ class _VAZIShowcaseState extends State<VAZIShowcase> with SingleTickerProviderSt
       decoration: const BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            Color(0xFF0C110E),
-            Color(0xFF191A18),
+            Color(0xFF070B08),
+            Color(0xFF111210),
           ],
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
@@ -362,20 +461,22 @@ class _VAZIShowcaseState extends State<VAZIShowcase> with SingleTickerProviderSt
       ),
       child: Stack(
         children: [
-          // Spotlight glow in background
+          // Spotlight glow in background (breathing)
           Positioned.fill(
             child: Center(
-              child: Container(
-                width: 300,
-                height: 300,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: MitumbaColors.green.withValues(alpha: 0.12),
-                ),
-                child: BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: 40, sigmaY: 40),
-                  child: const SizedBox.shrink(),
-                ),
+              child: AnimatedBuilder(
+                animation: _floatController,
+                builder: (context, child) {
+                  final pulse = _floatController.value;
+                  return Container(
+                    width: 260 + pulse * 50,
+                    height: 260 + pulse * 50,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: MitumbaColors.green.withOpacity(0.08 + pulse * 0.04),
+                    ),
+                  );
+                },
               ),
             ),
           ),
@@ -393,6 +494,7 @@ class _VAZIShowcaseState extends State<VAZIShowcase> with SingleTickerProviderSt
               onItemClick: widget.onItemClick,
               onShopAll: widget.onShopAll,
               onSaveLook: widget.onSaveLook,
+              onDoubleTap: _triggerHeartPop,
             ),
           ),
 
@@ -412,7 +514,7 @@ class _VAZIShowcaseState extends State<VAZIShowcase> with SingleTickerProviderSt
                     width: 4,
                     height: active ? 28 : 8,
                     decoration: BoxDecoration(
-                      color: active ? MitumbaColors.green : MitumbaColors.textDisabled.withValues(alpha: 0.3),
+                      color: active ? MitumbaColors.green : MitumbaColors.textDisabled.withOpacity(0.3),
                       borderRadius: BorderRadius.circular(MitumbaRadius.full),
                     ),
                   );
@@ -427,6 +529,41 @@ class _VAZIShowcaseState extends State<VAZIShowcase> with SingleTickerProviderSt
             left: MitumbaSpacing.lg,
             child: const VAZIBadge(size: VAZIBadgeSize.small),
           ),
+
+          // Heart Pop overlay (mobile)
+          if (_showHeart)
+            IgnorePointer(
+              child: Center(
+                child: AnimatedBuilder(
+                  animation: _heartController,
+                  builder: (context, child) {
+                    final scale = TweenSequence<double>([
+                      TweenSequenceItem(tween: Tween(begin: 0.0, end: 1.3), weight: 40),
+                      TweenSequenceItem(tween: Tween(begin: 1.3, end: 1.0), weight: 20),
+                      TweenSequenceItem(tween: Tween(begin: 1.0, end: 0.0), weight: 40),
+                    ]).evaluate(_heartController);
+
+                    final opacity = TweenSequence<double>([
+                      TweenSequenceItem(tween: Tween(begin: 0.0, end: 1.0), weight: 45),
+                      TweenSequenceItem(tween: Tween(begin: 1.0, end: 1.0), weight: 15),
+                      TweenSequenceItem(tween: Tween(begin: 1.0, end: 0.0), weight: 40),
+                    ]).evaluate(_heartController);
+
+                    return Opacity(
+                      opacity: opacity,
+                      child: Transform.scale(
+                        scale: scale,
+                        child: const Icon(
+                          Icons.favorite,
+                          color: Color(0xFFE74C3C),
+                          size: 80,
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ),
         ],
       ),
     );
@@ -440,12 +577,14 @@ class _Desktop3DCarousel extends StatelessWidget {
     required this.current,
     required this.onNavigate,
     required this.floatAnimation,
+    this.onDoubleTap,
   });
 
   final List<VAZIShowcaseOutfit> outfits;
   final int current;
   final ValueChanged<int> onNavigate;
   final Animation<double> floatAnimation;
+  final VoidCallback? onDoubleTap;
 
   @override
   Widget build(BuildContext context) {
@@ -457,10 +596,10 @@ class _Desktop3DCarousel extends StatelessWidget {
         if (absDiff > 3) return const SizedBox.shrink();
 
         final isActive = diff == 0;
-        final scale = isActive ? 1.0 : (0.7 - absDiff * 0.15).clamp(0.35, 0.7);
-        final xOffset = diff * 150.0;
-        final opacity = isActive ? 1.0 : (0.6 - (absDiff - 1) * 0.2).clamp(0.0, 0.6);
-        final blur = isActive ? 0.0 : (absDiff * 4.0).clamp(0.0, 12.0);
+        final scale = isActive ? 1.0 : (0.7 - absDiff * 0.12).clamp(0.4, 0.75);
+        final xOffset = diff * 180.0;
+        final opacity = isActive ? 1.0 : (0.5 - (absDiff - 1) * 0.15).clamp(0.0, 0.5);
+        final blur = isActive ? 0.0 : (absDiff * 3.0).clamp(0.0, 10.0);
 
         Widget modelImg = Image.network(
           outfits[i].modelMediaUrl,
@@ -505,6 +644,7 @@ class _Desktop3DCarousel extends StatelessWidget {
           child: Center(
             child: GestureDetector(
               onTap: !isActive ? () => onNavigate(i) : null,
+              onDoubleTap: isActive ? onDoubleTap : null,
               child: AnimatedOpacity(
                 duration: const Duration(milliseconds: 800),
                 curve: const Cubic(0.25, 0.46, 0.45, 0.94),
@@ -540,12 +680,14 @@ class _OutfitSlide extends StatelessWidget {
     this.onItemClick,
     this.onShopAll,
     this.onSaveLook,
+    this.onDoubleTap,
   });
 
   final VAZIShowcaseOutfit outfit;
   final ValueChanged<String>? onItemClick;
   final ValueChanged<String>? onShopAll;
   final ValueChanged<String>? onSaveLook;
+  final VoidCallback? onDoubleTap;
 
   @override
   Widget build(BuildContext context) {
@@ -553,17 +695,20 @@ class _OutfitSlide extends StatelessWidget {
       fit: StackFit.expand,
       children: [
         // Model Media Background
-        Center(
-          child: Padding(
-            padding: const EdgeInsets.only(bottom: 220),
-            child: Image.network(
-              outfit.modelMediaUrl,
-              fit: BoxFit.contain,
-              height: double.infinity,
-              errorBuilder: (_, __, ___) => const SizedBox(
-                width: 200,
-                height: 400,
-                child: MitumbaSkeleton(variant: MitumbaSkeletonVariant.rectangular),
+        GestureDetector(
+          onDoubleTap: onDoubleTap,
+          child: Center(
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 220),
+              child: Image.network(
+                outfit.modelMediaUrl,
+                fit: BoxFit.contain,
+                height: double.infinity,
+                errorBuilder: (_, __, ___) => const SizedBox(
+                  width: 200,
+                  height: 400,
+                  child: MitumbaSkeleton(variant: MitumbaSkeletonVariant.rectangular),
+                ),
               ),
             ),
           ),
@@ -720,7 +865,7 @@ class _ItemThumbState extends State<_ItemThumb> {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(MitumbaRadius.md),
             border: Border.all(
-              color: _isHovered ? MitumbaColors.earth : MitumbaColors.white.withValues(alpha: 0.15),
+              color: _isHovered ? MitumbaColors.earth : MitumbaColors.white.withOpacity(0.15),
               width: 2,
             ),
             boxShadow: _isHovered ? MitumbaShadows.card : null,
@@ -733,7 +878,7 @@ class _ItemThumbState extends State<_ItemThumb> {
             widget.item.imageUrl,
             fit: BoxFit.cover,
             errorBuilder: (_, __, ___) => Container(
-              color: MitumbaColors.divider.withValues(alpha: 0.2),
+              color: MitumbaColors.divider.withOpacity(0.2),
               child: const Icon(
                 Icons.image_not_supported_outlined,
                 size: 16,
