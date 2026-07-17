@@ -863,6 +863,37 @@ class WidgetbookApp extends StatelessWidget {
                       ),
                     ],
                   ),
+                  WidgetbookComponent(
+                    name: 'MitumbaBanner',
+                    useCases: [
+                      WidgetbookUseCase(
+                        name: 'Default',
+                        builder: (context) {
+                          final severity = context.knobs.object.dropdown(
+                            label: 'Severity',
+                            options: MitumbaBannerSeverity.values,
+                            labelBuilder: (v) => v.name,
+                            initialOption: MitumbaBannerSeverity.info,
+                          );
+                          final title = context.knobs.string(label: 'Title', initialValue: 'Payment in Escrow');
+                          final message = context.knobs.stringOrNull(label: 'Message', initialValue: "KES 5,200 is securely held. We'll release it once you confirm delivery.");
+                          final hasClose = context.knobs.boolean(label: 'Show Close Button', initialValue: true);
+
+                          return Center(
+                            child: Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: MitumbaBanner(
+                                title: title,
+                                message: message,
+                                severity: severity,
+                                onClose: hasClose ? () {} : null,
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
                 ],
               ),
               WidgetbookCategory(
@@ -1730,6 +1761,128 @@ class WidgetbookApp extends StatelessWidget {
                                 ),
                               ],
                               onChange: (_) {},
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              WidgetbookCategory(
+                name: 'Commerce',
+                children: [
+                  WidgetbookComponent(
+                    name: 'PriceTag',
+                    useCases: [
+                      WidgetbookUseCase(
+                        name: 'Default',
+                        builder: (context) {
+                          final price = context.knobs.double.slider(label: 'Price (KES)', initialValue: 4500, min: 0, max: 100000);
+                          final strikethrough = context.knobs.boolean(label: 'Strikethrough', initialValue: false);
+                          final size = context.knobs.object.dropdown(
+                            label: 'Size',
+                            options: ['small', 'medium', 'large'],
+                            initialOption: 'medium',
+                          );
+                          final color = context.knobs.object.dropdown(
+                            label: 'Color',
+                            options: ['default', 'green', 'earth'],
+                            initialOption: 'default',
+                          );
+
+                          return Center(
+                            child: PriceTag(
+                              priceKes: price,
+                              size: size,
+                              color: color,
+                              strikethrough: strikethrough,
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                  WidgetbookComponent(
+                    name: 'DeliveryBadge',
+                    useCases: [
+                      WidgetbookUseCase(
+                        name: 'Default',
+                        builder: (context) {
+                          final type = context.knobs.object.dropdown(
+                            label: 'Type',
+                            options: ['same-city', 'intercity'],
+                            initialOption: 'same-city',
+                          );
+                          final days = context.knobs.stringOrNull(label: 'Estimated Days', initialValue: '1-2 days');
+
+                          return Center(
+                            child: DeliveryBadge(
+                              type: type,
+                              estimatedDays: days,
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                  WidgetbookComponent(
+                    name: 'EscrowStatusBanner',
+                    useCases: [
+                      WidgetbookUseCase(
+                        name: 'Default',
+                        builder: (context) {
+                          final status = context.knobs.object.dropdown(
+                            label: 'Status',
+                            options: EscrowStatus.values,
+                            labelBuilder: (s) => s.name,
+                            initialOption: EscrowStatus.funded,
+                          );
+                          final amount = context.knobs.double.slider(label: 'Amount (KES)', initialValue: 5200, min: 0, max: 50000);
+                          final hours = context.knobs.int.slider(label: 'Hours Remaining', initialValue: 18, min: 1, max: 72);
+
+                          return Center(
+                            child: Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: EscrowStatusBanner(
+                                status: status,
+                                amountKes: amount,
+                                hoursRemaining: hours,
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                  WidgetbookComponent(
+                    name: 'CartItem',
+                    useCases: [
+                      WidgetbookUseCase(
+                        name: 'Default',
+                        builder: (context) {
+                          final qty = context.knobs.int.slider(label: 'Qty', initialValue: 1, min: 1, max: 10);
+                          final size = context.knobs.string(label: 'Selected Size', initialValue: 'M');
+
+                          return Center(
+                            child: Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: SizedBox(
+                                width: 340,
+                                child: CartItem(
+                                  imageUrl: 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=200',
+                                  title: 'Vintage Denim Jacket',
+                                  subtitle: 'Blue / Stonewash',
+                                  status: 'IN STOCK',
+                                  priceKes: 3200,
+                                  size: size,
+                                  availableSizes: const ['S', 'M', 'L'],
+                                  quantity: qty,
+                                  onRemove: () {},
+                                  onQuantityChange: (_) {},
+                                  onSizeChange: (_) {},
+                                ),
+                              ),
                             ),
                           );
                         },

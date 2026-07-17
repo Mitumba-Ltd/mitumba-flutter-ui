@@ -39,11 +39,16 @@ export 'src/components/seller/sti_breakdown_panel.dart';
 // Components — Commerce
 export 'src/components/commerce/order_status_timeline.dart';
 export 'src/components/commerce/dispute_status_timeline.dart';
+export 'src/components/commerce/price_tag.dart';
+export 'src/components/commerce/delivery_badge.dart';
+export 'src/components/commerce/cart_item.dart';
+export 'src/components/commerce/escrow_status_banner.dart';
 
 // Components — Feedback
 export 'src/components/feedback/empty_state.dart';
 export 'src/components/feedback/mitumba_toast.dart';
 export 'src/components/feedback/mitumba_skeleton.dart';
+export 'src/components/feedback/mitumba_banner.dart';
 
 // Components — Layout
 export 'src/components/layout/auth_page.dart';
