@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.18.0](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/compare/v1.17.0...v1.18.0) (2026-07-20)
+
+
+### Features
+
+* **components:** 100% React component parity implementation ([#62](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/issues/62)) ([c2d9069](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/commit/c2d906948d983247469a8f50ecdf2b1eb79652a5))
+
 ## [1.17.0](https://github.com/Mitumba-Ltd/mitumba-flutter-ui/compare/v1.16.0...v1.17.0) (2026-07-17)
 
 
