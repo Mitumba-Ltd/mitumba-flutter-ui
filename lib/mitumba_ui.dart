@@ -72,6 +72,7 @@ export 'src/components/layout/profile_card.dart';
 export 'src/components/layout/profile_nav_list.dart';
 export 'src/components/layout/form_card.dart';
 export 'src/components/layout/email_verification_page.dart';
+export 'src/components/layout/seller_onboarding_page.dart';
 
 // Components — Forms
 export 'src/components/forms/search_filter_sheet.dart';
@@ -82,6 +83,8 @@ export 'src/components/forms/search_bar.dart';
 export 'src/components/forms/add_address_modal.dart';
 export 'src/components/forms/two_factor_method_list.dart';
 export 'src/components/forms/add_two_factor_method_modal.dart';
+export 'src/components/forms/two_factor_login_step.dart';
+export 'src/components/forms/two_factor_setup_modal.dart';
 
 // Components — VAZI
 export 'src/components/vazi/vazi_showcase.dart';
@@ -94,6 +97,8 @@ export 'src/components/vazi/vazi_hero_spotlight.dart';
 
 // Components — Messaging
 export 'src/components/messaging/messaging.dart';
+export 'src/components/messaging/floating_chat_dock.dart';
+export 'src/components/messaging/order_message_attachment.dart';
 
 // Components — Data
 export 'src/components/data/stats_card.dart';
