@@ -419,6 +419,25 @@ class WidgetbookApp extends StatelessWidget {
                       ),
                     ],
                   ),
+                  WidgetbookComponent(
+                    name: 'AuthSubmitButton',
+                    useCases: [
+                      WidgetbookUseCase(
+                        name: 'Interactive',
+                        builder: (context) {
+                          return Center(
+                            child: AuthSubmitButton(
+                              label: context.knobs.string(label: 'Label', initialValue: 'Verify & Submit'),
+                              loading: context.knobs.boolean(label: 'Loading', initialValue: false),
+                              disabled: context.knobs.boolean(label: 'Disabled', initialValue: false),
+                              fullWidth: context.knobs.boolean(label: 'Full Width', initialValue: false),
+                              onClick: () {},
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
                 ],
               ),
               WidgetbookCategory(
@@ -632,6 +651,50 @@ class WidgetbookApp extends StatelessWidget {
                             onLogin: (_, __, ___) {},
                             onSignUp: (_, __) {},
                             onForgotPassword: (_) {},
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                  WidgetbookComponent(
+                    name: 'EmailVerificationPage',
+                    useCases: [
+                      WidgetbookUseCase(
+                        name: 'Default',
+                        builder: (context) {
+                          return EmailVerificationPage(
+                            email: context.knobs.string(label: 'Email', initialValue: 'buyer@mitumba.com'),
+                            onVerify: (code) {},
+                            onResend: () {},
+                            loading: context.knobs.boolean(label: 'Loading', initialValue: false),
+                            error: context.knobs.stringOrNull(label: 'Error', initialValue: null),
+                            resendSuccess: context.knobs.boolean(label: 'Resend Success', initialValue: false),
+                            onGoBack: () {},
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                  WidgetbookComponent(
+                    name: 'SellerOnboardingPage',
+                    useCases: [
+                      WidgetbookUseCase(
+                        name: 'Default',
+                        builder: (context) {
+                          return SellerOnboardingPage(
+                            currentStep: context.knobs.double.slider(
+                              label: 'Active Step (0-5)',
+                              initialValue: 0,
+                              min: 0,
+                              max: 5,
+                              divisions: 5,
+                            ).toInt(),
+                            theme: context.knobs.boolean(label: 'Dark Mode', initialValue: false)
+                                ? 'mitumba-dark'
+                                : 'mitumba-light',
+                            loading: context.knobs.boolean(label: 'Loading', initialValue: false),
+                            error: context.knobs.stringOrNull(label: 'Error', initialValue: null),
+                            onComplete: (data) {},
                           );
                         },
                       ),
@@ -1289,6 +1352,31 @@ class WidgetbookApp extends StatelessWidget {
                               requireTotp: context.knobs.boolean(label: 'Require TOTP', initialValue: true),
                               blockers: blockers,
                               onConfirm: ({code}) async {},
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                  WidgetbookComponent(
+                    name: 'UnauthenticatedState',
+                    useCases: [
+                      WidgetbookUseCase(
+                        name: 'Default',
+                        builder: (context) {
+                          final hasSecondary = context.knobs.boolean(label: 'Secondary Action', initialValue: true);
+                          return Center(
+                            child: UnauthenticatedState(
+                              title: context.knobs.string(label: 'Title', initialValue: 'Please sign in to access chat'),
+                              subtitle: context.knobs.string(label: 'Subtitle', initialValue: 'You need an account to message buyers and sellers directly.'),
+                              signInLabel: context.knobs.string(label: 'Sign In Label', initialValue: 'Sign In'),
+                              onSignIn: () {},
+                              secondaryAction: hasSecondary
+                                  ? MitumbaSecondaryAction(
+                                      label: 'Browse catalog instead',
+                                      onClick: () {},
+                                    )
+                                  : null,
                             ),
                           );
                         },
@@ -2305,6 +2393,160 @@ class WidgetbookApp extends StatelessWidget {
                               onClose: () {},
                               availableTypes: const [TwoFactorMethodType.totp, TwoFactorMethodType.passkey, TwoFactorMethodType.sms],
                               onSelectType: (_) {},
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                  WidgetbookComponent(
+                    name: 'TwoFactorLoginStep',
+                    useCases: [
+                      WidgetbookUseCase(
+                        name: 'Default',
+                        builder: (context) {
+                          final methods = [
+                            const TwoFactorLoginMethod(id: '1', type: TwoFactorLoginMethodType.totp),
+                            const TwoFactorLoginMethod(id: '2', type: TwoFactorLoginMethodType.sms, label: '0712***678'),
+                          ];
+                          return TwoFactorLoginStep(
+                            methods: methods,
+                            onSubmit: (code) {},
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                  WidgetbookComponent(
+                    name: 'TwoFactorSetupModal',
+                    useCases: [
+                      WidgetbookUseCase(
+                        name: 'Default',
+                        builder: (context) {
+                          return Center(
+                            child: TwoFactorSetupModal(
+                              open: context.knobs.boolean(label: 'Open', initialValue: true),
+                              onClose: () {},
+                              otpauthUri: 'otpauth://totp/Mitumba:buyer?secret=ABCD',
+                              secret: 'ABCD',
+                              backupCodes: const ['1111-2222', '3333-4444', '5555-6666', '7777-8888'],
+                              onVerify: (code) async {},
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              WidgetbookCategory(
+                name: 'Messaging',
+                children: [
+                  WidgetbookComponent(
+                    name: 'FloatingChatDock',
+                    useCases: [
+                      WidgetbookUseCase(
+                        name: 'Interactive Dock',
+                        builder: (context) {
+                          final open = context.knobs.boolean(label: 'Open', initialValue: true);
+                          final minimized = context.knobs.boolean(label: 'Minimized', initialValue: false);
+                          final title = context.knobs.string(label: 'Title', initialValue: 'Thrift Shop');
+                          final subtitle = context.knobs.stringOrNull(label: 'Subtitle', initialValue: 'Active 5m ago');
+                          final unreadCount = context.knobs.double.slider(label: 'Unread Badge', initialValue: 2, min: 0, max: 10).toInt();
+
+                          return Center(
+                            child: Stack(
+                              clipBehavior: Clip.none,
+                              children: [
+                                SizedBox(
+                                  width: 800,
+                                  height: 600,
+                                  child: Container(color: Colors.black12),
+                                ),
+                                FloatingChatDock(
+                                  open: open,
+                                  title: title,
+                                  subtitle: subtitle,
+                                  minimized: minimized,
+                                  unreadCount: unreadCount,
+                                  onToggleMinimize: () {},
+                                  onClose: () {},
+                                  children: ChatThread(
+                                    partnerName: title,
+                                    messages: const [
+                                      ChatMessage(body: 'Hi, is this jacket still available?', timestamp: '10:00 AM', isMine: false),
+                                      ChatMessage(body: 'Yes, it is! Let me know if you want to purchase.', timestamp: '10:02 AM', isMine: true),
+                                    ],
+                                    onSend: (_) {},
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                  WidgetbookComponent(
+                    name: 'OrderMessageAttachment',
+                    useCases: [
+                      WidgetbookUseCase(
+                        name: 'Default Card',
+                        builder: (context) {
+                          final title = context.knobs.string(label: 'Item Title', initialValue: 'Retro Leather Jacket');
+                          final price = context.knobs.double.slider(label: 'Amount (KES)', initialValue: 5500, min: 0, max: 20000);
+                          final status = context.knobs.string(label: 'Order Status', initialValue: 'processing');
+                          final shortId = context.knobs.string(label: 'Short ID', initialValue: '7d83f2a1');
+
+                          return Center(
+                            child: Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: SizedBox(
+                                width: 360,
+                                child: OrderMessageAttachment(
+                                  orderShortId: shortId,
+                                  listingTitle: title,
+                                  amount: price,
+                                  status: status,
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                  WidgetbookComponent(
+                    name: 'InboxLayout',
+                    useCases: [
+                      WidgetbookUseCase(
+                        name: 'Full View',
+                        builder: (context) {
+                          final messages = [
+                            const ChatMessage(body: 'Hello!', timestamp: 'Yesterday', isMine: false),
+                            const ChatMessage(body: 'Can I purchase this?', timestamp: 'Today', isMine: false),
+                          ];
+                          final conversations = [
+                            const Conversation(id: '1', partnerId: 's1', partnerName: 'Joy Thrift', lastMessage: 'Can I purchase this?', lastMessageAt: '1h ago', unread: true),
+                            const Conversation(id: '2', partnerId: 's2', partnerName: 'Urban Kicks', lastMessage: 'Sounds good', lastMessageAt: '2d ago', unread: false),
+                          ];
+
+                          return Center(
+                            child: SizedBox(
+                              width: 1000,
+                              height: 600,
+                              child: InboxLayout(
+                                conversationList: ConversationList(
+                                  conversations: conversations,
+                                  activeId: '1',
+                                  onSelect: (_) {},
+                                ),
+                                chatThread: ChatThread(
+                                  partnerName: 'Joy Thrift',
+                                  messages: messages,
+                                  onSend: (_) {},
+                                ),
+                              ),
                             ),
                           );
                         },
